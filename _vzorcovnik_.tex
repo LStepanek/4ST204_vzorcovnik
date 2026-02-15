@@ -1,0 +1,138 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[czech]{babel}
+
+\usepackage[
+  a4paper,
+  margin=2.5cm
+]{geometry}
+
+\usepackage{amsmath, amsfonts, amssymb, mathtools, bm}
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{booktabs}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\color{gray!10},
+    frame=single,
+    breaklines=true
+}
+
+\newenvironment{funkcedict}
+{
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{p{0.22\textwidth} p{0.38\textwidth} p{0.35\textwidth}}
+\toprule
+\textbf{Funkce} & \textbf{Příklad použití} & \textbf{Vysvětlení} \\
+\midrule
+}
+{
+\bottomrule
+\end{tabular}
+}
+
+
+%% ----------------------------------------------------------------------------
+%\title{Vzorcovník -- 4ST204 Statistika pro informatiky}
+%\author{}
+%\date{}
+
+\begin{document}
+
+%\maketitle
+
+\begin{center}
+\Huge
+Vzorcovník -- 4ST204 Statistika pro informatiky
+\end{center}
+
+%% ----------------------------------------------------------------------------
+\section{Užitečné vzorce}
+
+Mějme výběr $n$ hodnot $x_1, x_2, \dots, x_n$. Pak aritmetický průměr
+a geometrický průměr je
+
+\begin{equation*}
+\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i ,
+\qquad \textrm{a} \qquad
+\bar{x}_{G} = \sqrt[n]{ \prod_{i=1}^{n} x_i }.
+\end{equation*}
+
+
+%% ----------------------------------------------------------------------------
+\section{Užitečné funkce v R}
+
+\begin{funkcedict}
+
+\texttt{mean(x)} &
+\begin{lstlisting}
+x <- c(1, 2, 3, 4, 5)
+mean(x)
+\end{lstlisting}
+&
+Vrací aritmetický průměr hodnot ve vektoru \texttt{x}.
+\\
+
+\texttt{sd(x)} &
+\begin{lstlisting}
+sd(x)
+\end{lstlisting}
+&
+Vrací výběrovou směrodatnou odchylku ve vektoru \texttt{x}.
+\\
+
+\end{funkcedict}
+
+
+%% ----------------------------------------------------------------------------
+\section{Užitečné funkce v Pythonu}
+
+\begin{funkcedict}
+
+\texttt{np.mean(x)} &
+\begin{lstlisting}
+import numpy as np
+x = np.array([1,2,3,4,5])
+np.mean(x)
+\end{lstlisting}
+&
+Vrací aritmetický průměr pole pomocí knihovny \texttt{numpy}.
+\\
+
+\texttt{statistics.mean(x)} &
+\begin{lstlisting}
+import statistics
+x = [1,2,3,4,5]
+statistics.mean(x)
+\end{lstlisting}
+&
+Vrací aritmetický průměr pomocí standardní knihovny Pythonu
+\texttt{statistics}.
+\\
+
+\end{funkcedict}
+
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
