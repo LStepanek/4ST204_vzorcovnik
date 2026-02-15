@@ -1,6 +1,6 @@
 # 4ST204_vzorcovnik
 
-Tento repozitář poskytuje strukturovanou šablonu pro sestavení sdíleného seznamu klíčových vzorců používaných v předmětu 4ST204 Statistika pro informatiky. Cílem je podpořit studenty při vytváření vlastního stručného a dobře organizovaného referenčního dokumentu, který jim bude sloužit jako doplněk ke studiu. Studenti jsou vyzváni, aby ke společnému dokumentu přispívali vzorci a vysvětleními formou spolupráce.
+Tento repozitář poskytuje strukturovanou šablonu pro sestavení sdíleného seznamu klíčových vzorců ("vzorcovníku") používaných v předmětu 4ST204 Statistika pro informatiky. Cílem je podpořit studenty při vytváření vlastního stručného a dobře organizovaného referenčního dokumentu, který jim bude sloužit jako doplněk ke studiu a zejména jako povolená pomůcka k testům. Studenti jsou vítáni, aby ke společnému dokumentu přispívali vzorci, popisy, užitečnými funkcemi v Pythonu a R, a to formou spolupráce.
 
 ## Jak přispívat do repozitáře (např. přidání vzorce)
 
