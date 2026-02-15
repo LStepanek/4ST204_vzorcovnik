@@ -1,3 +1,39 @@
 # 4ST204_vzorcovnik
 
-This repository provides a structured template for compiling a shared list of key formulas used in 4ST204 Statistics for computer scientists. The goal is to support students in building their own concise, well-organized reference document to accompany their study. Students are encouraged to contribute formulas and explanations collaboratively.
+Tento repozitář poskytuje strukturovanou šablonu pro sestavení sdíleného seznamu klíčových vzorců používaných v předmětu 4ST204 Statistika pro informatiky. Cílem je podpořit studenty při vytváření vlastního stručného a dobře organizovaného referenčního dokumentu, který jim bude sloužit jako doplněk ke studiu. Studenti jsou vyzváni, aby ke společnému dokumentu přispívali vzorci a vysvětleními formou spolupráce.
+
+## Jak přispívat do repozitáře (např. přidání vzorce)
+
+Přímé úpravy větve `main` nejsou povoleny. Každá změna musí projít schválením pomocí Pull Requestu.
+
+### 1. Vytvořme vlastní větev
+1. Otevřeme repozitář na GitHubu.
+2. Klikneme na tlačítko **Branch: main** (nahoře vlevo nad seznamem souborů).
+3. Zadejme název nové větve, např. `pridani-vzorce-jmeno`, `pridani-vzorce-nick`, apod.
+4. Klikneme na **Create branch**.
+
+### 2. Proveďme úpravy
+1. Otevřeme např. příslušný `.tex` soubor.
+2. Klikneme na **Edit this file**.
+3. Přidejme nový vzorec na vhodné místo.
+4. Dole napišme stručný popis změny (např. "Přidán vzorec pro směrodatnou odchylku").
+5. Klikneme na **Commit changes** (do své větve, ne do `main`).
+
+### 3. Vytvořme Pull Request
+1. Klikneme na tlačítko **Compare & pull request**, které se objeví po commitu.
+   - Pokud ho nevidíme, přejděte na záložku **Pull requests** → **New pull request**.
+2. Zkontrolujme, že změna směřuje z naší větve do `main`.
+3. Přidejme stručný popis změny.
+4. Klikneme na **Create pull request**.
+
+### 4. Počkejme na schválení
+- Změna bude zkontrolována.
+- Pokud bude vše v pořádku, bude sloučena do větve `main`.
+- Pokud budou potřeba úpravy, budeme vyzváni k jejich doplnění, eventuálně drobné doplnění provede ihned po schválení úpravy pak admin repozitáře.
+
+---
+
+## Důležité
+- Neupravujme přímo větev `main` (tato možnost je systémově vypnuta).
+- Vždy pracujme ve vlastní větvi.
+- Každá změna musí projít Pull Requestem a schválením.
