@@ -13,7 +13,7 @@ Přímé úpravy větve `main` nejsou povoleny. Každá změna musí projít sch
 4. Klikneme na **Create branch**.
 
 ### 2. Proveďme úpravy
-1. Otevřeme např. příslušný `.tex` soubor.
+1. Otevřeme příslušný `.tex` soubor (nejspíš budete upravovat `_vzorcovnik_.tex`, já budu výstupy průněžně sázet, ale můžete i vy a updatovat i `_vzorcovnik_.pdf`).
 2. Klikneme na **Edit this file**.
 3. Přidejme nový vzorec na vhodné místo.
 4. Dole napišme stručný popis změny (např. "Přidán vzorec pro směrodatnou odchylku").
