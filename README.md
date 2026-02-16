@@ -21,7 +21,7 @@ Přímé úpravy větve `main` nejsou povoleny. Každá změna musí projít sch
 
 ### 3. Vytvořme Pull Request
 1. Klikneme na tlačítko **Compare & pull request**, které se objeví po commitu.
-   - Pokud ho nevidíme, přejděte na záložku **Pull requests** → **New pull request**.
+   - Pokud ho nevidíme, přejděme na záložku **Pull requests** → **New pull request**.
 2. Zkontrolujme, že změna směřuje z naší větve do `main`.
 3. Přidejme stručný popis změny.
 4. Klikneme na **Create pull request**.
