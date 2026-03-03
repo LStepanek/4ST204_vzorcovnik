@@ -1,0 +1,122 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[czech]{babel}
+\usepackage[a4paper, margin=1.8cm]{geometry}
+\usepackage{amsmath, amsfonts, amssymb, mathtools, bm}
+\usepackage{graphicx, hyperref, xcolor, enumitem, booktabs, listings}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\color{gray!10},
+    frame=single,
+    breaklines=true,
+    language=Python
+}
+
+% Prostředí pro tabulky funkcí
+\newenvironment{funkcedict}
+{
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{p{0.30\textwidth} p{0.32\textwidth} p{0.33\textwidth}}
+\toprule
+\textbf{Funkce / Operace} & \textbf{Příklad použití} & \textbf{Vysvětlení} \\
+\midrule
+}
+{
+\bottomrule
+\end{tabular}
+}
+
+\begin{document}
+
+\begin{center}
+\Huge \textbf{Vzorcovník -- 4ST204 (Python)}
+\end{center}
+
+%% --- SEKCE: TEORIE ----------------------------------------------------------
+\section{Statistická teorie}
+
+\subsection*{Míry úrovně a polohy}
+\begin{itemize}[noitemsep]
+    \item \textbf{Aritmetický průměr:} $\bar{x} = \frac{\sum x_i}{n}$. Klasický průměr pro data bez extrémních hodnot.
+    \item \textbf{Geometrický průměr:} $\bar{x}_{G} = \sqrt[n]{\prod x_i}$. Pro multiplikativní data (tempa růstu, úroky).
+    \item \textbf{Harmonický průměr:} $\bar{x}_h = \frac{n}{\sum \frac{1}{x_i}}$. Používá se pro poměrové veličiny (např. rychlost v km/h), kde je konstantní čitatel (např. ujetá vzdálenost).
+    \item \textbf{Modus ($\hat{x}$):} Nejpravděpodobnější (nejčetnější) hodnota.
+    \item \textbf{Kvartily:} Dolní $Q_1$ (25 \%), Medián $Q_2$ (50 \%) a Horní $Q_3$ (75 \%).
+    \item \textbf{Sturgesovo pravidlo:} $k = 1 + \log_2 n$ (doporučený počet intervalů).
+\end{itemize}
+
+\subsection*{Kvantily (Pozice a výpočet)}
+Pozice $p$-tého kvantilu: $z_p = n \cdot p$. Hodnota $\tilde{x}_p$ se určí z uspořádaného souboru $x_{(1)} \le \dots \le x_{(n)}$:
+\begin{equation*}
+\tilde{x}_p = 
+\begin{cases} 
+x_{(\lceil z_p \rceil)} & \text{pokud } z_p \notin \mathbb{Z} \\
+\frac{x_{(z_p)} + x_{(z_p+1)}}{2} & \text{pokud } z_p \in \mathbb{Z}
+\end{cases}
+\end{equation*}
+
+\subsection*{$L^p$ Normy (Vzdálenosti a penalizace)}
+Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky chyb a regularizaci.
+\begin{itemize}
+    \item \textbf{$L^1$ (Manhattan):} $\|x\|_1 = \sum |x_i|$. Využití: \textbf{Lasso regrese}.
+    \item \textbf{$L^2$ (Euklid):} $\|x\|_2 = \sqrt{\sum x_i^2}$. Využití: \textbf{Ridge regrese} (metoda nejmenších čtverců).
+    \item \textbf{$L^\infty$ (Max):} $\|x\|_\infty = \max(|x_i|)$. Reprezentuje nejhorší možnou chybu.
+\end{itemize}
+
+%% --- SEKCE: PRÁCE S POLEMI --------------------------------------------------
+\section{Práce s poli (Standardní Python)}
+\begin{funkcedict}
+\textbf{List Comprehension} & \texttt{[x**2 for x in range(5)]} & Dynamické generování pole pomocí cyklu. \\
+\texttt{x[start:stop:krok]} & \texttt{pole[1:10:2]} & Výřez (stop je exkluzivní). \texttt{[::-1]} pro otočení. \\
+\texttt{x.copy()} vs \texttt{deepcopy} & \texttt{a = b.copy()} & \texttt{copy} je plytká, \texttt{deepcopy} kopíruje i vnořená pole. \\
+\texttt{x.append(v)} & \texttt{data.append(10)} & Přidání jednoho prvku na konec pole. \\
+\texttt{x.extend(a)} & \texttt{data.extend([1,2,3])} & Přidání více prvků na konec pole. \\
+\end{funkcedict}
+
+%% --- SEKCE: ZÁKLADNÍ PYTHON -------------------------------------------------
+\section{Základní Python (Built-in \& Math)}
+\begin{funkcedict}
+\texttt{help(funkce)} & \texttt{help(print)} & Dokumentace pro zadanou funkci. \\
+\texttt{range(start, stop)} & \texttt{list(range(0, 5))} & Vygeneruje sekvenci \texttt{[0, 1, 2, 3, 4]}. \\
+\texttt{math.log(x, b)} & \texttt{math.log(8, 2)} & Logaritmus čísla $x$ o základu $b$. \\
+\texttt{math.sqrt(x)} & \texttt{math.sqrt(16)} & Druhá odmocnina čísla. \\
+\texttt{math.ceil / floor} & \texttt{math.ceil(2.1)} & Zaokrouhlení nahoru (3) / dolů (2). \\
+\texttt{math.trunc(x)} & \texttt{math.trunc(2.9)} & Odříznutí desetinné části (2). \\
+\texttt{math.comb(n, k)} & \texttt{math.comb(10, 3)} & Kombinační číslo (počet kombinací $k$ prvků z $n$). \\
+\end{funkcedict}
+
+%% --- SEKCE: NUMPY -----------------------------------------------------------
+\section{Knihovna NumPy (Statistika a Matice)}
+\begin{funkcedict}
+\texttt{np.array([...])} & \texttt{np.array([1, 2, 3])} & Vytvoření základního NumPy pole (vektoru nebo matice). \\
+\texttt{np.sum(x)} & \texttt{np.sum(data, axis=0)} & Součet všech prvků v poli (nebo podél zvolené osy). \\
+\texttt{np.mean(x)} & \texttt{np.mean(data)} & Průměr všech prvků v poli. \\
+\texttt{np.prod(x)} & \texttt{np.prod(data)} & Součin všech prvků v poli. \\
+\texttt{np.sqrt(x)} & \texttt{np.sqrt(data)} & Druhá odmocnina z každého prvku v poli. \\
+\texttt{np.random.rand(n)} & \texttt{np.random.rand(100)} & Generování pole $n$ náhodných čísel z rovnoměrného rozdělení na $[0, 1)$. \\
+\texttt{np.random.uniform(a, b, n)} & \texttt{np.random.uniform(10, 50, 100)} & Generuje $n$ náhodných \textbf{desetinných} čísel v rozsahu $[a, b)$. \\
+\texttt{np.quantile(x, q)} & \texttt{np.quantile(x, 0.75)} & Výpočet kvantilu ($q \in [0, 1]$). \\
+\texttt{np.log10(x)} & \texttt{np.log10(data)} & Dekadický logaritmus (základ 10). Často se používá pro normalizaci dat. \\
+\texttt{np.std(x, ddof=1)} & \texttt{np.std(data, ddof=1)} & Výběrová směrodatná odchylka (\texttt{ddof=1} je nutné pro nestranný odhad). \\
+\texttt{np.linalg.norm(x, p)} & \texttt{np.linalg.norm(x, ord=2)} & Výpočet $L^1, L^2$ nebo $L^\infty$ (\texttt{np.inf}) normy. \\
+\texttt{np.insert / np.delete} & \texttt{np.insert(A, 1, [..], axis=0)} & Vloží/Smaže řádek (\texttt{axis=0}) nebo sloupec 
+(\texttt{axis=1}). \\
+\texttt{stats.gmean(x)} & \texttt{stats.gmean(x)} & Geometrický průměr (knihovna Scipy). \\
+\texttt{Geometrický průměr} & \texttt{10**np.mean(np.log10(x))} & Výpočet geometrického průměru pomocí logaritmů. \\
+\texttt{stats.hmean(x)} & \texttt{stats.hmean(x)} & Harmonický průměr (knihovna Scipy). \\
+\end{funkcedict}
+
+%% --- SEKCE: PANDAS ----------------------------------------------------------
+\section{Knihovna Pandas (Analýza dat)}
+\begin{funkcedict}
+\texttt{df.describe()} & \texttt{df.describe()} & Souhrnné statistiky (mean, std, kvartily, atd.). \\
+\texttt{df.loc} vs \texttt{df.iloc} & \texttt{df.loc[0, 'Sloupec']} & Výběr dat podle \textbf{názvů} (\texttt{loc}) vs. \textbf{pozice} (\texttt{iloc}). \\
+\texttt{df.value\_counts()} & \texttt{df['A'].value\_counts()} & Tabulka četností pro kategorická data. \\
+\texttt{df.isna().sum()} & \texttt{df.isna().sum()} & Počet chybějících (null) hodnot v tabulce. \\
+\end{funkcedict}
+
+\end{document}
