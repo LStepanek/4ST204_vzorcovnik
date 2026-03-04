@@ -67,6 +67,17 @@ Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky c
     \item \textbf{$L^\infty$ (Max):} $\|x\|_\infty = \max(|x_i|)$. Reprezentuje nejhorší možnou chybu.
 \end{itemize}
 
+%% --- SEKCE: UŽITEČNÉ KNIHOVNY ------------------------------------------------
+\section{Užitečné knihovny (Importy a přehled)}
+\begin{funkcedict}
+\texttt{import numpy as np} & \texttt{np.array([...])} & Základ pro matice, vektory a rychlé matematické operace. \\
+\texttt{import pandas as pd} & \texttt{pd.DataFrame(matice)} & Nejdůležitější pro analýzu tabulek (DataFrame) a práci s CSV. \\
+\texttt{from scipy import stats} & \texttt{stats.hmean(data)} & Vědecká statistika: vážené průměry, rozdělení, testy. \\
+\texttt{import statistics} & \texttt{statistics.multimode(x)} & Vestavěná knihovna pro základní statistiku (i bez NumPy). \\
+\texttt{import matplotlib.pyplot as plt} & \texttt{plt.hist(data)} & Tvorba grafů, histogramů a vizualizace dat. \\
+\texttt{import math} & \texttt{math.sqrt(x)} & Základní matematické funkce pro skalární čísla (ne pro pole). \\
+\end{funkcedict}
+
 %% --- SEKCE: PRÁCE S POLEMI --------------------------------------------------
 \section{Práce s poli (Standardní Python)}
 \begin{funkcedict}
@@ -90,9 +101,8 @@ Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky c
 \end{funkcedict}
 
 %% --- SEKCE: NUMPY -----------------------------------------------------------
-\section{Knihovna NumPy (Statistika a Matice)}
+\section{Statistika a Matice (Knihovna NumPy a jiné)}
 \begin{funkcedict}
-\texttt{np.array([...])} & \texttt{np.array([1, 2, 3])} & Vytvoření základního NumPy pole (vektoru nebo matice). \\
 \texttt{np.sum(x)} & \texttt{np.sum(data, axis=0)} & Součet všech prvků v poli (nebo podél zvolené osy). \\
 \texttt{np.mean(x)} & \texttt{np.mean(data)} & Průměr všech prvků v poli. \\
 \texttt{np.prod(x)} & \texttt{np.prod(data)} & Součin všech prvků v poli. \\
@@ -100,6 +110,7 @@ Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky c
 \texttt{np.random.rand(n)} & \texttt{np.random.rand(100)} & Generování pole $n$ náhodných čísel z rovnoměrného rozdělení na $[0, 1)$. \\
 \texttt{np.random.uniform(a, b, n)} & \texttt{np.random.uniform(10, 50, 100)} & Generuje $n$ náhodných \textbf{desetinných} čísel v rozsahu $[a, b)$. \\
 \texttt{np.quantile(x, q)} & \texttt{np.quantile(x, 0.75)} & Výpočet kvantilu ($q \in [0, 1]$). \\
+\texttt{Modus} & \texttt{statistics.multimode(data)} & \texttt{Vrací modus z pole (i více prvků)} \\
 \texttt{np.log10(x)} & \texttt{np.log10(data)} & Dekadický logaritmus (základ 10). Často se používá pro normalizaci dat. \\
 \texttt{np.std(x, ddof=1)} & \texttt{np.std(data, ddof=1)} & Výběrová směrodatná odchylka (\texttt{ddof=1} je nutné pro nestranný odhad). \\
 \texttt{np.linalg.norm(x, p)} & \texttt{np.linalg.norm(x, ord=2)} & Výpočet $L^1, L^2$ nebo $L^\infty$ (\texttt{np.inf}) normy. \\
@@ -107,16 +118,44 @@ Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky c
 (\texttt{axis=1}). \\
 \texttt{stats.gmean(x)} & \texttt{stats.gmean(x)} & Geometrický průměr (knihovna Scipy). \\
 \texttt{Geometrický průměr} & \texttt{10**np.mean(np.log10(x))} & Výpočet geometrického průměru pomocí logaritmů. \\
-\texttt{stats.hmean(x)} & \texttt{stats.hmean(x)} & Harmonický průměr (knihovna Scipy). \\
+\texttt{stats.hmean(x)} & \texttt{stats.hmean(x, weights=[...])} & Harmonický průměr (knihovna Scipy). \\
 \end{funkcedict}
 
 %% --- SEKCE: PANDAS ----------------------------------------------------------
 \section{Knihovna Pandas (Analýza dat)}
 \begin{funkcedict}
+\texttt{pd.read\_csv(file)} & \texttt{pd.read\_csv('titanic.txt')} & Načte data z CSV souboru a vytvoří DataFrame. \\
+\texttt{df.quantile(p)} & \texttt{df.quantile(0.25, interpolation = 'midpoint')} & Vrátí p-tý kvantil z vybraného dataframe dle "VŠE" vzorce. \\
 \texttt{df.describe()} & \texttt{df.describe()} & Souhrnné statistiky (mean, std, kvartily, atd.). \\
 \texttt{df.loc} vs \texttt{df.iloc} & \texttt{df.loc[0, 'Sloupec']} & Výběr dat podle \textbf{názvů} (\texttt{loc}) vs. \textbf{pozice} (\texttt{iloc}). \\
 \texttt{df.value\_counts()} & \texttt{df['A'].value\_counts()} & Tabulka četností pro kategorická data. \\
 \texttt{df.isna().sum()} & \texttt{df.isna().sum()} & Počet chybějících (null) hodnot v tabulce. \\
+
+\end{funkcedict}
+
+%% --- SEKCE: MATPLOTLIB (DETAILNÍ GRAFY) -------------------------------------
+\section{Vizualizace dat (Knihovna Matplotlib)}
+
+\subsection*{Základní typy grafů}
+\begin{funkcedict}
+\texttt{plt.hist(x)} & \texttt{plt.hist(data, bins=15, edgecolor='black')} & \textbf{Histogram}: Rozdělení četností. \texttt{bins} = počet intervalů, \texttt{density=True} pro hustotu. \\
+\texttt{plt.bar(x, y)} & \texttt{plt.bar(kategorie, hodnoty, width=0.5)} & \textbf{Sloupcový graf}: Porovnání kategorií. \texttt{width} mění šířku sloupců. \\
+\texttt{plt.barh(x, y)} & \texttt{plt.barh(kategorie, hodnoty)} & \textbf{Vodorovný sloupcový graf}: Vhodný pro dlouhé názvy kategorií. \\
+\texttt{plt.scatter(x, y)} & \texttt{plt.scatter(x, y, alpha=0.5, marker='o')} & \textbf{Bodový graf}: Závislost dvou proměnných. \texttt{alpha} nastavuje průhlednost. \\
+\texttt{plt.plot(x, y)} & \texttt{plt.plot(x, y, linestyle='--', linewidth=2)} & \textbf{Spojnicový graf}: Vývoj v čase nebo trend. \\
+\end{funkcedict}
+
+\subsection*{Nastavení a úprava grafu (Vzhled)}
+\begin{funkcedict}
+\texttt{plt.title(s)} & \texttt{plt.title("Název grafu", fontsize=16)} & Nastaví hlavní nadpis grafu. \\
+\texttt{plt.xlabel / ylabel} & \texttt{plt.xlabel("Čas [s]")} & Nastaví popisky os $x$ a $y$. \\
+\texttt{plt.xticks / yticks} & \texttt{plt.xticks(rotation=45)} & Nastavení značek na osách. \texttt{rotation} otočí popisky. \\
+\texttt{plt.legend()} & \texttt{plt.legend(loc='upper right')} & Zobrazí legendu (vyžaduje parametr \texttt{label} v definici grafu). \\
+\texttt{plt.grid()} & \texttt{plt.grid(True, axis='y', linestyle=':')} & Zobrazí mřížku. \texttt{axis} určuje směr (x, y, both). \\
+\texttt{plt.xlim / ylim} & \texttt{plt.xlim(0, 100)} & Nastaví rozsah (měřítko) osy od--do. \\
+\texttt{plt.axvline / hline} & \texttt{plt.axvline(np.mean(x), color='r')} & Vykreslí svislou/vodorovnou čáru (např. pro vyznačení průměru). \\
+\texttt{plt.figure()} & \texttt{plt.figure(figsize=(10, 6))} & Nastaví velikost plátna grafu v palcích. \\
+\texttt{plt.savefig()} & \texttt{plt.savefig("graf.pdf", bbox\_inches='tight')} & Uloží graf. \texttt{bbox\_inches='tight'} zajistí, že se neoříznou popisky. \\
 \end{funkcedict}
 
 \end{document}
