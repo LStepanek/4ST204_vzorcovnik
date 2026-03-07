@@ -90,6 +90,40 @@ Mějme množinu $n$ prvků, ze které vybíráme $k$ prvků.
     \end{itemize}
 \end{itemize}
 
+\subsection*{Míry variability}
+Variabilita vyjadřuje různorodost hodnot v souboru[cite: 8]. Čím více jsou hodnoty vzdálené od průměru, tím je variabilita vyšší[cite: 9].
+
+\begin{itemize}
+    \item \textbf{Variační rozpětí ($R$):} Rozdíl mezi maximální a minimální hodnotou: $R = x_{max} - x_{min}$.
+    \item \textbf{„Klasický“ rozptyl ($s_x^2$):} Průměrná čtvercová odchylka od průměru (používá se pro celou populaci):
+    \begin{equation*}
+        s_x^2 = \frac{1}{n} \sum_{i=1}^{n} (x_i - \bar{x})^2 
+    \end{equation*}
+    \item \textbf{Výběrový rozptyl ($S^2$):} Používá se pro odhad rozptylu z náhodného výběru (v NumPy \texttt{ddof=1}):
+    \begin{equation*}
+        S^2 = \frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{x})^2
+    \end{equation*}
+    \item \textbf{Směrodatná odchylka ($s_x$):} Odmocnina z rozptylu, udává variabilitu v původních jednotkách: $s_x = \sqrt{s_x^2}$.
+    \item \textbf{Variační koeficient ($v_x$):} Relativní míra variability (bezrozměrná), slouží k porovnání souborů s různými průměry: $v_x = \frac{s_x}{\bar{x}}$.
+\end{itemize}
+
+\subsection*{Rozklad rozptylu}
+Pokud máme data rozdělená do $k$ skupin (např. pobočky firmy), můžeme celkový rozptyl rozložit na dvě složky:
+\begin{equation*}
+    s_x^2 = \underbrace{\bar{s}_i^2}_{\text{vnitroskupinový}} + \underbrace{s_{\bar{x}}^2}_{\text{meziskupinový}}
+\end{equation*}
+
+\begin{itemize}
+    \item \textbf{Vnitroskupinový rozptyl ($\bar{s}_i^2$):} Průměr rozptylů jednotlivých skupin (vyjadřuje kolísání uvnitř skupin):
+    \begin{equation*}
+        \bar{s}_i^2 = \frac{\sum_{i=1}^{k} s_i^2 n_i}{\sum_{i=1}^{k} n_i} 
+    \end{equation*}
+    \item \textbf{Meziskupinový rozptyl ($s_{\bar{x}}^2$):} Rozptyl skupinových průměrů od celkového průměru (vyjadřuje rozdíly mezi skupinami):
+    \begin{equation*}
+        s_{\bar{x}}^2 = \frac{\sum_{i=1}^{k} (\bar{x}_i - \bar{x})^2 n_i}{\sum_{i=1}^{k} n_i} 
+    \end{equation*}
+\end{itemize}
+
 %% --- SEKCE: UŽITEČNÉ KNIHOVNY ------------------------------------------------
 \section{Užitečné knihovny (Importy a přehled)}
 \begin{funkcedict}
@@ -136,13 +170,17 @@ Mějme množinu $n$ prvků, ze které vybíráme $k$ prvků.
 \texttt{np.quantile(x, q)} & \texttt{np.quantile(x, 0.75)} & Výpočet kvantilu ($q \in [0, 1]$). \\
 \texttt{Modus} & \texttt{statistics.multimode(data)} & \texttt{Vrací modus z pole (i více prvků)} \\
 \texttt{np.log10(x)} & \texttt{np.log10(data)} & Dekadický logaritmus (základ 10). Často se používá pro normalizaci dat. \\
-\texttt{np.std(x, ddof=1)} & \texttt{np.std(data, ddof=1)} & Výběrová směrodatná odchylka (\texttt{ddof=1} je nutné pro nestranný odhad). \\
 \texttt{np.linalg.norm(x, p)} & \texttt{np.linalg.norm(x, ord=2)} & Výpočet $L^1, L^2$ nebo $L^\infty$ (\texttt{np.inf}) normy. \\
 \texttt{np.insert / np.delete} & \texttt{np.insert(A, 1, [..], axis=0)} & Vloží/Smaže řádek (\texttt{axis=0}) nebo sloupec 
 (\texttt{axis=1}). \\
 \texttt{stats.gmean(x)} & \texttt{stats.gmean(x)} & Geometrický průměr (knihovna Scipy). \\
-\texttt{Geometrický průměr} & \texttt{10**np.mean(np.log10(x))} & Výpočet geometrického průměru pomocí logaritmů. \\
 \texttt{stats.hmean(x)} & \texttt{stats.hmean(x, weights=[...])} & Harmonický průměr (knihovna Scipy). \\
+\texttt{np.var(x, ddof=0)} & \texttt{np.var(data, ddof=0)} & \textbf{Klasický rozptyl} $s_x^2$ (děleno $n$). \\
+\texttt{np.var(x, ddof=1)} & \texttt{np.var(data, ddof=1)} & \textbf{Výběrový rozptyl} $S^2$ (děleno $n-1$). \\
+\texttt{np.std(x, ddof=0)} & \texttt{np.std(data, ddof=0)} & Klasická směrodatná odchylka $s_x$. \\
+\texttt{np.std(x, ddof=1)} & \texttt{np.std(data, ddof=1)} & Výběrová směrodatná odchylka $S$. \\
+\texttt{np.ptp(x)} & \texttt{np.ptp(data)} & \textbf{Variační rozpětí} $R = x_{max} - x_{min}$. \\
+\texttt{v\_x = std / mean} & \texttt{np.std(x) / np.mean(x)} & \textbf{Variační koeficient} $v_x$ (relativní variabilita). \\
 \end{funkcedict}
 
 %% --- SEKCE: PANDAS ----------------------------------------------------------
