@@ -67,6 +67,29 @@ Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky c
     \item \textbf{$L^\infty$ (Max):} $\|x\|_\infty = \max(|x_i|)$. Reprezentuje nejhorší možnou chybu.
 \end{itemize}
 
+\subsection*{Kombinatorika}
+Mějme množinu $n$ prvků, ze které vybíráme $k$ prvků.
+
+\begin{itemize}
+    \item \textbf{Permutace (Pořadí všech $n$ prvků):}
+    \begin{itemize}
+        \item Bez opakování: $P(n) = n!$
+        \item S opakováním: $P'_{k_1, k_2, \dots, k_m}(n) = \frac{n!}{k_1! \cdot k_2! \cdot \dots \cdot k_m!}$
+    \end{itemize}
+    
+    \item \textbf{Variace (Výběr $k$ prvků z $n$, záleží na pořadí):}
+    \begin{itemize}
+        \item Bez opakování: $V(k, n) = \frac{n!}{(n-k)!}$
+        \item S opakováním: $V'(k, n) = n^k$
+    \end{itemize}
+
+    \item \textbf{Kombinace (Výběr $k$ prvků z $n$, nezáleží na pořadí):}
+    \begin{itemize}
+        \item Bez opakování: $K(k, n) = \binom{n}{k} = \frac{n!}{k!(n-k)!}$
+        \item S opakováním: $K'(k, n) = \binom{n+k-1}{k} = \frac{(n+k-1)!}{k!(n-1)!}$
+    \end{itemize}
+\end{itemize}
+
 %% --- SEKCE: UŽITEČNÉ KNIHOVNY ------------------------------------------------
 \section{Užitečné knihovny (Importy a přehled)}
 \begin{funkcedict}
@@ -98,6 +121,7 @@ Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky c
 \texttt{math.ceil / floor} & \texttt{math.ceil(2.1)} & Zaokrouhlení nahoru (3) / dolů (2). \\
 \texttt{math.trunc(x)} & \texttt{math.trunc(2.9)} & Odříznutí desetinné části (2). \\
 \texttt{math.comb(n, k)} & \texttt{math.comb(10, 3)} & Kombinační číslo (počet kombinací $k$ prvků z $n$). \\
+\texttt{def function(...):} & \texttt{def funkce(x, y, z):} & Definice vlastní funkce s parametry. \\
 \end{funkcedict}
 
 %% --- SEKCE: NUMPY -----------------------------------------------------------
@@ -130,6 +154,16 @@ Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky c
 \texttt{df.loc} vs \texttt{df.iloc} & \texttt{df.loc[0, 'Sloupec']} & Výběr dat podle \textbf{názvů} (\texttt{loc}) vs. \textbf{pozice} (\texttt{iloc}). \\
 \texttt{df.value\_counts()} & \texttt{df['A'].value\_counts()} & Tabulka četností pro kategorická data. \\
 \texttt{df.isna().sum()} & \texttt{df.isna().sum()} & Počet chybějících (null) hodnot v tabulce. \\
+\texttt{df.columns} & \texttt{list(df.columns)} & Vrátí seznam názvů všech sloupců v tabulce. \\
+\texttt{df.index} & \texttt{df.index.tolist()} & Vrátí indexy řádků (názvy nebo čísla). \\
+\texttt{df['A'].values} & \texttt{df['A'].values} & Převede sloupec zpět na \textbf{NumPy pole} (vhodné pro math funkce). \\
+\texttt{df.sort\_values()} & \texttt{df.sort\_values(by='X')} & Seřadí tabulku podle hodnot ve sloupci 'X'. \\
+\texttt{df.head(n) / tail} & \texttt{df.head(5)} & Zobrazí prvních / posledních $n$ řádků tabulky. \\
+\texttt{df.groupby('A')} & \texttt{df.groupby('A').mean()} & \textbf{Seskupování}: Výpočet statistik podle kategorií ve sloupci 'A'. \\
+\texttt{Filtrování} & \texttt{df[df['Věk'] > 18]} & Vybere pouze řádky splňující danou podmínku. \\
+\texttt{df.drop()} & \texttt{df.drop(columns=['ID'])} & Odstraní vybraný sloupec nebo řádek. \\
+\texttt{df.rename()} & \texttt{df.rename(columns=\{'A':'X'\})} & Přejmenování sloupců pomocí slovníku. \\
+\texttt{df.T} & \texttt{df.T} & \textbf{Transpozice}: Prohodí řádky a sloupce. \\
 
 \end{funkcedict}
 
