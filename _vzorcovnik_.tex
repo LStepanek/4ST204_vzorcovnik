@@ -55,50 +55,203 @@
 %\maketitle
 
 \begin{center}
+
+\includegraphics[width=0.35\textwidth]{FIS_2_logo_cb_cmyk.png}
+
+\vspace{0.5cm}
+
 \Huge
 Vzorcovník -- 4ST204 Statistika pro informatiky
+
 \end{center}
 
-%% ----------------------------------------------------------------------------
-\section{Užitečné vzorce}
+% %% ----------------------------------------------------------------------------
+% \section{Užitečné vzorce}
 
-Mějme výběr $n$ hodnot $x_1, x_2, \dots, x_n$. Pak aritmetický průměr
-a geometrický průměr je
+% Mějme výběr $n$ hodnot $x_1, x_2, \dots, x_n$. Pak aritmetický průměr
+% a geometrický průměr je
+
+% \begin{equation*}
+% \bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i ,
+% \qquad \textrm{a} \qquad
+% \bar{x}_{G} = \sqrt[n]{ \prod_{i=1}^{n} x_i }.
+% \end{equation*}
+
+
+% %% ----------------------------------------------------------------------------
+% \section{Užitečné funkce v R}
+
+% \begin{funkcedict}
+
+% \texttt{mean(x)} &
+% \begin{lstlisting}
+% x <- c(1, 2, 3, 4, 5)
+% mean(x)
+% \end{lstlisting}
+% &
+% Vrací aritmetický průměr hodnot ve vektoru \texttt{x}.
+% \\
+
+% \texttt{sd(x)} &
+% \begin{lstlisting}
+% sd(x)
+% \end{lstlisting}
+% &
+% Vrací výběrovou směrodatnou odchylku ve vektoru \texttt{x}.
+% \\
+
+% \end{funkcedict}
+
+
+% %% ----------------------------------------------------------------------------
+% \section{Užitečné funkce v Pythonu}
+
+% \begin{funkcedict}
+
+% \texttt{np.mean(x)} &
+% \begin{lstlisting}
+% import numpy as np
+% x = np.array([1,2,3,4,5])
+% np.mean(x)
+% \end{lstlisting}
+% &
+% Vrací aritmetický průměr pole pomocí knihovny \texttt{numpy}.
+% \\
+
+% \texttt{statistics.mean(x)} &
+% \begin{lstlisting}
+% import statistics
+% x = [1,2,3,4,5]
+% statistics.mean(x)
+% \end{lstlisting}
+% &
+% Vrací aritmetický průměr pomocí standardní knihovny Pythonu
+% \texttt{statistics}.
+% \\
+
+% \end{funkcedict}
+
+%%_____________________________________________________________________________
+\tableofcontents
+\newpage
+%%_____________________________________________________________________________
+
+%%-----------------------------------------------------------------------------
+\section{Popisná Statistika}
+%%_____________________________________________________________________________
+
+\subsection{Četnosti}
+%%-----------------------------------------------------------------------------
+
+\subsubsection{Absolutní četnost}
+
+Absolutní četnost $i$-té hodnoty je počet výskytů dané hodnoty ve výběru.
 
 \begin{equation*}
-\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i ,
-\qquad \textrm{a} \qquad
-\bar{x}_{G} = \sqrt[n]{ \prod_{i=1}^{n} x_i }.
+n_i
 \end{equation*}
 
+kde
 
-%% ----------------------------------------------------------------------------
-\section{Užitečné funkce v R}
+\begin{itemize}[noitemsep]
+\item $n_i$ je počet výskytů $i$-té hodnoty ve výběru.
+\end{itemize}
+%%-----------------------------------------------------------------------------
+
+\subsubsection{Součet absolutních četností}
+
+Součet absolutních četností všech hodnot (nebo tříd) ve výběru
+se rovná celkovému počtu pozorování.
+
+\begin{equation*}
+\sum_{i=1}^{k} n_i = n
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $\sum$ je sumační znak (značí sčítání),
+\item $i$ je index hodnoty nebo třídy,
+\item $k$ je počet různých hodnot nebo tříd,
+\item $n_i$ je absolutní četnost $i$-té hodnoty (nebo třídy),
+\item $n$ je celkový počet pozorování.
+\end{itemize}
+%%-----------------------------------------------------------------------------
+
+\subsubsection{Relativní Četnost}
+Relativní četnost $i$-té hodnoty ve výběru je definována jako podíl
+absolutní četnosti dané hodnoty a celkového počtu pozorování,
+
+\begin{equation*}
+p_i = \frac{n_i}{n}
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $p_i$ je relativní četnost $i$-té hodnoty,
+\item $n_i$ je absolutní četnost $i$-té hodnoty (kolikrát se hodnota vyskytla),
+\item $n$ je celkový počet pozorování v souboru.
+\end{itemize}
+%%-----------------------------------------------------------------------------
+
+\subsubsection{Součet relativních četností}
+
+Součet relativních četností všech hodnot (nebo tříd) ve výběru
+je roven jedné.
+
+\begin{equation*}
+\sum_{i=1}^{k} p_i = 1
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $\sum$ je sumační znak (značí sčítání),
+\item $i$ je index hodnoty nebo třídy,
+\item $k$ je počet různých hodnot nebo tříd,
+\item $p_i$ je relativní četnost $i$-té hodnoty (nebo třídy).
+\end{itemize}
+
+%%-----------------------------------------------------------------------------
+\subsection{Charakteristiky polohy}
+%%_____________________________________________________________________________
+
+\subsubsection{Aritmetický průměr}
+%%-----------------------------------------------------------------------------
+
+Aritmetický průměr (výběrový průměr) je definován jako součet
+všech hodnot statistického souboru dělený počtem pozorování.
+
+\begin{equation*}
+\bar{x} = \frac{\sum_{i=1}^{n} x_i}{n}
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $\bar{x}$ je aritmetický průměr,
+\item $\sum$ je sumační znak (součet hodnot),
+\item $x_i$ je $i$-tá hodnota statistického souboru,
+\item $i$ je index hodnoty,
+\item $n$ je počet pozorování.
+\end{itemize}
+
+\paragraph{Implementace v R}\mbox{}\par
 
 \begin{funkcedict}
 
 \texttt{mean(x)} &
 \begin{lstlisting}
-x <- c(1, 2, 3, 4, 5)
+x <- c(1,2,3,4,5)
 mean(x)
 \end{lstlisting}
 &
 Vrací aritmetický průměr hodnot ve vektoru \texttt{x}.
 \\
-
-\texttt{sd(x)} &
-\begin{lstlisting}
-sd(x)
-\end{lstlisting}
-&
-Vrací výběrovou směrodatnou odchylku ve vektoru \texttt{x}.
-\\
-
 \end{funkcedict}
 
-
-%% ----------------------------------------------------------------------------
-\section{Užitečné funkce v Pythonu}
+\paragraph{Implementace v Python}\mbox{}\par
 
 \begin{funkcedict}
 
@@ -111,16 +264,741 @@ np.mean(x)
 &
 Vrací aritmetický průměr pole pomocí knihovny \texttt{numpy}.
 \\
+\end{funkcedict}
 
-\texttt{statistics.mean(x)} &
+%%----------------------------------------------------------------------------
+\subsubsection{Vážený aritmetický průměr (z četnostní tabulky)}
+
+Pokud jsou data zadána pomocí četnostní tabulky, aritmetický průměr
+lze vypočítat jako vážený průměr hodnot.
+
+\begin{equation*}
+\bar{x} =
+\frac{\sum_{i=1}^{k} x_i n_i}{\sum_{i=1}^{k} n_i}
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $\bar{x}$ je aritmetický průměr,
+\item $\sum$ je sumační znak (součet),
+\item $x_i$ je $i$-tá hodnota znaku,
+\item $n_i$ je absolutní četnost $i$-té hodnoty,
+\item $k$ je počet různých hodnot nebo tříd,
+\item $\sum_{i=1}^{k} n_i$ je celkový počet pozorování.
+\end{itemize}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{weighted.mean(x, w)} &
 \begin{lstlisting}
-import statistics
-x = [1,2,3,4,5]
-statistics.mean(x)
+x <- c(1,2,3)
+w <- c(2,3,5)
+
+weighted.mean(x, w)
 \end{lstlisting}
 &
-Vrací aritmetický průměr pomocí standardní knihovny Pythonu
-\texttt{statistics}.
+Vrací vážený průměr hodnot ve vektoru \texttt{x} s váhami \texttt{w}.
+\\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{np.average(x, weights=w)} &
+\begin{lstlisting}
+import numpy as np
+
+x = np.array([1,2,3])
+w = np.array([2,3,5])
+
+np.average(x, weights=w)
+\end{lstlisting}
+&
+Vrací vážený průměr hodnot ve vektoru \texttt{x} s váhami \texttt{w}.
+\\
+
+\end{funkcedict}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Aritmetický průměr pomocí relativních četností}
+
+Pokud jsou data vyjádřena pomocí relativních četností,
+lze aritmetický průměr vypočítat jako vážený součet hodnot.
+
+\begin{equation*}
+\bar{x} = \sum_{i=1}^{k} x_i p_i
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $\bar{x}$ je aritmetický průměr,
+\item $\sum$ je sumační znak (součet),
+\item $x_i$ je $i$-tá hodnota znaku,
+\item $p_i$ je relativní četnost $i$-té hodnoty,
+\item $i$ je index hodnoty,
+\item $k$ je počet různých hodnot nebo tříd.
+\end{itemize}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{sum(x * p)} &
+\begin{lstlisting}
+x <- c(1,2,3)
+p <- c(0.2,0.3,0.5)
+
+sum(x * p)
+\end{lstlisting}
+&
+Vrací aritmetický průměr vypočtený pomocí relativních četností.
+\\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{np.sum(x * p)} &
+\begin{lstlisting}
+import numpy as np
+
+x = np.array([1,2,3])
+p = np.array([0.2,0.3,0.5])
+
+np.sum(x * p)
+\end{lstlisting}
+&
+Vrací aritmetický průměr vypočtený pomocí relativních četností
+pomocí knihovny \texttt{numpy}.
+\\
+
+\end{funkcedict}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Harmonický průměr}
+
+Harmonický průměr je definován jako podíl počtu pozorování
+a součtu převrácených hodnot jednotlivých pozorování.
+
+\begin{equation*}
+\bar{x}_H = \frac{n}{\sum_{i=1}^{n} \frac{1}{x_i}}
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $\bar{x}_H$ je harmonický průměr,
+\item $n$ je počet pozorování,
+\item $\sum$ je sumační znak (součet),
+\item $x_i$ je $i$-tá hodnota statistického souboru,
+\item $\frac{1}{x_i}$ je převrácená hodnota $i$-tého pozorování.
+\end{itemize}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{n / sum(1/x)} &
+\begin{lstlisting}
+x <- c(1,2,4,5)
+n <- length(x)
+
+n / sum(1/x)
+\end{lstlisting}
+&
+Vrací harmonický průměr hodnot ve vektoru \texttt{x}.
+\\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{len(x) / np.sum(1/x)} &
+\begin{lstlisting}
+import numpy as np
+
+x = np.array([1,2,4,5])
+len(x) / np.sum(1/x)
+\end{lstlisting}
+&
+Vrací harmonický průměr hodnot ve vektoru \texttt{x}.
+\\
+
+\end{funkcedict}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Geometrický průměr}
+
+Geometrický průměr je definován jako $n$-tá odmocnina součinu
+všech hodnot statistického souboru.
+
+\begin{equation*}
+\bar{x}_G =
+\sqrt[n]{\prod_{i=1}^{n} x_i}
+=
+\sqrt[n]{x_1 \cdot x_2 \cdots x_n}
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $\bar{x}_G$ je geometrický průměr,
+\item $\prod$ je znak pro součin (násobení všech hodnot),
+\item $x_i$ je $i$-tá hodnota statistického souboru,
+\item $i$ je index hodnoty,
+\item $n$ je počet pozorování,
+\item $\sqrt[n]{\cdot}$ značí $n$-tou odmocninu.
+\end{itemize}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{exp(mean(log(x)))} &
+\begin{lstlisting}
+x <- c(1,2,3,4)
+
+exp(mean(log(x)))
+\end{lstlisting}
+&
+Vrací geometrický průměr hodnot ve vektoru \texttt{x}.
+\\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{np.exp(np.mean (np.log(x)))} &
+\begin{lstlisting}
+import numpy as np
+
+x = np.array([1,2,3,4])
+
+np.exp(np.mean(np.log(x)))
+\end{lstlisting}
+&
+Vrací geometrický průměr hodnot ve vektoru \texttt{x}.
+\\
+
+\end{funkcedict}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Vztah mezi průměry}
+
+\begin{equation*}
+\bar{x}_H \le \bar{x}_G \le \bar{x}
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $\bar{x}_H$ je harmonický průměr,
+\item $\bar{x}_G$ je geometrický průměr,
+\item $\bar{x}$ je aritmetický průměr.
+\end{itemize}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Medián}
+
+Medián je hodnota, která rozděluje uspořádaný statistický soubor
+na dvě stejně početné části. Medián také vyjadřuje 50\% kvantil.
+
+\begin{equation*}
+\tilde{x} =
+\begin{cases}
+x_{\left(\frac{n+1}{2}\right)}, & \text{je-li } n \text{ liché}, \\
+\\
+\frac{x_{\left(\frac{n}{2}\right)} + x_{\left(\frac{n}{2}+1\right)}}{2}, & \text{je-li } n \text{ sudé}.
+\end{cases}
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $\tilde{x}$ je medián,
+\item $x_{(i)}$ je $i$-tá hodnota v uspořádaném statistickém souboru,
+\item $n$ je počet pozorování.
+\end{itemize}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{median(x)} &
+\begin{lstlisting}
+x <- c(1,3,2,5,4)
+median(x)
+\end{lstlisting}
+&
+Vrací medián hodnot ve vektoru \texttt{x}.
+\\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{np.median(x)} &
+\begin{lstlisting}
+import numpy as np
+
+x = np.array([1,3,2,5,4])
+np.median(x)
+\end{lstlisting}
+&
+Vrací medián hodnot ve vektoru \texttt{x}.
+\\
+
+\end{funkcedict}
+
+%%----------------------------------------------------------------------------
+\subsubsection{Kvantily a kvartily}
+
+Kvantily rozdělují uspořádaný statistický soubor na části
+se stejným počtem pozorování.
+
+$q$-kvantil je hodnota $x_q$, pro kterou platí
+
+\begin{equation*}
+P(X \le x_q) = q
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $x_q$ je $q$-kvantil,
+\item $q \in (0,1)$ je pořadí kvantilu,
+\item $P(X \le x_q)$ je pravděpodobnost, že náhodná veličina
+nabývá hodnot menších nebo rovných $x_q$.
+\end{itemize}
+
+Speciálním případem kvantilů jsou kvartily, které rozdělují
+data na čtyři stejně velké části.
+
+\begin{equation*}
+Q_1 = x_{0.25}, \qquad
+Q_2 = x_{0.5}, \qquad
+Q_3 = x_{0.75}
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $Q_1$ je první kvartil (25\% dat je menších),
+\item $Q_2$ je druhý kvartil, který odpovídá mediánu,
+\item $Q_3$ je třetí kvartil (75\% dat je menších).
+\end{itemize}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{quantile(x)} &
+\begin{lstlisting}
+x <- c(1,2,3,4,5,6,7,8)
+
+quantile(x)
+\end{lstlisting}
+&
+Vrací kvantily datového vektoru.
+\\
+
+\texttt{quantile(x, probs=c(0.25, 0.5, 0.75))} &
+\begin{lstlisting}
+x <- c(1,2,3,4,5,6,7,8)
+
+quantile(x, probs=c(0.25,0.5,0.75))
+\end{lstlisting}
+&
+Vrací první, druhý a třetí kvartil.
+\\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{np.quantile(x,q)} &
+\begin{lstlisting}
+import numpy as np
+
+x = np.array([1,2,3,4,5,6,7,8])
+
+np.quantile(x,0.5)
+\end{lstlisting}
+&
+Vrací $q$-kvantil pole.
+\\
+
+\texttt{np.quantile(x, [0.25,0.5,0.75])} &
+\begin{lstlisting}
+import numpy as np
+
+x = np.array([1,2,3,4,5,6,7,8])
+
+np.quantile(x,[0.25,0.5,0.75])
+\end{lstlisting}
+&
+Vrací první, druhý a třetí kvartil.
+\\
+
+\end{funkcedict}
+
+%%----------------------------------------------------------------------------
+\subsection{Charakteristiky variability}
+%%____________________________________________________________________________
+\subsubsection{Variační rozpětí}
+
+Variační rozpětí je rozdíl mezi maximální a minimální
+hodnotou statistického souboru.
+
+\begin{equation*}
+R = x_{\max} - x_{\min}
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $R$ je variační rozpětí,
+\item $x_{\max}$ je maximální hodnota v souboru,
+\item $x_{\min}$ je minimální hodnota v souboru.
+\end{itemize}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{max(x) - min(x)} &
+\begin{lstlisting}
+x <- c(3,7,2,9,5)
+
+max(x) - min(x)
+\end{lstlisting}
+&
+Vrací variační rozpětí hodnot ve vektoru \texttt{x}.
+\\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{np.max(x) - np.min(x)} &
+\begin{lstlisting}
+import numpy as np
+
+x = np.array([3,7,2,9,5])
+
+np.max(x) - np.min(x)
+\end{lstlisting}
+&
+Vrací variační rozpětí hodnot ve vektoru \texttt{x}.
+\\
+
+\end{funkcedict}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Rozptyl statistického souboru}
+
+Rozptyl vyjadřuje průměrnou kvadratickou odchylku hodnot
+od aritmetického průměru.
+
+\begin{equation*}
+s_x^2 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n}
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $s_x^2$ je rozptyl statistického souboru,
+\item $\sum$ je sumační znak (součet),
+\item $x_i$ je $i$-tá hodnota statistického souboru,
+\item $\bar{x}$ je aritmetický průměr,
+\item $x_i - \bar{x}$ je odchylka hodnoty od průměru,
+\item $(x_i - \bar{x})^2$ je čtverec odchylky,
+\item $n$ je počet pozorování.
+\end{itemize}
+
+Výpočetní tvar rozptylu:
+
+\begin{equation*}
+s_x^2 =
+\frac{\sum_{i=1}^{n} x_i^2}{n}
+-
+\left(
+\frac{\sum_{i=1}^{n} x_i}{n}
+\right)^2
+\end{equation*}
+
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{mean((x - mean(x))$^2$)} &
+\begin{lstlisting}
+x <- c(2,4,6,8)
+
+mean((x-mean(x))^2)
+\end{lstlisting}
+&
+Vrací nevýběrový (populační) rozptyl
+hodnot ve vektoru \texttt{x}.
+\\
+
+\end{funkcedict}
+
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{np.var(x)} &
+\begin{lstlisting}
+import numpy as np
+
+x = np.array([2,4,6,8])
+
+np.var(x)
+\end{lstlisting}
+&
+Vrací nevýběrový (populační) rozptyl
+pomocí knihovny \texttt{numpy}.
+\\
+
+\end{funkcedict}
+
+%%----------------------------------------------------------------------------
+\subsubsection{Výběrový rozptyl}
+
+Výběrový rozptyl je nezkreslený odhad rozptylu populace
+a vznikne úpravou rozptylu statistického souboru pomocí
+Besselovy korekce.
+
+\begin{equation*}
+S^2 = \frac{n}{n-1}s_x^2
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $S^2$ je výběrový rozptyl,
+\item $s_x^2$ je rozptyl statistického souboru,
+\item $n$ je počet pozorování,
+\item $n-1$ je korekce při odhadu rozptylu (Besselova korekce).
+\end{itemize}
+
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{var(x)} &
+\begin{lstlisting}
+x <- c(2,4,6,8)
+
+var(x)
+\end{lstlisting}
+&
+Vrací výběrový rozptyl hodnot ve vektoru
+\texttt{x} (dělí se $n-1$).
+\\
+
+\end{funkcedict}
+
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{np.var(x, ddof=1)} &
+\begin{lstlisting}
+import numpy as np
+
+x = np.array([2,4,6,8])
+
+np.var(x, ddof=1)
+\end{lstlisting}
+&
+Vrací výběrový rozptyl pomocí knihovny
+\texttt{numpy} (Besselova korekce).
+\\
+
+\end{funkcedict}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Směrodatná odchylka statistického souboru}
+
+Směrodatná odchylka je druhá odmocnina rozptylu
+statistického souboru.
+
+\begin{equation*}
+s_x = \sqrt{s_x^2}
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $s_x$ je směrodatná odchylka,
+\item $s_x^2$ je rozptyl statistického souboru,
+\item $\sqrt{\cdot}$ značí druhou odmocninu.
+\end{itemize}
+
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{sqrt(mean((x- mean(x))$^2$))} &
+\begin{lstlisting}
+x <- c(2,4,6,8)
+
+sqrt(mean((x-mean(x))^2))
+\end{lstlisting}
+&
+Vrací směrodatnou odchylku statistického souboru.
+\\
+
+\end{funkcedict}
+
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{np.std(x)} &
+\begin{lstlisting}
+import numpy as np
+
+x = np.array([2,4,6,8])
+
+np.std(x)
+\end{lstlisting}
+&
+Vrací směrodatnou odchylku pole (nevýběrovou).
+\\
+
+\end{funkcedict}
+
+%%----------------------------------------------------------------------------
+\subsubsection{Výběrová směrodatná odchylka}
+
+Výběrová směrodatná odchylka je odmocnina
+z výběrového rozptylu.
+
+\begin{equation*}
+S = \sqrt{S^2}
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $S$ je výběrová směrodatná odchylka,
+\item $S^2$ je výběrový rozptyl,
+\item $\sqrt{\cdot}$ značí druhou odmocninu.
+\end{itemize}
+
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{sd(x)} &
+\begin{lstlisting}
+x <- c(2,4,6,8)
+
+sd(x)
+\end{lstlisting}
+&
+Vrací výběrovou směrodatnou odchylku
+(dělí se $n-1$).
+\\
+
+\end{funkcedict}
+
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{np.std(x, ddof=1)} &
+\begin{lstlisting}
+import numpy as np
+
+x = np.array([2,4,6,8])
+
+np.std(x, ddof=1)
+\end{lstlisting}
+&
+Vrací výběrovou směrodatnou odchylku
+(Besselova korekce).
+\\
+
+\end{funkcedict}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Variační koeficient}
+
+Variační koeficient vyjadřuje relativní variabilitu dat
+a udává poměr směrodatné odchylky k aritmetickému průměru.
+
+\begin{equation*}
+v_x = \frac{s_x}{\bar{x}}
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $v_x$ je variační koeficient,
+\item $s_x$ je směrodatná odchylka,
+\item $\bar{x}$ je aritmetický průměr.
+\end{itemize}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{sd(x) / mean(x)} &
+\begin{lstlisting}
+x <- c(2,4,6,8)
+
+sd(x) / mean(x)
+\end{lstlisting}
+&
+Vrací variační koeficient hodnot ve vektoru \texttt{x}.
+\\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{np.std(x) / np.mean(x)} &
+\begin{lstlisting}
+import numpy as np
+
+x = np.array([2,4,6,8])
+
+np.std(x) / np.mean(x)
+\end{lstlisting}
+&
+Vrací variační koeficient hodnot ve vektoru \texttt{x}.
 \\
 
 \end{funkcedict}
