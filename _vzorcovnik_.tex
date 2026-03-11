@@ -657,6 +657,59 @@ Vrací první, druhý a třetí kvartil.
 \\
 
 \end{funkcedict}
+%%----------------------------------------------------------------------------
+\subsubsection{Interkvartilové rozpětí (IQR)}
+
+Interkvartilové rozpětí (IQR) je rozdíl mezi třetím
+a prvním kvartilem. Vyjadřuje rozptyl prostředních
+50\,\% dat.
+
+\begin{equation*}
+IQR = Q_3 - Q_1
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $IQR$ je interkvartilové rozpětí,
+\item $Q_1$ je první kvartil,
+\item $Q_3$ je třetí kvartil.
+\end{itemize}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{IQR(x)} &
+\begin{lstlisting}
+x <- c(1,2,3,4,5,6,7,8)
+
+IQR(x)
+\end{lstlisting}
+&
+Vrací interkvartilové rozpětí datového vektoru.
+\\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{np.quantile(x,0.75) - np.quantile(x,0.25)} &
+\begin{lstlisting}
+import numpy as np
+
+x = np.array([1,2,3,4,5,6,7,8])
+
+np.quantile(x,0.75) - np.quantile(x,0.25)
+\end{lstlisting}
+&
+Vrací interkvartilové rozpětí pole.
+\\
+
+\end{funkcedict}
+
 
 %%----------------------------------------------------------------------------
 \subsection{Charakteristiky variability}
