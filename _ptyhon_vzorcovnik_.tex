@@ -167,7 +167,7 @@ Pokud máme data rozdělená do $k$ skupin (např. pobočky firmy), můžeme cel
 \texttt{np.sqrt(x)} & \texttt{np.sqrt(data)} & Druhá odmocnina z každého prvku v poli. \\
 \texttt{np.random.rand(n)} & \texttt{np.random.rand(100)} & Generování pole $n$ náhodných čísel z rovnoměrného rozdělení na $[0, 1)$. \\
 \texttt{np.random.uniform(a, b, n)} & \texttt{np.random.uniform(10, 50, 100)} & Generuje $n$ náhodných \textbf{desetinných} čísel v rozsahu $[a, b)$. \\
-\texttt{np.quantile(x, q)} & \texttt{np.quantile(x, 0.75)} & Výpočet kvantilu ($q \in [0, 1]$). \\
+\texttt{np.quantile(x, q)} & \texttt{np.quantile(x, 0.75, method='midpoint')} & Výpočet kvantilu ($q \in [0, 1]$). \\
 \texttt{Modus} & \texttt{statistics.multimode(data)} & \texttt{Vrací modus z pole (i více prvků)} \\
 \texttt{np.log10(x)} & \texttt{np.log10(data)} & Dekadický logaritmus (základ 10). Často se používá pro normalizaci dat. \\
 \texttt{np.linalg.norm(x, p)} & \texttt{np.linalg.norm(x, ord=2)} & Výpočet $L^1, L^2$ nebo $L^\infty$ (\texttt{np.inf}) normy. \\
@@ -181,12 +181,15 @@ Pokud máme data rozdělená do $k$ skupin (např. pobočky firmy), můžeme cel
 \texttt{np.std(x, ddof=1)} & \texttt{np.std(data, ddof=1)} & Výběrová směrodatná odchylka $S$. \\
 \texttt{np.ptp(x)} & \texttt{np.ptp(data)} & \textbf{Variační rozpětí} $R = x_{max} - x_{min}$. \\
 \texttt{v\_x = std / mean} & \texttt{np.std(x) / np.mean(x)} & \textbf{Variační koeficient} $v_x$ (relativní variabilita). \\
+\texttt{np.where(cond, x, y)} & \texttt{np.where(df['am'] == 0, 'aut', 'man')} & \textbf{Podmíněný sloupec}: Pokud platí \texttt{cond}, vlož \texttt{x}, jinak \texttt{y} (jako IF v Excelu). \\
 \end{funkcedict}
 
 %% --- SEKCE: PANDAS ----------------------------------------------------------
 \section{Knihovna Pandas (Analýza dat)}
 \begin{funkcedict}
 \texttt{pd.read\_csv(file)} & \texttt{pd.read\_csv('titanic.txt')} & Načte data z CSV souboru a vytvoří DataFrame. \\
+\texttt{df[columns]} & \texttt{df[["A", "B", "C"]]} & Výběr určitých sloupců. \\
+\texttt{Filtrování} & \texttt{df[df['Věk'] >= 18]} & Vybere pouze řádky splňující danou podmínku. \\
 \texttt{df.quantile(p)} & \texttt{df.quantile(0.25, interpolation = 'midpoint')} & Vrátí p-tý kvantil z vybraného dataframe dle "VŠE" vzorce. \\
 \texttt{df.describe()} & \texttt{df.describe()} & Souhrnné statistiky (mean, std, kvartily, atd.). \\
 \texttt{df.loc} vs \texttt{df.iloc} & \texttt{df.loc[0, 'Sloupec']} & Výběr dat podle \textbf{názvů} (\texttt{loc}) vs. \textbf{pozice} (\texttt{iloc}). \\
@@ -198,18 +201,27 @@ Pokud máme data rozdělená do $k$ skupin (např. pobočky firmy), můžeme cel
 \texttt{df.sort\_values()} & \texttt{df.sort\_values(by='X')} & Seřadí tabulku podle hodnot ve sloupci 'X'. \\
 \texttt{df.head(n) / tail} & \texttt{df.head(5)} & Zobrazí prvních / posledních $n$ řádků tabulky. \\
 \texttt{df.groupby('A')} & \texttt{df.groupby('A').mean()} & \textbf{Seskupování}: Výpočet statistik podle kategorií ve sloupci 'A'. \\
-\texttt{Filtrování} & \texttt{df[df['Věk'] > 18]} & Vybere pouze řádky splňující danou podmínku. \\
 \texttt{df.drop()} & \texttt{df.drop(columns=['ID'])} & Odstraní vybraný sloupec nebo řádek. \\
 \texttt{df.rename()} & \texttt{df.rename(columns=\{'A':'X'\})} & Přejmenování sloupců pomocí slovníku. \\
-\texttt{df.T} & \texttt{df.T} & \textbf{Transpozice}: Prohodí řádky a sloupce. \\
-
+\texttt{df.groupby()} & \texttt{df.groupby('A', as\_index=False).mean()} & \textbf{Seskupování}: \texttt{as\_index=False} zajistí, že sloupce zůstanou sloupci a nebudou v indexu. \\
+\texttt{df.cumsum()} & \texttt{df['cetnost'].cumsum()} & \textbf{Kumulativní součet}: Pro výpočet kumulativních absolutních/relativních četností. \\
+\texttt{pd.crosstab()} & \texttt{pd.crosstab(df['A'], df['B'])} & \textbf{Kontingenční tabulka četností}: Rychlý počet (count) pro kombinaci dvou kategorií. \\
+\texttt{pd.pivot\_table()} & \texttt{df.pivot\_table(index='A', columns='B', values='C', aggfunc='mean')} & \textbf{Pivotní tabulka}: Univerzální. \texttt{values} je co počítám, \texttt{aggfunc} je co s tím dělám (mean, sum, count). \\
 \end{funkcedict}
 
 %% --- SEKCE: MATPLOTLIB (DETAILNÍ GRAFY) -------------------------------------
 \section{Vizualizace dat (Knihovna Matplotlib)}
 
+\subsection*{Boxploty a statistické grafy}
+\begin{funkcedict}
+\texttt{df.boxplot()} & \texttt{df.boxplot(column='Y', by='X', grid=False)} & \textbf{Boxplot (Pandas)}: \texttt{column} je osa Y, \texttt{by} je osa X (skupiny). \\
+\texttt{sns.boxplot()} & \texttt{sns.boxplot(data=df, x='X', y='Y', palette='Set2')} & \textbf{Boxplot (Seaborn)}: Často hezčí a jednodušší syntaxe pro skupiny. \\
+\texttt{df['X'].hist()} & \texttt{df['X'].hist(bins=10, edgecolor='black')} & \textbf{Histogram (Pandas)}: Nejrychlejší cesta k rozdělení četností. \\
+\end{funkcedict}
+
 \subsection*{Základní typy grafů}
 \begin{funkcedict}
+\texttt{df.plot()} & \texttt{df.plot(kind="bar", figsize=(4,3))} & Umožňuje interpretaci grafů rovnou z dataframe. \\
 \texttt{plt.hist(x)} & \texttt{plt.hist(data, bins=15, edgecolor='black')} & \textbf{Histogram}: Rozdělení četností. \texttt{bins} = počet intervalů, \texttt{density=True} pro hustotu. \\
 \texttt{plt.bar(x, y)} & \texttt{plt.bar(kategorie, hodnoty, width=0.5)} & \textbf{Sloupcový graf}: Porovnání kategorií. \texttt{width} mění šířku sloupců. \\
 \texttt{plt.barh(x, y)} & \texttt{plt.barh(kategorie, hodnoty)} & \textbf{Vodorovný sloupcový graf}: Vhodný pro dlouhé názvy kategorií. \\
