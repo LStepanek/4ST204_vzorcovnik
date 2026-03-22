@@ -54,16 +54,52 @@
 
 %\maketitle
 
+\begin{titlepage}
 \begin{center}
 
-\includegraphics[width=0.35\textwidth]{FIS_2_logo_cb_cmyk.eps}
 
-\vspace{0.5cm}
 
-\Huge
-Vzorcovník -- 4ST204 Statistika pro informatiky
+{\large
+\textbf{VYSOKÁ ŠKOLA EKONOMICKÁ V PRAZE}
+}
+
+\vspace{0.05cm}
+
+{\large
+FAKULTA INFORMATIKY A STATISTIKY
+}
+
+\vspace{2.5cm}
+
+\includegraphics[width=0.5\textwidth]{FIS_2_logo_cb_cmyk.eps}
+
+\vspace{3cm}
+
+{\fontsize{50}{50}\selectfont \textbf{STATISTIKA PRO}}
+
+\vspace{0.7cm}
+
+{\fontsize{50}{50}\selectfont \textbf{INFORMATIKY}}
+
+\vspace{2cm}
+
+{\Large
+\textbf{VZORCE PRO 4ST204}
+}
 
 \end{center}
+\end{titlepage}
+
+% \begin{center}
+
+% \includegraphics[width=0.35\textwidth]{FIS_2_logo_cb_cmyk.eps}
+
+% \vspace{0.5cm}
+
+% \Huge
+% Vzorcovník -- 4ST204 Statistika pro informatiky
+
+% \end{center}
 
 % %% ----------------------------------------------------------------------------
 % \section{Užitečné vzorce}
@@ -148,11 +184,7 @@ Vzorcovník -- 4ST204 Statistika pro informatiky
 Absolutní četnost $i$-té hodnoty je počet výskytů dané hodnoty ve výběru.
 
 \begin{equation*}
-\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i ,
-\qquad \textrm{a} \qquad
-\bar{x}_{G} = \sqrt[n]{ \prod_{i=1}^{n} x_i },
-\qquad \textrm{a} \qquad
-\bar{x}_{H} = \frac{n}{\sum^{n}_{i=1}{\frac{1}{x_{i}}}}.
+n_i
 \end{equation*}
 
 kde
@@ -427,15 +459,17 @@ Vrací harmonický průměr hodnot ve vektoru \texttt{x}.
 
 \begin{funkcedict}
 
-\texttt{len(x) / np.sum(1/x)} &
+\texttt{scipy.stats. hmean(x)} &
 \begin{lstlisting}
-import numpy as np
+from scipy.stats import hmean
 
-x = np.array([1,2,4,5])
-len(x) / np.sum(1/x)
+x = [1,2,4,5]
+
+hmean(x)
 \end{lstlisting}
 &
-Vrací harmonický průměr hodnot ve vektoru \texttt{x}.
+Vrací harmonický průměr pomocí funkce \texttt{hmean}
+z knihovny \texttt{scipy.stats}.
 \\
 
 \end{funkcedict}
@@ -484,16 +518,17 @@ Vrací geometrický průměr hodnot ve vektoru \texttt{x}.
 
 \begin{funkcedict}
 
-\texttt{np.exp(np.mean (np.log(x)))} &
+\texttt{scipy.stats. gmean(x)} &
 \begin{lstlisting}
-import numpy as np
+from scipy.stats import gmean
 
-x = np.array([1,2,3,4])
+x = [1,2,3,4]
 
-np.exp(np.mean(np.log(x)))
+gmean(x)
 \end{lstlisting}
 &
-Vrací geometrický průměr hodnot ve vektoru \texttt{x}.
+Vrací geometrický průměr pomocí funkce \texttt{gmean}
+z knihovny \texttt{scipy.stats}.
 \\
 
 \end{funkcedict}
@@ -899,6 +934,64 @@ Vrací výběrový rozptyl pomocí knihovny
 \end{funkcedict}
 
 %%-----------------------------------------------------------------------------
+\subsubsection{Vážený rozptyl}
+
+Vážený rozptyl vyjadřuje variabilitu hodnot znaku,
+když mají jednotlivé hodnoty různé váhy nebo relativní četnosti.
+
+\begin{equation*}
+s^2 = \sum_{i=1}^{k} p_i (x_i - \bar{x})^2
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $s^2$ je vážený rozptyl,
+\item $x_i$ je $i$-tá hodnota znaku,
+\item $\bar{x}$ je vážený aritmetický průměr,
+\item $p_i$ je váha nebo relativní četnost $i$-té hodnoty,
+\item $k$ je počet různých hodnot nebo tříd.
+\end{itemize}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{weighted.mean( (x-mean(x))\^{}2, w)} &
+\begin{lstlisting}
+x <- c(1,2,3,4)
+w <- c(0.1,0.2,0.3,0.4)
+
+weighted.mean((x-weighted.mean(x,w))^2, w)
+\end{lstlisting}
+&
+Vrací vážený rozptyl hodnot s váhami \texttt{w}.
+\\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{np.average( (x-xbar)**2, weights=w)} &
+\begin{lstlisting}
+import numpy as np
+
+x = np.array([1,2,3,4])
+w = np.array([0.1,0.2,0.3,0.4])
+
+xbar = np.average(x, weights=w)
+np.average((x-xbar)**2, weights=w)
+\end{lstlisting}
+&
+Vrací vážený rozptyl hodnot s váhami \texttt{w}
+pomocí knihovny \texttt{numpy}.
+\\
+
+\end{funkcedict}
+
+%%-----------------------------------------------------------------------------
 \subsubsection{Směrodatná odchylka statistického souboru}
 
 Směrodatná odchylka je druhá odmocnina rozptylu
@@ -1059,6 +1152,390 @@ Vrací variační koeficient hodnot ve vektoru \texttt{x}.
 \\
 
 \end{funkcedict}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Teorie pravděpodobnosti}
+%%_____________________________________________________________________________
+\subsection{Počet pravděpodobnosti}
+%%-----------------------------------------------------------------------------
+\subsubsection{Klasická definice pravděpodobnosti}
+
+Pravděpodobnost jevu $A$ při klasické definici pravděpodobnosti
+je podíl počtu příznivých výsledků a celkového počtu
+stejně pravděpodobných výsledků.
+
+\begin{equation*}
+P(A) = \frac{m}{n}
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $P(A)$ je pravděpodobnost jevu $A$,
+\item $m$ je počet příznivých výsledků,
+\item $n$ je počet všech možných výsledků.
+\end{itemize}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Pravděpodobnost komplementárního jevu}
+
+Pravděpodobnost opačného (komplementárního, doplňkového) jevu k jevu $A$
+je rovna jedné minus pravděpodobnost jevu $A$.
+
+\begin{equation*}
+P(\overline{A}) = 1 - P(A)
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $P(\overline{A})$ je pravděpodobnost opačného jevu k $A$,
+\item $P(A)$ je pravděpodobnost jevu $A$.
+\end{itemize}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Horní odhad pravděpodobnosti průniku}
+
+Pravděpodobnost současného nastání dvou jevů nemůže být větší
+než pravděpodobnost kteréhokoli z nich.
+
+\begin{equation*}
+P(A \cap B) \le \min(P(A), P(B))
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $P(A \cap B)$ je pravděpodobnost, že nastanou oba jevy současně,
+\item $P(A)$ je pravděpodobnost jevu $A$,
+\item $P(B)$ je pravděpodobnost jevu $B$,
+\item $\min(\cdot)$ označuje minimum z daných hodnot.
+\end{itemize}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Průnik nezávislých jevů}
+
+Jsou-li jevy $A$ a $B$ nezávislé, pak pravděpodobnost jejich
+současného nastání je rovna součinu jejich pravděpodobností.
+
+\begin{equation*}
+P(A \cap B) = P(A)P(B)
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $P(A \cap B)$ je pravděpodobnost současného nastání jevů $A$ a $B$,
+\item $P(A)$ je pravděpodobnost jevu $A$,
+\item $P(B)$ je pravděpodobnost jevu $B$.
+\end{itemize}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Sjednocení dvou jevů}
+
+Pravděpodobnost, že nastane alespoň jeden z jevů $A$ nebo $B$,
+je rovna součtu jejich pravděpodobností minus pravděpodobnost
+jejich současného nastání.
+
+\begin{equation*}
+P(A \cup B) = P(A) + P(B) - P(A \cap B)
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $P(A \cup B)$ je pravděpodobnost, že nastane alespoň jeden z jevů,
+\item $P(A)$ je pravděpodobnost jevu $A$,
+\item $P(B)$ je pravděpodobnost jevu $B$,
+\item $P(A \cap B)$ je pravděpodobnost současného nastání jevů $A$ a $B$.
+\end{itemize}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Sjednocení neslučitelných jevů}
+
+Pokud jsou jevy $A$ a $B$ neslučitelné (nemohou nastat současně),
+pak pravděpodobnost jejich sjednocení je rovna součtu
+pravděpodobností těchto jevů.
+
+\begin{equation*}
+P(A \cup B) = P(A) + P(B)
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $P(A \cup B)$ je pravděpodobnost, že nastane jev $A$ nebo $B$,
+\item $P(A)$ je pravděpodobnost jevu $A$,
+\item $P(B)$ je pravděpodobnost jevu $B$.
+\end{itemize}
+
+%%_____________________________________________________________________________
+\subsection{Náhodné veličiny}
+%%-----------------------------------------------------------------------------
+\subsubsection{Pravděpodobnostní funkce diskrétní náhodné veličiny}
+
+Pravděpodobnost, že diskrétní náhodná veličina $X$
+nabývá konkrétní hodnoty $x$.
+
+\begin{equation*}
+P(x) = P(X = x)
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $P(x)$ je pravděpodobnost hodnoty $x$,
+\item $P(X = x)$ je pravděpodobnost, že náhodná veličina $X$ má hodnotu $x$,
+\item $X$ je náhodná veličina,
+\item $x$ je konkrétní hodnota náhodné veličiny.
+\end{itemize}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Distribuční funkce diskrétní náhodné veličiny}
+
+Distribuční funkce (kumulativní pravděpodobnost) udává
+pravděpodobnost, že náhodná veličina $X$ bude menší
+nebo rovna hodnotě $x$.
+
+\begin{equation*}
+F(x) = P(X \le x) = \sum_{x_j \le x} P(x_j)
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $F(x)$ je distribuční funkce,
+\item $P(X \le x)$ je pravděpodobnost, že $X$ je menší nebo rovno $x$,
+\item $\sum$ je součet pravděpodobností,
+\item $x_j$ jsou jednotlivé možné hodnoty náhodné veličiny,
+\item $P(x_j)$ je pravděpodobnost, že $X = x_j$.
+\end{itemize}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Pravděpodobnost intervalu}
+
+Pravděpodobnost, že náhodná veličina $X$ nabývá hodnot
+v intervalu $(x_1, x_2]$.
+
+\begin{equation*}
+P(x_1 < X \le x_2)
+=
+\sum_{x_1 < x \le x_2} P(x)
+=
+F(x_2) - F(x_1)
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $P(x_1 < X \le x_2)$ je pravděpodobnost, že $X$ leží mezi $x_1$ a $x_2$,
+\item $X$ je náhodná veličina,
+\item $x_1, x_2$ jsou hranice intervalu,
+\item $\sum$ je součet pravděpodobností všech hodnot v intervalu,
+\item $P(x)$ je pravděpodobnost, že $X = x$,
+\item $F(x)$ je distribuční funkce.
+\end{itemize}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Střední hodnota diskrétní náhodné veličiny}
+
+Střední hodnota (očekávaná hodnota) diskrétní náhodné veličiny
+je vážený průměr všech možných hodnot, kde váhami jsou jejich
+pravděpodobnosti.
+
+\begin{equation*}
+E(X) = \sum_{x} x\,P(x)
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $E(X)$ je očekávaná hodnota náhodné veličiny $X$,
+\item $\sum$ je součet přes všechny možné hodnoty,
+\item $x$ jsou jednotlivé možné hodnoty náhodné veličiny,
+\item $P(x)=P(X=x)$ je pravděpodobnost, že $X$ nabude hodnoty $x$.
+\end{itemize}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Rozptyl diskrétní náhodné veličiny}
+
+Rozptyl náhodné veličiny vyjadřuje míru variability
+hodnot náhodné veličiny kolem její střední hodnoty.
+
+\begin{equation*}
+D(X) = E(X^2) - [E(X)]^2
+     = \sum_x x^2 P(x) - \left(\sum_x x P(x)\right)^2
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $D(X)$ je rozptyl náhodné veličiny $X$,
+\item $E(X)$ je očekávaná hodnota náhodné veličiny,
+\item $E(X^2)$ je očekávaná hodnota druhé mocniny náhodné veličiny,
+\item $\sum$ je součet přes všechny možné hodnoty,
+\item $x$ jsou jednotlivé možné hodnoty náhodné veličiny,
+\item $P(x)=P(X=x)$ je pravděpodobnost, že $X$ nabude hodnoty $x$.
+\end{itemize}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Hustota pravděpodobnosti spojité náhodné veličiny}
+
+Hustota pravděpodobnosti vyjadřuje rychlost změny distribuční
+funkce spojité náhodné veličiny.
+
+\begin{equation*}
+f(x) = F'(x)
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $f(x)$ je hustota pravděpodobnosti,
+\item $F(x)$ je distribuční funkce,
+\item $F'(x)$ je derivace distribuční funkce podle $x$,
+\item $x$ je hodnota náhodné veličiny.
+\end{itemize}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Normalizační podmínka hustoty pravděpodobnosti}
+
+Celková pravděpodobnost spojité náhodné veličiny
+přes všechny možné hodnoty je rovna jedné.
+
+\begin{equation*}
+\int_{-\infty}^{\infty} f(x)\,dx = 1
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $\int$ označuje integrál (součet přes všechny hodnoty),
+\item $f(x)$ je hustota pravděpodobnosti,
+\item $dx$ je integrační proměnná,
+\item $-\infty, \infty$ vyjadřují integraci přes všechny možné hodnoty
+náhodné veličiny.
+\end{itemize}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Distribuční funkce spojité náhodné veličiny}
+
+Distribuční funkce spojité náhodné veličiny udává
+pravděpodobnost, že náhodná veličina $X$ bude menší
+nebo rovna hodnotě $x$.
+
+\begin{equation*}
+F(x) = P(X \le x) = \int_{-\infty}^{x} f(t)\,dt
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $F(x)$ je distribuční funkce,
+\item $P(X \le x)$ je pravděpodobnost, že náhodná veličina $X$ je menší nebo rovna $x$,
+\item $\int$ označuje integrál,
+\item $f(t)$ je hustota pravděpodobnosti,
+\item $t$ je integrační proměnná,
+\item $-\infty$ je dolní mez integrace,
+\item $x$ je horní mez integrace.
+\end{itemize}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Pravděpodobnost intervalu spojité náhodné veličiny}
+
+Pravděpodobnost, že spojitá náhodná veličina $X$ nabývá hodnot
+v intervalu $(x_1, x_2]$.
+
+\begin{equation*}
+P(x_1 < X \le x_2)
+=
+\int_{x_1}^{x_2} f(x)\,dx
+=
+F(x_2) - F(x_1)
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $P(x_1 < X \le x_2)$ je pravděpodobnost, že $X$ leží mezi $x_1$ a $x_2$,
+\item $X$ je náhodná veličina,
+\item $x_1, x_2$ jsou hranice intervalu,
+\item $\int$ označuje integrál,
+\item $f(x)$ je hustota pravděpodobnosti,
+\item $dx$ je integrační proměnná,
+\item $F(x)$ je distribuční funkce.
+\end{itemize}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Střední hodnota spojité náhodné veličiny}
+
+Střední hodnota (očekávaná hodnota) spojité náhodné veličiny
+je vážený průměr všech možných hodnot, kde váhami jsou
+hodnoty hustoty pravděpodobnosti.
+
+\begin{equation*}
+E(X) = \int_{-\infty}^{\infty} x f(x)\,dx
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $E(X)$ je očekávaná hodnota náhodné veličiny $X$,
+\item $\int$ označuje integrál,
+\item $x$ je hodnota náhodné veličiny,
+\item $f(x)$ je hustota pravděpodobnosti,
+\item $dx$ je integrační proměnná,
+\item $-\infty, \infty$ vyjadřují integraci přes všechny možné hodnoty
+náhodné veličiny.
+\end{itemize}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Rozptyl spojité náhodné veličiny}
+
+Rozptyl spojité náhodné veličiny vyjadřuje variabilitu
+hodnot náhodné veličiny kolem její střední hodnoty.
+
+\begin{equation*}
+D(X)
+=
+\int_{-\infty}^{\infty} x^2 f(x)\,dx
+-
+\left[\int_{-\infty}^{\infty} x f(x)\,dx \right]^2
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $D(X)$ je rozptyl náhodné veličiny $X$,
+\item $\int$ označuje integrál,
+\item $x$ je hodnota náhodné veličiny,
+\item $f(x)$ je hustota pravděpodobnosti,
+\item $dx$ je integrační proměnná,
+\item $\int x f(x)\,dx$ je očekávaná hodnota $E(X)$,
+\item $\int x^2 f(x)\,dx$ je očekávaná hodnota $E(X^2)$.
+\end{itemize}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Směrodatná odchylka náhodné veličiny}
+
+Směrodatná odchylka vyjadřuje míru variability
+hodnot náhodné veličiny kolem její střední hodnoty.
+
+\begin{equation*}
+\sigma = \sqrt{D(X)}
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $\sigma$ je směrodatná odchylka,
+\item $D(X)$ je rozptyl náhodné veličiny $X$,
+\item $\sqrt{\phantom{x}}$ označuje druhou odmocninu.
+\end{itemize}
+
+%%_____________________________________________________________________________
+
+
 
 
 \end{document}
