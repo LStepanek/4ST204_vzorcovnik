@@ -1,7 +1,4 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \documentclass[a4paper, 11pt]{article}
 
 \usepackage[utf8]{inputenc}
@@ -10,33 +7,31 @@
 
 \usepackage[
   a4paper,
-  margin=2.5cm
+  margin=2.0cm
 ]{geometry}
 
 \usepackage{amsmath, amsfonts, amssymb, mathtools, bm}
-
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{xcolor}
 \usepackage{enumitem}
 \usepackage{booktabs}
-
 \usepackage{listings}
-\usepackage{xcolor}
 
 \lstset{
     basicstyle=\ttfamily\small,
     backgroundcolor=\color{gray!10},
     frame=single,
-    breaklines=true
+    breaklines=true,
+    language=Python
 }
 
 \newenvironment{funkcedict}
 {
 \renewcommand{\arraystretch}{1.4}
-\begin{tabular}{p{0.22\textwidth} p{0.38\textwidth} p{0.35\textwidth}}
+\begin{tabular}{p{0.30\textwidth} p{0.32\textwidth} p{0.33\textwidth}}
 \toprule
-\textbf{Funkce} & \textbf{Příklad použití} & \textbf{Vysvětlení} \\
+\textbf{Funkce / Operace} & \textbf{Příklad použití} & \textbf{Vysvětlení} \\
 \midrule
 }
 {
@@ -44,20 +39,10 @@
 \end{tabular}
 }
 
-
-%% ----------------------------------------------------------------------------
-%\title{Vzorcovník -- 4ST204 Statistika pro informatiky}
-%\author{}
-%\date{}
-
 \begin{document}
-
-%\maketitle
 
 \begin{titlepage}
 \begin{center}
-
-
 
 {\large
 \textbf{VYSOKÁ ŠKOLA EKONOMICKÁ V PRAZE}
@@ -71,6 +56,7 @@ FAKULTA INFORMATIKY A STATISTIKY
 
 \vspace{2.5cm}
 
+% Zkontroluj si, že máš soubor FIS_2_logo_cb_cmyk.eps ve složce, jinak zakomentuj
 \includegraphics[width=0.5\textwidth]{FIS_2_logo_cb_cmyk.eps}
 
 \vspace{3cm}
@@ -90,83 +76,6 @@ FAKULTA INFORMATIKY A STATISTIKY
 \end{center}
 \end{titlepage}
 
-% \begin{center}
-
-% \includegraphics[width=0.35\textwidth]{FIS_2_logo_cb_cmyk.eps}
-
-% \vspace{0.5cm}
-
-% \Huge
-% Vzorcovník -- 4ST204 Statistika pro informatiky
-
-% \end{center}
-
-% %% ----------------------------------------------------------------------------
-% \section{Užitečné vzorce}
-
-% Mějme výběr $n$ hodnot $x_1, x_2, \dots, x_n$. Pak aritmetický průměr
-% a geometrický průměr je
-
-% \begin{equation*}
-% \bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i ,
-% \qquad \textrm{a} \qquad
-% \bar{x}_{G} = \sqrt[n]{ \prod_{i=1}^{n} x_i }.
-% \end{equation*}
-
-
-% %% ----------------------------------------------------------------------------
-% \section{Užitečné funkce v R}
-
-% \begin{funkcedict}
-
-% \texttt{mean(x)} &
-% \begin{lstlisting}
-% x <- c(1, 2, 3, 4, 5)
-% mean(x)
-% \end{lstlisting}
-% &
-% Vrací aritmetický průměr hodnot ve vektoru \texttt{x}.
-% \\
-
-% \texttt{sd(x)} &
-% \begin{lstlisting}
-% sd(x)
-% \end{lstlisting}
-% &
-% Vrací výběrovou směrodatnou odchylku ve vektoru \texttt{x}.
-% \\
-
-% \end{funkcedict}
-
-
-% %% ----------------------------------------------------------------------------
-% \section{Užitečné funkce v Pythonu}
-
-% \begin{funkcedict}
-
-% \texttt{np.mean(x)} &
-% \begin{lstlisting}
-% import numpy as np
-% x = np.array([1,2,3,4,5])
-% np.mean(x)
-% \end{lstlisting}
-% &
-% Vrací aritmetický průměr pole pomocí knihovny \texttt{numpy}.
-% \\
-
-% \texttt{statistics.mean(x)} &
-% \begin{lstlisting}
-% import statistics
-% x = [1,2,3,4,5]
-% statistics.mean(x)
-% \end{lstlisting}
-% &
-% Vrací aritmetický průměr pomocí standardní knihovny Pythonu
-% \texttt{statistics}.
-% \\
-
-% \end{funkcedict}
-
 %%_____________________________________________________________________________
 \tableofcontents
 \newpage
@@ -180,1371 +89,269 @@ FAKULTA INFORMATIKY A STATISTIKY
 %%-----------------------------------------------------------------------------
 
 \subsubsection{Absolutní četnost}
-
 Absolutní četnost $i$-té hodnoty je počet výskytů dané hodnoty ve výběru.
-
 \begin{equation*}
 n_i
 \end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $n_i$ je počet výskytů $i$-té hodnoty ve výběru.
-\end{itemize}
-%%-----------------------------------------------------------------------------
+kde $n_i$ je počet výskytů $i$-té hodnoty ve výběru.
 
 \subsubsection{Součet absolutních četností}
-
-Součet absolutních četností všech hodnot (nebo tříd) ve výběru
-se rovná celkovému počtu pozorování.
-
+Součet absolutních četností všech hodnot (nebo tříd) ve výběru se rovná celkovému počtu pozorování.
 \begin{equation*}
 \sum_{i=1}^{k} n_i = n
 \end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $\sum$ je sumační znak (značí sčítání),
-\item $i$ je index hodnoty nebo třídy,
-\item $k$ je počet různých hodnot nebo tříd,
-\item $n_i$ je absolutní četnost $i$-té hodnoty (nebo třídy),
-\item $n$ je celkový počet pozorování.
-\end{itemize}
-%%-----------------------------------------------------------------------------
+kde $k$ je počet různých hodnot nebo tříd, $n_i$ je absolutní četnost a $n$ je celkový počet pozorování.
 
 \subsubsection{Relativní Četnost}
-Relativní četnost $i$-té hodnoty ve výběru je definována jako podíl
-absolutní četnosti dané hodnoty a celkového počtu pozorování,
-
+Relativní četnost $i$-té hodnoty ve výběru je definována jako podíl absolutní četnosti dané hodnoty a celkového počtu pozorování.
 \begin{equation*}
 p_i = \frac{n_i}{n}
 \end{equation*}
 
-kde
-
-\begin{itemize}[noitemsep]
-\item $p_i$ je relativní četnost $i$-té hodnoty,
-\item $n_i$ je absolutní četnost $i$-té hodnoty (kolikrát se hodnota vyskytla),
-\item $n$ je celkový počet pozorování v souboru.
-\end{itemize}
-%%-----------------------------------------------------------------------------
-
 \subsubsection{Součet relativních četností}
-
-Součet relativních četností všech hodnot (nebo tříd) ve výběru
-je roven jedné.
-
+Součet relativních četností všech hodnot (nebo tříd) ve výběru je roven jedné.
 \begin{equation*}
 \sum_{i=1}^{k} p_i = 1
 \end{equation*}
 
-kde
-
-\begin{itemize}[noitemsep]
-\item $\sum$ je sumační znak (značí sčítání),
-\item $i$ je index hodnoty nebo třídy,
-\item $k$ je počet různých hodnot nebo tříd,
-\item $p_i$ je relativní četnost $i$-té hodnoty (nebo třídy).
-\end{itemize}
+\subsubsection{Sturgesovo pravidlo}
+Doporučený počet intervalů (tříd) $k$ pro tvorbu histogramu a rozdělení četností:
+\begin{equation*}
+k = 1 + \log_2 n
+\end{equation*}
 
 %%-----------------------------------------------------------------------------
 \subsection{Charakteristiky polohy}
 %%_____________________________________________________________________________
 
 \subsubsection{Aritmetický průměr}
-%%-----------------------------------------------------------------------------
-
-Aritmetický průměr (výběrový průměr) je definován jako součet
-všech hodnot statistického souboru dělený počtem pozorování.
-
+Aritmetický průměr (výběrový průměr) je definován jako součet všech hodnot statistického souboru dělený počtem pozorování. Klasický průměr pro data bez extrémních hodnot.
 \begin{equation*}
 \bar{x} = \frac{\sum_{i=1}^{n} x_i}{n}
 \end{equation*}
 
-kde
-
-\begin{itemize}[noitemsep]
-\item $\bar{x}$ je aritmetický průměr,
-\item $\sum$ je sumační znak (součet hodnot),
-\item $x_i$ je $i$-tá hodnota statistického souboru,
-\item $i$ je index hodnoty,
-\item $n$ je počet pozorování.
-\end{itemize}
-
-\paragraph{Implementace v R}\mbox{}\par
-
+\paragraph{Implementace v R a Pythonu}\mbox{}\par
 \begin{funkcedict}
-
-\texttt{mean(x)} &
-\begin{lstlisting}
-x <- c(1,2,3,4,5)
-mean(x)
-\end{lstlisting}
-&
-Vrací aritmetický průměr hodnot ve vektoru \texttt{x}.
-\\
+\texttt{mean(x)} (R) & \texttt{mean(c(1,2,3))} & Vrací aritmetický průměr. \\
+\texttt{np.mean(x)} (Python) & \texttt{np.mean([1,2,3])} & Vrací aritmetický průměr pole. \\
 \end{funkcedict}
 
-\paragraph{Implementace v Python}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{np.mean(x)} &
-\begin{lstlisting}
-import numpy as np
-x = np.array([1,2,3,4,5])
-np.mean(x)
-\end{lstlisting}
-&
-Vrací aritmetický průměr pole pomocí knihovny \texttt{numpy}.
-\\
-\end{funkcedict}
-
-%%----------------------------------------------------------------------------
-\subsubsection{Vážený aritmetický průměr (z četnostní tabulky)}
-
-Pokud jsou data zadána pomocí četnostní tabulky, aritmetický průměr
-lze vypočítat jako vážený průměr hodnot.
-
+\subsubsection{Vážený aritmetický průměr}
+Pokud jsou data zadána pomocí četnostní tabulky, aritmetický průměr lze vypočítat jako vážený průměr hodnot.
 \begin{equation*}
-\bar{x} =
-\frac{\sum_{i=1}^{k} x_i n_i}{\sum_{i=1}^{k} n_i}
+\bar{x} = \frac{\sum_{i=1}^{k} x_i n_i}{\sum_{i=1}^{k} n_i} = \sum_{i=1}^{k} x_i p_i
 \end{equation*}
 
-kde
-
-\begin{itemize}[noitemsep]
-\item $\bar{x}$ je aritmetický průměr,
-\item $\sum$ je sumační znak (součet),
-\item $x_i$ je $i$-tá hodnota znaku,
-\item $n_i$ je absolutní četnost $i$-té hodnoty,
-\item $k$ je počet různých hodnot nebo tříd,
-\item $\sum_{i=1}^{k} n_i$ je celkový počet pozorování.
-\end{itemize}
-
-\paragraph{Implementace v R}\mbox{}\par
-
+\paragraph{Implementace v R a Pythonu}\mbox{}\par
 \begin{funkcedict}
-
-\texttt{weighted.mean(x, w)} &
-\begin{lstlisting}
-x <- c(1,2,3)
-w <- c(2,3,5)
-
-weighted.mean(x, w)
-\end{lstlisting}
-&
-Vrací vážený průměr hodnot ve vektoru \texttt{x} s váhami \texttt{w}.
-\\
-
+\texttt{weighted.mean(x, w)} (R) & \texttt{weighted.mean(x, w)} & Vážený průměr s váhami \texttt{w}. \\
+\texttt{np.average(x, weights=w)} (Py) & \texttt{np.average(x, weights=w)} & Vážený průměr pomocí NumPy. \\
 \end{funkcedict}
 
-\paragraph{Implementace v Python}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{np.average(x, weights=w)} &
-\begin{lstlisting}
-import numpy as np
-
-x = np.array([1,2,3])
-w = np.array([2,3,5])
-
-np.average(x, weights=w)
-\end{lstlisting}
-&
-Vrací vážený průměr hodnot ve vektoru \texttt{x} s váhami \texttt{w}.
-\\
-
-\end{funkcedict}
-
-%%-----------------------------------------------------------------------------
-\subsubsection{Aritmetický průměr pomocí relativních četností}
-
-Pokud jsou data vyjádřena pomocí relativních četností,
-lze aritmetický průměr vypočítat jako vážený součet hodnot.
-
-\begin{equation*}
-\bar{x} = \sum_{i=1}^{k} x_i p_i
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $\bar{x}$ je aritmetický průměr,
-\item $\sum$ je sumační znak (součet),
-\item $x_i$ je $i$-tá hodnota znaku,
-\item $p_i$ je relativní četnost $i$-té hodnoty,
-\item $i$ je index hodnoty,
-\item $k$ je počet různých hodnot nebo tříd.
-\end{itemize}
-
-\paragraph{Implementace v R}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{sum(x * p)} &
-\begin{lstlisting}
-x <- c(1,2,3)
-p <- c(0.2,0.3,0.5)
-
-sum(x * p)
-\end{lstlisting}
-&
-Vrací aritmetický průměr vypočtený pomocí relativních četností.
-\\
-
-\end{funkcedict}
-
-\paragraph{Implementace v Python}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{np.sum(x * p)} &
-\begin{lstlisting}
-import numpy as np
-
-x = np.array([1,2,3])
-p = np.array([0.2,0.3,0.5])
-
-np.sum(x * p)
-\end{lstlisting}
-&
-Vrací aritmetický průměr vypočtený pomocí relativních četností
-pomocí knihovny \texttt{numpy}.
-\\
-
-\end{funkcedict}
-
-%%-----------------------------------------------------------------------------
 \subsubsection{Harmonický průměr}
-
-Harmonický průměr je definován jako podíl počtu pozorování
-a součtu převrácených hodnot jednotlivých pozorování.
-
+Používá se pro poměrové veličiny (např. rychlost v km/h), kde je konstantní čitatel (např. ujetá vzdálenost).
 \begin{equation*}
 \bar{x}_H = \frac{n}{\sum_{i=1}^{n} \frac{1}{x_i}}
 \end{equation*}
 
-kde
-
-\begin{itemize}[noitemsep]
-\item $\bar{x}_H$ je harmonický průměr,
-\item $n$ je počet pozorování,
-\item $\sum$ je sumační znak (součet),
-\item $x_i$ je $i$-tá hodnota statistického souboru,
-\item $\frac{1}{x_i}$ je převrácená hodnota $i$-tého pozorování.
-\end{itemize}
-
-\paragraph{Implementace v R}\mbox{}\par
-
+\paragraph{Implementace v R a Pythonu}\mbox{}\par
 \begin{funkcedict}
-
-\texttt{n / sum(1/x)} &
-\begin{lstlisting}
-x <- c(1,2,4,5)
-n <- length(x)
-
-n / sum(1/x)
-\end{lstlisting}
-&
-Vrací harmonický průměr hodnot ve vektoru \texttt{x}.
-\\
-
+\texttt{n / sum(1/x)} (R) & \texttt{length(x) / sum(1/x)} & Harmonický průměr v R. \\
+\texttt{stats.hmean(x)} (Python) & \texttt{scipy.stats.hmean(x)} & Z knihovny \texttt{scipy.stats}. \\
 \end{funkcedict}
 
-\paragraph{Implementace v Python}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{scipy.stats. hmean(x)} &
-\begin{lstlisting}
-from scipy.stats import hmean
-
-x = [1,2,4,5]
-
-hmean(x)
-\end{lstlisting}
-&
-Vrací harmonický průměr pomocí funkce \texttt{hmean}
-z knihovny \texttt{scipy.stats}.
-\\
-
-\end{funkcedict}
-
-%%-----------------------------------------------------------------------------
 \subsubsection{Geometrický průměr}
-
-Geometrický průměr je definován jako $n$-tá odmocnina součinu
-všech hodnot statistického souboru.
-
+Geometrický průměr se využívá pro multiplikativní data (tempa růstu, úroky).
 \begin{equation*}
-\bar{x}_G =
-\sqrt[n]{\prod_{i=1}^{n} x_i}
-=
-\sqrt[n]{x_1 \cdot x_2 \cdots x_n}
+\bar{x}_G = \sqrt[n]{\prod_{i=1}^{n} x_i}
 \end{equation*}
 
-kde
-
-\begin{itemize}[noitemsep]
-\item $\bar{x}_G$ je geometrický průměr,
-\item $\prod$ je znak pro součin (násobení všech hodnot),
-\item $x_i$ je $i$-tá hodnota statistického souboru,
-\item $i$ je index hodnoty,
-\item $n$ je počet pozorování,
-\item $\sqrt[n]{\cdot}$ značí $n$-tou odmocninu.
-\end{itemize}
-
-\paragraph{Implementace v R}\mbox{}\par
-
+\paragraph{Implementace v R a Pythonu}\mbox{}\par
 \begin{funkcedict}
-
-\texttt{exp(mean(log(x)))} &
-\begin{lstlisting}
-x <- c(1,2,3,4)
-
-exp(mean(log(x)))
-\end{lstlisting}
-&
-Vrací geometrický průměr hodnot ve vektoru \texttt{x}.
-\\
-
+\texttt{exp(mean(log(x)))} (R) & \texttt{exp(mean(log(x)))} & Geometrický průměr v R. \\
+\texttt{stats.gmean(x)} (Python) & \texttt{scipy.stats.gmean(x)} & Z knihovny \texttt{scipy.stats}. \\
 \end{funkcedict}
 
-\paragraph{Implementace v Python}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{scipy.stats. gmean(x)} &
-\begin{lstlisting}
-from scipy.stats import gmean
-
-x = [1,2,3,4]
-
-gmean(x)
-\end{lstlisting}
-&
-Vrací geometrický průměr pomocí funkce \texttt{gmean}
-z knihovny \texttt{scipy.stats}.
-\\
-
-\end{funkcedict}
-
-%%-----------------------------------------------------------------------------
 \subsubsection{Vztah mezi průměry}
-
 \begin{equation*}
 \bar{x}_H \le \bar{x}_G \le \bar{x}
 \end{equation*}
 
-kde
+\subsubsection{Modus}
+Nejpravděpodobnější (nejčetnější) hodnota ve statistickém souboru. Označuje se typicky $\hat{x}$. V Pythonu lze využít \texttt{statistics.multimode(x)}.
 
-\begin{itemize}[noitemsep]
-\item $\bar{x}_H$ je harmonický průměr,
-\item $\bar{x}_G$ je geometrický průměr,
-\item $\bar{x}$ je aritmetický průměr.
-\end{itemize}
+\subsubsection{Medián a Kvantily}
+Kvantily rozdělují uspořádaný statistický soubor na části se stejným počtem pozorování. $q$-kvantil je hodnota $x_q$, pro kterou platí $P(X \le x_q) = q$. Medián (50\% kvantil) rozděluje uspořádaný statistický soubor na dvě stejně početné části. 
 
-%%-----------------------------------------------------------------------------
-\subsubsection{Medián}
-
-Medián je hodnota, která rozděluje uspořádaný statistický soubor
-na dvě stejně početné části. Medián také vyjadřuje 50\% kvantil.
-
+Pozice $p$-tého kvantilu: $z_p = n \cdot p$. Hodnota $\tilde{x}_p$ se určí z uspořádaného souboru $x_{(1)} \le \dots \le x_{(n)}$:
 \begin{equation*}
-\tilde{x} =
-\begin{cases}
-x_{\left(\frac{n+1}{2}\right)}, & \text{je-li } n \text{ liché}, \\
-\\
-\frac{x_{\left(\frac{n}{2}\right)} + x_{\left(\frac{n}{2}+1\right)}}{2}, & \text{je-li } n \text{ sudé}.
+\tilde{x}_p = 
+\begin{cases} 
+x_{(\lceil z_p \rceil)} & \text{pokud } z_p \notin \mathbb{Z} \\
+\frac{x_{(z_p)} + x_{(z_p+1)}}{2} & \text{pokud } z_p \in \mathbb{Z}
 \end{cases}
 \end{equation*}
 
-kde
-
-\begin{itemize}[noitemsep]
-\item $\tilde{x}$ je medián,
-\item $x_{(i)}$ je $i$-tá hodnota v uspořádaném statistickém souboru,
-\item $n$ je počet pozorování.
-\end{itemize}
-
-\paragraph{Implementace v R}\mbox{}\par
-
+\paragraph{Implementace v R a Pythonu}\mbox{}\par
 \begin{funkcedict}
-
-\texttt{median(x)} &
-\begin{lstlisting}
-x <- c(1,3,2,5,4)
-median(x)
-\end{lstlisting}
-&
-Vrací medián hodnot ve vektoru \texttt{x}.
-\\
-
+\texttt{median(x)} (R) & \texttt{median(x)} & Vrací medián. \\
+\texttt{np.median(x)} (Python) & \texttt{np.median(x)} & Vrací medián. \\
+\texttt{quantile(x, probs=q)} (R) & \texttt{quantile(x, probs=c(0.25, 0.75))} & Vrací kvartily. \\
+\texttt{np.quantile(x, q)} (Python) & \texttt{np.quantile(x, [0.25, 0.75])} & Vrací kvartily. \\
 \end{funkcedict}
-
-\paragraph{Implementace v Python}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{np.median(x)} &
-\begin{lstlisting}
-import numpy as np
-
-x = np.array([1,3,2,5,4])
-np.median(x)
-\end{lstlisting}
-&
-Vrací medián hodnot ve vektoru \texttt{x}.
-\\
-
-\end{funkcedict}
-
-%%----------------------------------------------------------------------------
-\subsubsection{Kvantily a kvartily}
-
-Kvantily rozdělují uspořádaný statistický soubor na části
-se stejným počtem pozorování.
-
-$q$-kvantil je hodnota $x_q$, pro kterou platí
-
-\begin{equation*}
-P(X \le x_q) = q
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $x_q$ je $q$-kvantil,
-\item $q \in (0,1)$ je pořadí kvantilu,
-\item $P(X \le x_q)$ je pravděpodobnost, že náhodná veličina
-nabývá hodnot menších nebo rovných $x_q$.
-\end{itemize}
-
-Speciálním případem kvantilů jsou kvartily, které rozdělují
-data na čtyři stejně velké části.
-
-\begin{equation*}
-Q_1 = x_{0.25}, \qquad
-Q_2 = x_{0.5}, \qquad
-Q_3 = x_{0.75}
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $Q_1$ je první kvartil (25\% dat je menších),
-\item $Q_2$ je druhý kvartil, který odpovídá mediánu,
-\item $Q_3$ je třetí kvartil (75\% dat je menších).
-\end{itemize}
-
-\paragraph{Implementace v R}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{quantile(x)} &
-\begin{lstlisting}
-x <- c(1,2,3,4,5,6,7,8)
-
-quantile(x)
-\end{lstlisting}
-&
-Vrací kvantily datového vektoru.
-\\
-
-\texttt{quantile(x, probs=c(0.25, 0.5, 0.75))} &
-\begin{lstlisting}
-x <- c(1,2,3,4,5,6,7,8)
-
-quantile(x, probs=c(0.25,0.5,0.75))
-\end{lstlisting}
-&
-Vrací první, druhý a třetí kvartil.
-\\
-
-\end{funkcedict}
-
-\paragraph{Implementace v Python}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{np.quantile(x,q)} &
-\begin{lstlisting}
-import numpy as np
-
-x = np.array([1,2,3,4,5,6,7,8])
-
-np.quantile(x,0.5)
-\end{lstlisting}
-&
-Vrací $q$-kvantil pole.
-\\
-
-\texttt{np.quantile(x, [0.25,0.5,0.75])} &
-\begin{lstlisting}
-import numpy as np
-
-x = np.array([1,2,3,4,5,6,7,8])
-
-np.quantile(x,[0.25,0.5,0.75])
-\end{lstlisting}
-&
-Vrací první, druhý a třetí kvartil.
-\\
-
-\end{funkcedict}
-%%----------------------------------------------------------------------------
-\subsubsection{Interkvartilové rozpětí (IQR)}
-
-Interkvartilové rozpětí (IQR) je rozdíl mezi třetím
-a prvním kvartilem. Vyjadřuje rozptyl prostředních
-50\,\% dat.
-
-\begin{equation*}
-IQR = Q_3 - Q_1
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $IQR$ je interkvartilové rozpětí,
-\item $Q_1$ je první kvartil,
-\item $Q_3$ je třetí kvartil.
-\end{itemize}
-
-\paragraph{Implementace v R}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{IQR(x)} &
-\begin{lstlisting}
-x <- c(1,2,3,4,5,6,7,8)
-
-IQR(x)
-\end{lstlisting}
-&
-Vrací interkvartilové rozpětí datového vektoru.
-\\
-
-\end{funkcedict}
-
-\paragraph{Implementace v Python}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{np.quantile(x,0.75) - np.quantile(x,0.25)} &
-\begin{lstlisting}
-import numpy as np
-
-x = np.array([1,2,3,4,5,6,7,8])
-
-np.quantile(x,0.75) - np.quantile(x,0.25)
-\end{lstlisting}
-&
-Vrací interkvartilové rozpětí pole.
-\\
-
-\end{funkcedict}
-
 
 %%----------------------------------------------------------------------------
 \subsection{Charakteristiky variability}
 %%____________________________________________________________________________
-\subsubsection{Variační rozpětí}
+\subsubsection{Variační rozpětí a IQR}
+Variační rozpětí ($R$) je rozdíl mezi maximální a minimální hodnotou: $R = x_{\max} - x_{\min}$. \\
+Interkvartilové rozpětí ($IQR$) je rozdíl mezi třetím a prvním kvartilem: $IQR = Q_3 - Q_1$.
 
-Variační rozpětí je rozdíl mezi maximální a minimální
-hodnotou statistického souboru.
-
+\subsubsection{Rozptyl statistického souboru (Populační)}
+Rozptyl vyjadřuje průměrnou kvadratickou odchylku hodnot od aritmetického průměru.
 \begin{equation*}
-R = x_{\max} - x_{\min}
+s_x^2 = \frac{1}{n} \sum_{i=1}^{n} (x_i - \bar{x})^2 = \frac{\sum_{i=1}^{n} x_i^2}{n} - \bar{x}^2
 \end{equation*}
 
-kde
-
-\begin{itemize}[noitemsep]
-\item $R$ je variační rozpětí,
-\item $x_{\max}$ je maximální hodnota v souboru,
-\item $x_{\min}$ je minimální hodnota v souboru.
-\end{itemize}
-
-\paragraph{Implementace v R}\mbox{}\par
-
+\paragraph{Implementace v R a Pythonu}\mbox{}\par
 \begin{funkcedict}
-
-\texttt{max(x) - min(x)} &
-\begin{lstlisting}
-x <- c(3,7,2,9,5)
-
-max(x) - min(x)
-\end{lstlisting}
-&
-Vrací variační rozpětí hodnot ve vektoru \texttt{x}.
-\\
-
+Nevýběrový rozptyl (R) & \texttt{mean((x - mean(x))\^{}2)} & V R neexistuje přímá zkratka pro populaci. \\
+\texttt{np.var(x, ddof=0)} (Py) & \texttt{np.var(x)} & Defaultní chování v NumPy. \\
 \end{funkcedict}
 
-\paragraph{Implementace v Python}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{np.max(x) - np.min(x)} &
-\begin{lstlisting}
-import numpy as np
-
-x = np.array([3,7,2,9,5])
-
-np.max(x) - np.min(x)
-\end{lstlisting}
-&
-Vrací variační rozpětí hodnot ve vektoru \texttt{x}.
-\\
-
-\end{funkcedict}
-
-%%-----------------------------------------------------------------------------
-\subsubsection{Rozptyl statistického souboru}
-
-Rozptyl vyjadřuje průměrnou kvadratickou odchylku hodnot
-od aritmetického průměru.
-
-\begin{equation*}
-s_x^2 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n}
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $s_x^2$ je rozptyl statistického souboru,
-\item $\sum$ je sumační znak (součet),
-\item $x_i$ je $i$-tá hodnota statistického souboru,
-\item $\bar{x}$ je aritmetický průměr,
-\item $x_i - \bar{x}$ je odchylka hodnoty od průměru,
-\item $(x_i - \bar{x})^2$ je čtverec odchylky,
-\item $n$ je počet pozorování.
-\end{itemize}
-
-Výpočetní tvar rozptylu:
-
-\begin{equation*}
-s_x^2 =
-\frac{\sum_{i=1}^{n} x_i^2}{n}
--
-\left(
-\frac{\sum_{i=1}^{n} x_i}{n}
-\right)^2
-\end{equation*}
-
-
-\paragraph{Implementace v R}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{mean((x - mean(x))$^2$)} &
-\begin{lstlisting}
-x <- c(2,4,6,8)
-
-mean((x-mean(x))^2)
-\end{lstlisting}
-&
-Vrací nevýběrový (populační) rozptyl
-hodnot ve vektoru \texttt{x}.
-\\
-
-\end{funkcedict}
-
-
-\paragraph{Implementace v Python}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{np.var(x)} &
-\begin{lstlisting}
-import numpy as np
-
-x = np.array([2,4,6,8])
-
-np.var(x)
-\end{lstlisting}
-&
-Vrací nevýběrový (populační) rozptyl
-pomocí knihovny \texttt{numpy}.
-\\
-
-\end{funkcedict}
-
-%%----------------------------------------------------------------------------
 \subsubsection{Výběrový rozptyl}
-
-Výběrový rozptyl je nezkreslený odhad rozptylu populace
-a vznikne úpravou rozptylu statistického souboru pomocí
-Besselovy korekce.
-
+Výběrový rozptyl je nezkreslený odhad rozptylu populace (Besselova korekce).
 \begin{equation*}
-S^2 = \frac{n}{n-1}s_x^2
+S^2 = \frac{n}{n-1}s_x^2 = \frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{x})^2
 \end{equation*}
 
-kde
-
-\begin{itemize}[noitemsep]
-\item $S^2$ je výběrový rozptyl,
-\item $s_x^2$ je rozptyl statistického souboru,
-\item $n$ je počet pozorování,
-\item $n-1$ je korekce při odhadu rozptylu (Besselova korekce).
-\end{itemize}
-
-
-\paragraph{Implementace v R}\mbox{}\par
-
+\paragraph{Implementace v R a Pythonu}\mbox{}\par
 \begin{funkcedict}
-
-\texttt{var(x)} &
-\begin{lstlisting}
-x <- c(2,4,6,8)
-
-var(x)
-\end{lstlisting}
-&
-Vrací výběrový rozptyl hodnot ve vektoru
-\texttt{x} (dělí se $n-1$).
-\\
-
+\texttt{var(x)} (R) & \texttt{var(x)} & Vrací výběrový rozptyl (dělí se $n-1$). \\
+\texttt{np.var(x, ddof=1)} (Py) & \texttt{np.var(x, ddof=1)} & Musí se specifikovat \texttt{ddof=1}. \\
 \end{funkcedict}
 
+\subsubsection{Směrodatná odchylka}
+Odmocnina z rozptylu, udává variabilitu v původních jednotkách. Nevýběrová $s_x = \sqrt{s_x^2}$, výběrová $S = \sqrt{S^2}$. V Pythonu \texttt{np.std(x)} (populační) a \texttt{np.std(x, ddof=1)} (výběrová). V R slouží \texttt{sd(x)} pro výběrovou.
 
-\paragraph{Implementace v Python}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{np.var(x, ddof=1)} &
-\begin{lstlisting}
-import numpy as np
-
-x = np.array([2,4,6,8])
-
-np.var(x, ddof=1)
-\end{lstlisting}
-&
-Vrací výběrový rozptyl pomocí knihovny
-\texttt{numpy} (Besselova korekce).
-\\
-
-\end{funkcedict}
-
-%%-----------------------------------------------------------------------------
-\subsubsection{Vážený rozptyl}
-
-Vážený rozptyl vyjadřuje variabilitu hodnot znaku,
-když mají jednotlivé hodnoty různé váhy nebo relativní četnosti.
-
-\begin{equation*}
-s^2 = \sum_{i=1}^{k} p_i (x_i - \bar{x})^2
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $s^2$ je vážený rozptyl,
-\item $x_i$ je $i$-tá hodnota znaku,
-\item $\bar{x}$ je vážený aritmetický průměr,
-\item $p_i$ je váha nebo relativní četnost $i$-té hodnoty,
-\item $k$ je počet různých hodnot nebo tříd.
-\end{itemize}
-
-\paragraph{Implementace v R}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{weighted.mean( (x-mean(x))\^{}2, w)} &
-\begin{lstlisting}
-x <- c(1,2,3,4)
-w <- c(0.1,0.2,0.3,0.4)
-
-weighted.mean((x-weighted.mean(x,w))^2, w)
-\end{lstlisting}
-&
-Vrací vážený rozptyl hodnot s váhami \texttt{w}.
-\\
-
-\end{funkcedict}
-
-\paragraph{Implementace v Python}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{np.average( (x-xbar)**2, weights=w)} &
-\begin{lstlisting}
-import numpy as np
-
-x = np.array([1,2,3,4])
-w = np.array([0.1,0.2,0.3,0.4])
-
-xbar = np.average(x, weights=w)
-np.average((x-xbar)**2, weights=w)
-\end{lstlisting}
-&
-Vrací vážený rozptyl hodnot s váhami \texttt{w}
-pomocí knihovny \texttt{numpy}.
-\\
-
-\end{funkcedict}
-
-%%-----------------------------------------------------------------------------
-\subsubsection{Směrodatná odchylka statistického souboru}
-
-Směrodatná odchylka je druhá odmocnina rozptylu
-statistického souboru.
-
-\begin{equation*}
-s_x = \sqrt{s_x^2}
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $s_x$ je směrodatná odchylka,
-\item $s_x^2$ je rozptyl statistického souboru,
-\item $\sqrt{\cdot}$ značí druhou odmocninu.
-\end{itemize}
-
-
-\paragraph{Implementace v R}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{sqrt(mean((x- mean(x))$^2$))} &
-\begin{lstlisting}
-x <- c(2,4,6,8)
-
-sqrt(mean((x-mean(x))^2))
-\end{lstlisting}
-&
-Vrací směrodatnou odchylku statistického souboru.
-\\
-
-\end{funkcedict}
-
-
-\paragraph{Implementace v Python}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{np.std(x)} &
-\begin{lstlisting}
-import numpy as np
-
-x = np.array([2,4,6,8])
-
-np.std(x)
-\end{lstlisting}
-&
-Vrací směrodatnou odchylku pole (nevýběrovou).
-\\
-
-\end{funkcedict}
-
-%%----------------------------------------------------------------------------
-\subsubsection{Výběrová směrodatná odchylka}
-
-Výběrová směrodatná odchylka je odmocnina
-z výběrového rozptylu.
-
-\begin{equation*}
-S = \sqrt{S^2}
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $S$ je výběrová směrodatná odchylka,
-\item $S^2$ je výběrový rozptyl,
-\item $\sqrt{\cdot}$ značí druhou odmocninu.
-\end{itemize}
-
-
-\paragraph{Implementace v R}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{sd(x)} &
-\begin{lstlisting}
-x <- c(2,4,6,8)
-
-sd(x)
-\end{lstlisting}
-&
-Vrací výběrovou směrodatnou odchylku
-(dělí se $n-1$).
-\\
-
-\end{funkcedict}
-
-
-\paragraph{Implementace v Python}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{np.std(x, ddof=1)} &
-\begin{lstlisting}
-import numpy as np
-
-x = np.array([2,4,6,8])
-
-np.std(x, ddof=1)
-\end{lstlisting}
-&
-Vrací výběrovou směrodatnou odchylku
-(Besselova korekce).
-\\
-
-\end{funkcedict}
-
-%%-----------------------------------------------------------------------------
 \subsubsection{Variační koeficient}
-
-Variační koeficient vyjadřuje relativní variabilitu dat
-a udává poměr směrodatné odchylky k aritmetickému průměru.
-
+Relativní míra variability (bezrozměrná), slouží k porovnání souborů s různými průměry.
 \begin{equation*}
 v_x = \frac{s_x}{\bar{x}}
 \end{equation*}
 
-kde
+\subsubsection{Rozklad rozptylu}
+Pokud máme data rozdělená do $k$ skupin, můžeme celkový rozptyl rozložit na vnitroskupinový a meziskupinový:
+\begin{equation*}
+    s_x^2 = \underbrace{\bar{s}_i^2}_{\text{vnitroskupinový}} + \underbrace{s_{\bar{x}}^2}_{\text{meziskupinový}}
+\end{equation*}
 
 \begin{itemize}[noitemsep]
-\item $v_x$ je variační koeficient,
-\item $s_x$ je směrodatná odchylka,
-\item $\bar{x}$ je aritmetický průměr.
+    \item \textbf{Vnitroskupinový rozptyl ($\bar{s}_i^2$):} Průměr rozptylů jednotlivých skupin. $\bar{s}_i^2 = \frac{\sum_{i=1}^{k} s_i^2 n_i}{\sum_{i=1}^{k} n_i}$
+    \item \textbf{Meziskupinový rozptyl ($s_{\bar{x}}^2$):} Rozptyl skupinových průměrů od celkového průměru. $s_{\bar{x}}^2 = \frac{\sum_{i=1}^{k} (\bar{x}_i - \bar{x})^2 n_i}{\sum_{i=1}^{k} n_i}$
 \end{itemize}
-
-\paragraph{Implementace v R}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{sd(x) / mean(x)} &
-\begin{lstlisting}
-x <- c(2,4,6,8)
-
-sd(x) / mean(x)
-\end{lstlisting}
-&
-Vrací variační koeficient hodnot ve vektoru \texttt{x}.
-\\
-
-\end{funkcedict}
-
-\paragraph{Implementace v Python}\mbox{}\par
-
-\begin{funkcedict}
-
-\texttt{np.std(x) / np.mean(x)} &
-\begin{lstlisting}
-import numpy as np
-
-x = np.array([2,4,6,8])
-
-np.std(x) / np.mean(x)
-\end{lstlisting}
-&
-Vrací variační koeficient hodnot ve vektoru \texttt{x}.
-\\
-
-\end{funkcedict}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Teorie pravděpodobnosti}
 %%_____________________________________________________________________________
 \subsection{Počet pravděpodobnosti}
-%%-----------------------------------------------------------------------------
+
 \subsubsection{Klasická definice pravděpodobnosti}
+Pravděpodobnost jevu $A$ je podíl počtu příznivých výsledků $m$ a celkového počtu stejně pravděpodobných výsledků $n$: $P(A) = \frac{m}{n}$. Komplementární jev: $P(\overline{A}) = 1 - P(A)$.
 
-Pravděpodobnost jevu $A$ při klasické definici pravděpodobnosti
-je podíl počtu příznivých výsledků a celkového počtu
-stejně pravděpodobných výsledků.
-
-\begin{equation*}
-P(A) = \frac{m}{n}
-\end{equation*}
-
-kde
-
+\subsubsection{Průnik a Sjednocení}
 \begin{itemize}[noitemsep]
-\item $P(A)$ je pravděpodobnost jevu $A$,
-\item $m$ je počet příznivých výsledků,
-\item $n$ je počet všech možných výsledků.
-\end{itemize}
-
-%%-----------------------------------------------------------------------------
-\subsubsection{Pravděpodobnost komplementárního jevu}
-
-Pravděpodobnost opačného (komplementárního, doplňkového) jevu k jevu $A$
-je rovna jedné minus pravděpodobnost jevu $A$.
-
-\begin{equation*}
-P(\overline{A}) = 1 - P(A)
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $P(\overline{A})$ je pravděpodobnost opačného jevu k $A$,
-\item $P(A)$ je pravděpodobnost jevu $A$.
-\end{itemize}
-
-%%-----------------------------------------------------------------------------
-\subsubsection{Horní odhad pravděpodobnosti průniku}
-
-Pravděpodobnost současného nastání dvou jevů nemůže být větší
-než pravděpodobnost kteréhokoli z nich.
-
-\begin{equation*}
-P(A \cap B) \le \min(P(A), P(B))
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $P(A \cap B)$ je pravděpodobnost, že nastanou oba jevy současně,
-\item $P(A)$ je pravděpodobnost jevu $A$,
-\item $P(B)$ je pravděpodobnost jevu $B$,
-\item $\min(\cdot)$ označuje minimum z daných hodnot.
-\end{itemize}
-
-%%-----------------------------------------------------------------------------
-\subsubsection{Průnik nezávislých jevů}
-
-Jsou-li jevy $A$ a $B$ nezávislé, pak pravděpodobnost jejich
-současného nastání je rovna součinu jejich pravděpodobností.
-
-\begin{equation*}
-P(A \cap B) = P(A)P(B)
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $P(A \cap B)$ je pravděpodobnost současného nastání jevů $A$ a $B$,
-\item $P(A)$ je pravděpodobnost jevu $A$,
-\item $P(B)$ je pravděpodobnost jevu $B$.
-\end{itemize}
-
-%%-----------------------------------------------------------------------------
-\subsubsection{Sjednocení dvou jevů}
-
-Pravděpodobnost, že nastane alespoň jeden z jevů $A$ nebo $B$,
-je rovna součtu jejich pravděpodobností minus pravděpodobnost
-jejich současného nastání.
-
-\begin{equation*}
-P(A \cup B) = P(A) + P(B) - P(A \cap B)
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $P(A \cup B)$ je pravděpodobnost, že nastane alespoň jeden z jevů,
-\item $P(A)$ je pravděpodobnost jevu $A$,
-\item $P(B)$ je pravděpodobnost jevu $B$,
-\item $P(A \cap B)$ je pravděpodobnost současného nastání jevů $A$ a $B$.
-\end{itemize}
-
-%%-----------------------------------------------------------------------------
-\subsubsection{Sjednocení neslučitelných jevů}
-
-Pokud jsou jevy $A$ a $B$ neslučitelné (nemohou nastat současně),
-pak pravděpodobnost jejich sjednocení je rovna součtu
-pravděpodobností těchto jevů.
-
-\begin{equation*}
-P(A \cup B) = P(A) + P(B)
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $P(A \cup B)$ je pravděpodobnost, že nastane jev $A$ nebo $B$,
-\item $P(A)$ je pravděpodobnost jevu $A$,
-\item $P(B)$ je pravděpodobnost jevu $B$.
+    \item \textbf{Horní odhad pravděpodobnosti průniku:} $P(A \cap B) \le \min(P(A), P(B))$
+    \item \textbf{Průnik nezávislých jevů:} $P(A \cap B) = P(A)P(B)$
+    \item \textbf{Sjednocení dvou jevů:} $P(A \cup B) = P(A) + P(B) - P(A \cap B)$
+    \item \textbf{Sjednocení neslučitelných jevů:} $P(A \cup B) = P(A) + P(B)$
 \end{itemize}
 
 %%_____________________________________________________________________________
 \subsection{Náhodné veličiny}
-%%-----------------------------------------------------------------------------
-\subsubsection{Pravděpodobnostní funkce diskrétní náhodné veličiny}
 
-Pravděpodobnost, že diskrétní náhodná veličina $X$
-nabývá konkrétní hodnoty $x$.
-
-\begin{equation*}
-P(x) = P(X = x)
-\end{equation*}
-
-kde
-
+\subsubsection{Diskrétní náhodná veličina}
+Pravděpodobnostní funkce: $P(x) = P(X = x)$. Distribuční funkce: $F(x) = P(X \le x) = \sum_{x_j \le x} P(x_j)$.
 \begin{itemize}[noitemsep]
-\item $P(x)$ je pravděpodobnost hodnoty $x$,
-\item $P(X = x)$ je pravděpodobnost, že náhodná veličina $X$ má hodnotu $x$,
-\item $X$ je náhodná veličina,
-\item $x$ je konkrétní hodnota náhodné veličiny.
+    \item \textbf{Pravděpodobnost intervalu:} $P(x_1 < X \le x_2) = F(x_2) - F(x_1)$
+    \item \textbf{Střední hodnota:} $E(X) = \sum_{x} x\,P(x)$
+    \item \textbf{Rozptyl:} $D(X) = E(X^2) - [E(X)]^2 = \sum_x x^2 P(x) - \left(\sum_x x P(x)\right)^2$
 \end{itemize}
 
-%%-----------------------------------------------------------------------------
-\subsubsection{Distribuční funkce diskrétní náhodné veličiny}
-
-Distribuční funkce (kumulativní pravděpodobnost) udává
-pravděpodobnost, že náhodná veličina $X$ bude menší
-nebo rovna hodnotě $x$.
-
-\begin{equation*}
-F(x) = P(X \le x) = \sum_{x_j \le x} P(x_j)
-\end{equation*}
-
-kde
-
+\subsubsection{Spojitá náhodná veličina}
+Hustota pravděpodobnosti vyjadřuje rychlost změny distribuční funkce: $f(x) = F'(x)$. Normalizační podmínka: $\int_{-\infty}^{\infty} f(x)\,dx = 1$. Distribuční funkce: $F(x) = \int_{-\infty}^{x} f(t)\,dt$.
 \begin{itemize}[noitemsep]
-\item $F(x)$ je distribuční funkce,
-\item $P(X \le x)$ je pravděpodobnost, že $X$ je menší nebo rovno $x$,
-\item $\sum$ je součet pravděpodobností,
-\item $x_j$ jsou jednotlivé možné hodnoty náhodné veličiny,
-\item $P(x_j)$ je pravděpodobnost, že $X = x_j$.
+    \item \textbf{Pravděpodobnost intervalu:} $P(x_1 < X \le x_2) = \int_{x_1}^{x_2} f(x)\,dx = F(x_2) - F(x_1)$
+    \item \textbf{Střední hodnota:} $E(X) = \int_{-\infty}^{\infty} x f(x)\,dx$
+    \item \textbf{Rozptyl:} $D(X) = \int_{-\infty}^{\infty} x^2 f(x)\,dx - \left[\int_{-\infty}^{\infty} x f(x)\,dx \right]^2$
 \end{itemize}
 
-%%-----------------------------------------------------------------------------
-\subsubsection{Pravděpodobnost intervalu}
+Směrodatná odchylka je i zde odmocnina z rozptylu: $\sigma = \sqrt{D(X)}$.
 
-Pravděpodobnost, že náhodná veličina $X$ nabývá hodnot
-v intervalu $(x_1, x_2]$.
-
-\begin{equation*}
-P(x_1 < X \le x_2)
-=
-\sum_{x_1 < x \le x_2} P(x)
-=
-F(x_2) - F(x_1)
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $P(x_1 < X \le x_2)$ je pravděpodobnost, že $X$ leží mezi $x_1$ a $x_2$,
-\item $X$ je náhodná veličina,
-\item $x_1, x_2$ jsou hranice intervalu,
-\item $\sum$ je součet pravděpodobností všech hodnot v intervalu,
-\item $P(x)$ je pravděpodobnost, že $X = x$,
-\item $F(x)$ je distribuční funkce.
-\end{itemize}
-
-%%-----------------------------------------------------------------------------
-\subsubsection{Střední hodnota diskrétní náhodné veličiny}
-
-Střední hodnota (očekávaná hodnota) diskrétní náhodné veličiny
-je vážený průměr všech možných hodnot, kde váhami jsou jejich
-pravděpodobnosti.
-
-\begin{equation*}
-E(X) = \sum_{x} x\,P(x)
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $E(X)$ je očekávaná hodnota náhodné veličiny $X$,
-\item $\sum$ je součet přes všechny možné hodnoty,
-\item $x$ jsou jednotlivé možné hodnoty náhodné veličiny,
-\item $P(x)=P(X=x)$ je pravděpodobnost, že $X$ nabude hodnoty $x$.
-\end{itemize}
-
-%%-----------------------------------------------------------------------------
-\subsubsection{Rozptyl diskrétní náhodné veličiny}
-
-Rozptyl náhodné veličiny vyjadřuje míru variability
-hodnot náhodné veličiny kolem její střední hodnoty.
-
-\begin{equation*}
-D(X) = E(X^2) - [E(X)]^2
-     = \sum_x x^2 P(x) - \left(\sum_x x P(x)\right)^2
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $D(X)$ je rozptyl náhodné veličiny $X$,
-\item $E(X)$ je očekávaná hodnota náhodné veličiny,
-\item $E(X^2)$ je očekávaná hodnota druhé mocniny náhodné veličiny,
-\item $\sum$ je součet přes všechny možné hodnoty,
-\item $x$ jsou jednotlivé možné hodnoty náhodné veličiny,
-\item $P(x)=P(X=x)$ je pravděpodobnost, že $X$ nabude hodnoty $x$.
-\end{itemize}
-
-%%-----------------------------------------------------------------------------
-\subsubsection{Hustota pravděpodobnosti spojité náhodné veličiny}
-
-Hustota pravděpodobnosti vyjadřuje rychlost změny distribuční
-funkce spojité náhodné veličiny.
-
-\begin{equation*}
-f(x) = F'(x)
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $f(x)$ je hustota pravděpodobnosti,
-\item $F(x)$ je distribuční funkce,
-\item $F'(x)$ je derivace distribuční funkce podle $x$,
-\item $x$ je hodnota náhodné veličiny.
-\end{itemize}
-
-%%-----------------------------------------------------------------------------
-\subsubsection{Normalizační podmínka hustoty pravděpodobnosti}
-
-Celková pravděpodobnost spojité náhodné veličiny
-přes všechny možné hodnoty je rovna jedné.
-
-\begin{equation*}
-\int_{-\infty}^{\infty} f(x)\,dx = 1
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $\int$ označuje integrál (součet přes všechny hodnoty),
-\item $f(x)$ je hustota pravděpodobnosti,
-\item $dx$ je integrační proměnná,
-\item $-\infty, \infty$ vyjadřují integraci přes všechny možné hodnoty
-náhodné veličiny.
-\end{itemize}
-
-%%-----------------------------------------------------------------------------
-\subsubsection{Distribuční funkce spojité náhodné veličiny}
-
-Distribuční funkce spojité náhodné veličiny udává
-pravděpodobnost, že náhodná veličina $X$ bude menší
-nebo rovna hodnotě $x$.
-
-\begin{equation*}
-F(x) = P(X \le x) = \int_{-\infty}^{x} f(t)\,dt
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $F(x)$ je distribuční funkce,
-\item $P(X \le x)$ je pravděpodobnost, že náhodná veličina $X$ je menší nebo rovna $x$,
-\item $\int$ označuje integrál,
-\item $f(t)$ je hustota pravděpodobnosti,
-\item $t$ je integrační proměnná,
-\item $-\infty$ je dolní mez integrace,
-\item $x$ je horní mez integrace.
-\end{itemize}
-
-%%-----------------------------------------------------------------------------
-\subsubsection{Pravděpodobnost intervalu spojité náhodné veličiny}
-
-Pravděpodobnost, že spojitá náhodná veličina $X$ nabývá hodnot
-v intervalu $(x_1, x_2]$.
-
-\begin{equation*}
-P(x_1 < X \le x_2)
-=
-\int_{x_1}^{x_2} f(x)\,dx
-=
-F(x_2) - F(x_1)
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $P(x_1 < X \le x_2)$ je pravděpodobnost, že $X$ leží mezi $x_1$ a $x_2$,
-\item $X$ je náhodná veličina,
-\item $x_1, x_2$ jsou hranice intervalu,
-\item $\int$ označuje integrál,
-\item $f(x)$ je hustota pravděpodobnosti,
-\item $dx$ je integrační proměnná,
-\item $F(x)$ je distribuční funkce.
-\end{itemize}
-
-%%-----------------------------------------------------------------------------
-\subsubsection{Střední hodnota spojité náhodné veličiny}
-
-Střední hodnota (očekávaná hodnota) spojité náhodné veličiny
-je vážený průměr všech možných hodnot, kde váhami jsou
-hodnoty hustoty pravděpodobnosti.
-
-\begin{equation*}
-E(X) = \int_{-\infty}^{\infty} x f(x)\,dx
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $E(X)$ je očekávaná hodnota náhodné veličiny $X$,
-\item $\int$ označuje integrál,
-\item $x$ je hodnota náhodné veličiny,
-\item $f(x)$ je hustota pravděpodobnosti,
-\item $dx$ je integrační proměnná,
-\item $-\infty, \infty$ vyjadřují integraci přes všechny možné hodnoty
-náhodné veličiny.
-\end{itemize}
-
-%%-----------------------------------------------------------------------------
-\subsubsection{Rozptyl spojité náhodné veličiny}
-
-Rozptyl spojité náhodné veličiny vyjadřuje variabilitu
-hodnot náhodné veličiny kolem její střední hodnoty.
-
-\begin{equation*}
-D(X)
-=
-\int_{-\infty}^{\infty} x^2 f(x)\,dx
--
-\left[\int_{-\infty}^{\infty} x f(x)\,dx \right]^2
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $D(X)$ je rozptyl náhodné veličiny $X$,
-\item $\int$ označuje integrál,
-\item $x$ je hodnota náhodné veličiny,
-\item $f(x)$ je hustota pravděpodobnosti,
-\item $dx$ je integrační proměnná,
-\item $\int x f(x)\,dx$ je očekávaná hodnota $E(X)$,
-\item $\int x^2 f(x)\,dx$ je očekávaná hodnota $E(X^2)$.
-\end{itemize}
-
-%%-----------------------------------------------------------------------------
-\subsubsection{Směrodatná odchylka náhodné veličiny}
-
-Směrodatná odchylka vyjadřuje míru variability
-hodnot náhodné veličiny kolem její střední hodnoty.
-
-\begin{equation*}
-\sigma = \sqrt{D(X)}
-\end{equation*}
-
-kde
-
-\begin{itemize}[noitemsep]
-\item $\sigma$ je směrodatná odchylka,
-\item $D(X)$ je rozptyl náhodné veličiny $X$,
-\item $\sqrt{\phantom{x}}$ označuje druhou odmocninu.
-\end{itemize}
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Kombinatorika a Metriky}
 %%_____________________________________________________________________________
+\subsection{Kombinatorika}
+Mějme množinu $n$ prvků, ze které vybíráme $k$ prvků.
+\begin{itemize}[noitemsep]
+    \item \textbf{Permutace (Pořadí všech $n$ prvků):}
+        Bez opakování: $P(n) = n!$ \\
+        S opakováním: $P'_{k_1, \dots, k_m}(n) = \frac{n!}{k_1! \cdot \dots \cdot k_m!}$
+    \item \textbf{Variace (Výběr $k$ prvků z $n$, záleží na pořadí):}
+        Bez opakování: $V(k, n) = \frac{n!}{(n-k)!}$ \\
+        S opakováním: $V'(k, n) = n^k$
+    \item \textbf{Kombinace (Výběr $k$ prvků z $n$, nezáleží na pořadí):}
+        Bez opakování: $K(k, n) = \binom{n}{k} = \frac{n!}{k!(n-k)!}$ \\
+        S opakováním: $K'(k, n) = \binom{n+k-1}{k} = \frac{(n+k-1)!}{k!(n-1)!}$
+\end{itemize}
 
+\subsection{$L^p$ Normy (Vzdálenosti a penalizace)}
+Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky chyb a regularizaci.
+\begin{itemize}[noitemsep]
+    \item \textbf{$L^1$ (Manhattan):} $\|x\|_1 = \sum |x_i|$. Využití: Lasso regrese.
+    \item \textbf{$L^2$ (Euklid):} $\|x\|_2 = \sqrt{\sum x_i^2}$. Využití: Ridge regrese (metoda nejmenších čtverců).
+    \item \textbf{$L^\infty$ (Max):} $\|x\|_\infty = \max(|x_i|)$. Reprezentuje nejhorší možnou chybu.
+\end{itemize}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Práce s daty v Pythonu (Cheatsheet)}
 
+\subsection{Užitečné knihovny a základy}
+\begin{funkcedict}
+\texttt{import numpy as np} & \texttt{np.array([...])} & Matice, vektory a rychlé matematické operace. \\
+\texttt{import pandas as pd} & \texttt{pd.DataFrame(matice)} & Analýza tabulek a práce s CSV. \\
+\texttt{import matplotlib.pyplot as plt} & \texttt{plt.hist(data)} & Tvorba grafů a vizualizace dat. \\
+\texttt{math.comb(n, k)} & \texttt{math.comb(10, 3)} & Kombinační číslo (výběr $k$ z $n$). \\
+\texttt{List Comprehension} & \texttt{[x**2 for x in range(5)]} & Dynamické generování pole pomocí cyklu. \\
+\end{funkcedict}
+
+\subsection{NumPy: Statistika a Matice}
+\begin{funkcedict}
+\texttt{np.random.uniform(a,b,n)} & \texttt{np.random.uniform(10,50,100)} & Generuje náhodná desetinná čísla z $[a, b)$. \\
+\texttt{np.linalg.norm(x, p)} & \texttt{np.linalg.norm(x, ord=2)} & Výpočet $L^1, L^2$ nebo $L^\infty$ normy. \\
+\texttt{np.where(cond, x, y)} & \texttt{np.where(df['a']==0, 1, 2)} & Pokud platí \texttt{cond}, vlož \texttt{x}, jinak \texttt{y} (jako IF v Excelu). \\
+\end{funkcedict}
+
+\subsection{Pandas: Analýza dat}
+\begin{funkcedict}
+\texttt{pd.read\_csv(file)} & \texttt{pd.read\_csv('data.csv')} & Načte data z CSV souboru a vytvoří DataFrame. \\
+\texttt{df.describe()} & \texttt{df.describe()} & Souhrnné statistiky (průměr, std, kvartily, atd.). \\
+\texttt{df.loc} vs \texttt{df.iloc} & \texttt{df.loc[0, 'Sloupec']} & Výběr dat podle \textbf{názvů} (\texttt{loc}) vs. \textbf{pozice} (\texttt{iloc}). \\
+\texttt{df.value\_counts()} & \texttt{df['A'].value\_counts()} & Tabulka četností pro kategorická data. \\
+\texttt{df.groupby('A')} & \texttt{df.groupby('A').mean()} & Výpočet statistik podle kategorií ve sloupci 'A'. \\
+\texttt{pd.crosstab()} & \texttt{pd.crosstab(df['A'], df['B'])} & Kontingenční tabulka četností dvou kategorií. \\
+\texttt{pd.pivot\_table()} & \texttt{df.pivot\_table(values='C', \dots)} & Univerzální pivotní tabulka. \\
+\end{funkcedict}
+
+\subsection{Matplotlib a Seaborn: Vizualizace}
+\begin{funkcedict}
+\texttt{df.boxplot()} & \texttt{df.boxplot(column='Y', by='X')} & \textbf{Boxplot (Pandas)}: Rozdělení dat do kvartilů dle skupiny. \\
+\texttt{plt.hist(x)} & \texttt{plt.hist(data, bins=15)} & \textbf{Histogram}: Rozdělení četností. \texttt{bins} určuje intervaly. \\
+\texttt{plt.scatter(x, y)} & \texttt{plt.scatter(x, y, alpha=0.5)} & \textbf{Bodový graf}: Závislost dvou proměnných. \\
+\texttt{plt.title(s)} & \texttt{plt.title("Název", fontsize=16)} & Nastaví hlavní nadpis grafu. \\
+\texttt{plt.xlabel / ylabel} & \texttt{plt.xlabel("Čas [s]")} & Nastaví popisky os $x$ a $y$. \\
+\texttt{plt.legend()} & \texttt{plt.legend(loc='upper right')} & Zobrazí legendu (nutný parametr \texttt{label} u dat). \\
+\texttt{plt.savefig()} & \texttt{plt.savefig("graf.pdf")} & Uloží graf na disk. \\
+\end{funkcedict}
 
 \end{document}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-
-
