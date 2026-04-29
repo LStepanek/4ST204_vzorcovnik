@@ -1587,6 +1587,7 @@ Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky c
 \texttt{df.describe()} & \texttt{df.describe()} & Souhrnné statistiky (průměr, std, kvartily, atd.). \\
 \texttt{df[columns]} & \texttt{df[["A", "B", "C"]]} & Výběr určitých sloupců. \\
 \texttt{Filtrování} & \texttt{df[df['Věk'] >= 18]} & Vybere pouze řádky splňující danou podmínku. \\
+\texttt{df['A']. isin([list])} & \texttt{df[df['mesto'].isin(['Praha', 'Brno'])]} & Vybere řádky, kde hodnota sloupce odpovídá prvkům v seznamu. \\
 \texttt{df.loc} vs \texttt{df.iloc} & \texttt{df.loc[0, 'Sloupec']} & Výběr dat podle \textbf{názvů} (\texttt{loc}) vs. \textbf{pozice} (\texttt{iloc}). \\
 \texttt{df.isna().sum()} & \texttt{df.isna().sum()} & Počet chybějících (null) hodnot v tabulce. \\
 \texttt{df.value\_counts()} & \texttt{df['A'].value\_counts()} & Tabulka četností pro kategorická data. \\
@@ -1594,6 +1595,7 @@ Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky c
 \texttt{df.cumsum()} & \texttt{df['cetnost'].cumsum()} & \textbf{Kumulativní součet}: Pro výpočet kumulativních absolutních/relativních četností. \\
 \texttt{pd.crosstab()} & \texttt{pd.crosstab(df['A'], df['B'])} & Kontingenční tabulka četností dvou kategorií. \\
 \texttt{pd.pivot\_table()} & \texttt{df.pivot\_table(values='C', \dots)} & Univerzální pivotní tabulka. \\
+\texttt{df['A'].between(a, b)} & \texttt{df[df['mzda'].between(30000, 50000)]} & Filtrování hodnot v uzavřeném intervalu [a, b]. \\
 \end{funkcedict}
 
 \subsection{Matplotlib a Seaborn: Vizualizace}
@@ -1606,10 +1608,22 @@ Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky c
 \texttt{plt.legend()} & \texttt{plt.legend(loc='upper right')} & Zobrazí legendu (nutný parametr \texttt{label} u dat). \\
 \texttt{plt.savefig()} & \texttt{plt.savefig("graf.pdf")} & Uloží graf na disk. \\
 \end{funkcedict}
-
+\subsection{Náhodné veličiny (Praktické výpočty)}
+\begin{funkcedict}
+\texttt{Importy:} & 
+\begin{lstlisting}
+from scipy.stats import norm, binom, poisson, hypergeom
+\end{lstlisting}} \\
+\texttt{norm.cdf(x, mu, sigma)} & \texttt{norm.cdf(16, loc=20, scale=4)} & \textbf{Pravděpodobnost "MÉNĚ NEŽ"}: Šance, že hodnota bude maximálně $x$. \\
+\texttt{norm.sf(x, mu, sigma)} & \texttt{norm.sf(20, loc=20, scale=4)} & \textbf{Pravděpodobnost "VÍCE NEŽ"}: Šance, že hodnota bude větší než $x$. \\
+\texttt{norm.cdf(b) - norm.cdf(a)} & \texttt{norm.cdf(28, 20, 4) - norm.cdf(12, 20, 4)} & \textbf{Pravděpodobnost "MEZI"}: Šance, že se hodnota trefí do intervalu $(a, b)$. \\
+\texttt{norm.ppf(q, mu, sigma)} & \texttt{norm.ppf(0.1, loc=20, scale=4)} & \textbf{Hledání bodu $x$}: Když známe pravděpodobnost (např. spodních 10 \%) a hledáme hodnotu. \\
+\texttt{binom.pmf(k, n, p)} & \texttt{binom.pmf(5, n=10, p=0.5)} & \textbf{Pravděpodobnost PŘESNĚ}: Šance, že se něco stane přesně $k$-krát (např. 5 hlav z 10 hodů). \\
+\texttt{binom.cdf(k, n, p)} & \texttt{binom.cdf(2, n=10, p=0.5)} & \textbf{Pravděpodobnost NEJVÝŠE}: Šance, že úspěchů bude $0$ až $k$ (včetně). \\
+\texttt{poisson.pmf(k, mu)} & \texttt{poisson.pmf(3, mu=2)} & \textbf{Počet událostí}: Pravděpodobnost, že nastanou přesně 3 události, když průměr je 2. \\
+\texttt{hypergeom.pmf(k, M, n, N)} & \texttt{hypergeom.pmf(k=0, M=200, n=10, N=5)} & \textbf{Výběr bez vracení}: Šance na $k$ zmetků ve výběru $N$ z populace $M$, kde je $n$ zmetků. \\
+\texttt{math.comb(n, k)} & \texttt{math.comb(10, 3)} & \textbf{Kombinační číslo}: Kolika způsoby lze vybrat $k$ prvků z $n$. \\
+\end{funkcedict}
 \end{document}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-
