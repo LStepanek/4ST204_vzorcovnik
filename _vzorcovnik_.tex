@@ -1741,6 +1741,13 @@ Spojité rozdělení. Používá se pro konstrukci intervalů spolehlivosti a te
 \texttt{t.ppf(q, df)} & \texttt{t.ppf(1 - 0.05/2, df=19)} & \texttt{Kritická hodnota}: Kvantil pro t-rozdělení (např. pro výpočet mezí intervalu spolehlivosti). \\
 \end{funkcedict}
 
+\subsection{Intervaly spolehlivosti a velikost výběru}
+\begin{funkcedict}
+\texttt{Kritická hodnota Z} & \texttt{z\_crit = norm.ppf(1 - 0.05 / 2)} & Výpočet kvantilu pro oboustranný interval. Pro 95\% spolehlivost je $\alpha = 0.05$. Pro 99\% je $\alpha = 0.01$. \\
+\texttt{Mezní chyba odhadu} & \texttt{err = z\_crit * np.sqrt(p * (1-p) / n)} & Výpočet maximální odchylky odhadu proporce $p$ pro vzorek velikosti $n$. \\
+\texttt{Meze intervalu} & \texttt{lower = p - err} \newline \texttt{upper = p + err} & Skutečná hodnota leží s danou pravděpodobností v intervalu \texttt{(lower, upper)}. \\
+\texttt{Potřebná velikost} & \texttt{n = math.ceil((z\_crit * np.sqrt(p * (1-p)) / delta)**2)} & Výpočet velikosti výběru $n$, aby mezní chyba nepřesáhla limit $\Delta$ (\texttt{delta}). \\
+\end{funkcedict}
 
 \subsection{Testování hypotéz v Pythonu (SciPy)}
 \begin{funkcedict}
