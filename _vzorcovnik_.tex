@@ -1560,6 +1560,55 @@ Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky c
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Testování hypotéz}
+
+\textbf{1. Stanovení hypotéz}
+\begin{itemize}
+    \item \textbf{$H_0$ (Nulová hypotéza)}: Předpokládá stav „bez změny“, „rovnost“ nebo „nezávislost“ (např. $\mu = \mu_0$).
+    \item \textbf{$H_1$ (Alternativní hypotéza)}: Tvrzení, které chceme prokázat vyvrácením $H_0$. Může být oboustranná (např. $\mu \neq \mu_0$) nebo jednostranná (např. $\mu < \mu_0$).
+\end{itemize}
+\textbf{2. Volba hladiny významnosti ($\alpha$)}
+\begin{itemize}
+    \item \textbf{$\alpha$}: Maximální přípustná pravděpodobnost chyby I. typu, tedy riziko, že chybně zamítneme pravdivou $H_0$ (tzv. odsouzení nevinného). 
+    \item Nejčastěji se volí $\alpha = 0,05$ nebo $\alpha = 0,01$. Vyžadujeme-li vyšší jistotu, volíme nižší hladinu významnosti.
+\end{itemize}
+\textbf{3. Výpočet testové statistiky a kritické hodnoty}
+\begin{itemize}
+    \item \textbf{Testová statistika (např. $u$ nebo $t$):} Vypočítaná hodnota ze vzorku dat, podle které se následně rozhodujeme.
+    \item \textbf{Vzorec pro test průměru:} $u = \frac{\bar{x} - \mu_0}{s_x / \sqrt{n}}$.
+    \begin{itemize}
+        \item $\bar{x}$: výběrový průměr.
+        \item $\mu_0$: hypotetická střední hodnota (populační parametr) dle $H_0$.
+        \item $s_x$: výběrová směrodatná odchylka.
+        \item $n$: počet pozorování (rozsah výběru).
+    \end{itemize}
+    \item \textbf{Vzorec pro test podílu/relativní četnosti:} $u = \frac{p - p_0}{\sqrt{p_0(1-p_0)/n}}$.
+    \item \textbf{Kritická hodnota:} Hranice, která vymezuje kritický obor. V Pythonu ji najdeme např. jako \texttt{stats.norm.ppf(1 - $\alpha$)} pro jednostranný test. Pokud statistika překročí tuto hranici do kritického oboru, $H_0$ se zamítá.
+\end{itemize}
+\textbf{4. Rozhodnutí}
+\begin{itemize}
+    \item \textbf{p-hodnota}: Udává pravděpodobnost, že za platnosti $H_0$ získáme stejnou nebo ještě extrémnější hodnotu testového kritéria (v podstatě pravděpodobnost chyby 1. typu, pokud bychom $H_0$ zamítli).
+    \item \textbf{Pravidlo rozhodování}:
+    \begin{itemize}
+        \item Pokud $p \leq \alpha$: Data jsou v silném rozporu s $H_0$, a proto \textbf{zamítáme $H_0$} ve prospěch $H_1$.
+        \item Pokud $p > \alpha$: Rozdíl lze vysvětlit náhodou, a proto \textbf{nezamítáme $H_0$} na hladině významnosti $\alpha$.
+    \end{itemize}
+\end{itemize}
+
+\textbf{Jak se p-hodnota určí?}
+\begin{itemize}
+    \item P-hodnota představuje obsah plochy pod křivkou hustoty pravděpodobnosti v „extrémní“ oblasti, kterou vymezuje vámi vypočítaná testová statistika ($t_{obs}$).
+    \item Neexistuje jeden univerzální algebraický vzorec, protože výpočet závisí na typu rozdělení (např. normální rozdělení, Studentovo t-rozdělení) a typu alternativní hypotézy:
+    \begin{itemize}
+        \item \textbf{Pravostranný test} ($H_1: \mu > \mu_0$): $p = P(T \geq t_{obs} \mid H_0)$.
+        \item \textbf{Levostranný test} ($H_1: \mu < \mu_0$): $p = P(T \leq t_{obs} \mid H_0)$.
+        \item \textbf{Oboustranný test} ($H_1: \mu \neq \mu_0$): $p = 2 \cdot P(T \geq |t_{obs}| \mid H_0)$.
+    \end{itemize}
+    \item V Pythonu se tato hodnota určuje pomocí distribučních funkcí (\texttt{cdf} nebo \texttt{sf}) nebo je přímo výstupem testových funkcí (např. \texttt{stats.ttest\_1samp}).
+\end{itemize}
+
 \section{Práce s daty v Pythonu (Cheatsheet)}
 
 \subsection{Užitečné knihovny a základy}
@@ -1608,7 +1657,7 @@ Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky c
 \texttt{plt.legend()} & \texttt{plt.legend(loc='upper right')} & Zobrazí legendu (nutný parametr \texttt{label} u dat). \\
 \texttt{plt.savefig()} & \texttt{plt.savefig("graf.pdf")} & Uloží graf na disk. \\
 \end{funkcedict}
-\subsection{Náhodné veličiny (Praktické výpočty)}
+\subsection{Náhodné veličiny}
 \begin{funkcedict}
 \texttt{Importy:} & 
 \begin{lstlisting}
@@ -1622,7 +1671,17 @@ from scipy.stats import norm, binom, poisson, hypergeom
 \texttt{binom.cdf(k, n, p)} & \texttt{binom.cdf(2, n=10, p=0.5)} & \textbf{Pravděpodobnost NEJVÝŠE}: Šance, že úspěchů bude $0$ až $k$ (včetně). \\
 \texttt{poisson.pmf(k, mu)} & \texttt{poisson.pmf(3, mu=2)} & \textbf{Počet událostí}: Pravděpodobnost, že nastanou přesně 3 události, když průměr je 2. \\
 \texttt{hypergeom.pmf(k, M, n, N)} & \texttt{hypergeom.pmf(k=0, M=200, n=10, N=5)} & \textbf{Výběr bez vracení}: Šance na $k$ zmetků ve výběru $N$ z populace $M$, kde je $n$ zmetků. \\
-\texttt{math.comb(n, k)} & \texttt{math.comb(10, 3)} & \textbf{Kombinační číslo}: Kolika způsoby lze vybrat $k$ prvků z $n$. \\
+\texttt{t.pdf(x, df)} & \texttt{t.pdf(x, df=15)} & \textbf{Studentovo t-rozdělení}: Hustota pravděpodobnosti. Používá se pro malé výběry ($n < 30$) s neznámým rozptylem. \\
+
+\end{funkcedict}
+
+
+\subsection{Testování hypotéz v Pythonu}
+\begin{funkcedict}
+\texttt{stats.ttest\_1samp( x, m)} & \texttt{stats.ttest\_1samp(x, popmean=$\mu_0$)} & Jednovýběrový t-test střední hodnoty. Vrací testovou statistiku a p-hodnotu. \\
+\texttt{stats.f\_oneway( *args)} & \texttt{stats.f\_oneway(A, B, C)} & Jednofaktorová ANOVA pro porovnání průměrů ve třech a více skupinách. \\
+\texttt{stats.chi2 \_contingency} & \texttt{stats.chi2\_contingency(obs, correction=False)} & Chí-kvadrát test nezávislosti. \texttt{obs} představuje kontingenční tabulku. \\
+\texttt{stats.chisquare( obs, exp)} & \texttt{stats.chisquare(f\_obs=poz, f\_exp=ocek)} & Chí-kvadrát test dobré shody. Porovnává zjištěné četnosti s očekávanými. \\
 \end{funkcedict}
 \end{document}
 
