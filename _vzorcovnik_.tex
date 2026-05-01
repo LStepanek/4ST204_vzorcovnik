@@ -1620,14 +1620,49 @@ Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky c
 \texttt{List Comprehension} & \texttt{[x**2 for x in range(5)]} & Dynamické generování pole pomocí cyklu. \\
 \end{funkcedict}
 
-\subsection{NumPy: Statistika a Matice}
+\subsection{Práce s poli (Standardní Python)}
 \begin{funkcedict}
-\texttt{np.linalg.norm(x, p)} & \texttt{np.linalg.norm(x, ord=2)} & Výpočet $L^1, L^2$ nebo $L^\infty$ normy. \\
-\texttt{np.where(cond, x, y)} & \texttt{np.where(df['a']==0, 1, 2)} & Pokud platí \texttt{cond}, vlož \texttt{x}, jinak \texttt{y} (jako IF v Excelu). \\
-\texttt{np.insert / np.delete} & \texttt{np.insert(A, 1, [..], axis=0)} & Vloží/Smaže řádek (\texttt{axis=0}) nebo sloupec 
-(\texttt{axis=1}). \\
+\textbf{List Comprehension} & \texttt{[x**2 for x in range(5)]} & Dynamické generování pole pomocí cyklu. \\
+\texttt{x[start:stop:krok]} & \texttt{pole[1:10:2]} & Výřez (stop je exkluzivní). \texttt{[::-1]} pro otočení. \\
+\texttt{x.copy()} vs \texttt{deepcopy} & \texttt{a = b.copy()} & \texttt{copy} je plytká, \texttt{deepcopy} kopíruje i vnořená pole. \\
+\texttt{x.append(v)} & \texttt{data.append(10)} & Přidání jednoho prvku na konec pole. \\
+\texttt{x.extend(a)} & \texttt{data.extend([1,2,3])} & Přidání více prvků na konec pole. \\
+\end{funkcedict}
+
+\subsection{Základní Python (Built-in \& Math)}
+\begin{funkcedict}
+\texttt{help(funkce)} & \texttt{help(print)} & Dokumentace pro zadanou funkci. \\
+\texttt{range(start, stop)} & \texttt{list(range(0, 5))} & Vygeneruje sekvenci \texttt{[0, 1, 2, 3, 4]}. \\
+\texttt{math.log(x, b)} & \texttt{math.log(8, 2)} & Logaritmus čísla $x$ o základu $b$. \\
+\texttt{math.sqrt(x)} & \texttt{math.sqrt(16)} & Druhá odmocnina čísla. \\
+\texttt{math.ceil / floor} & \texttt{math.ceil(2.1)} & Zaokrouhlení nahoru (3) / dolů (2). \\
+\texttt{math.trunc(x)} & \texttt{math.trunc(2.9)} & Odříznutí desetinné části (2). \\
+\texttt{math.comb(n, k)} & \texttt{math.comb(10, 3)} & Kombinační číslo (počet kombinací $k$ prvků z $n$). \\
+\texttt{def function(...):} & \texttt{def funkce(x, y, z):} & Definice vlastní funkce s parametry. \\
+\end{funkcedict}
+
+\subsection{Statistika a Matice (Knihovna NumPy a jiné)}
+\begin{funkcedict}
+\texttt{np.sum(x)} & \texttt{np.sum(data, axis=0)} & Součet všech prvků v poli (nebo podél zvolené osy). \\
+\texttt{np.mean(x)} & \texttt{np.mean(data)} & Průměr všech prvků v poli. \\
+\texttt{np.prod(x)} & \texttt{np.prod(data)} & Součin všech prvků v poli. \\
+\texttt{np.sqrt(x)} & \texttt{np.sqrt(data)} & Druhá odmocnina z každého prvku v poli. \\
+\texttt{np.random.rand(n)} & \texttt{np.random.rand(100)} & Generování pole $n$ náhodných čísel z rovnoměrného rozdělení na $[0, 1)$. \\
+\texttt{np.random.uniform(a, b, n)} & \texttt{np.random.uniform(10, 50, 100)} & Generuje $n$ náhodných \textbf{desetinných} čísel v rozsahu $[a, b)$. \\
+\texttt{np.quantile(x, q)} & \texttt{np.quantile(x, 0.75, method='midpoint')} & Výpočet kvantilu ($q \in [0, 1]$). \\
+\texttt{Modus} & \texttt{statistics.multimode(data)} & \texttt{Vrací modus z pole (i více prvků)} \\
+\texttt{np.log10(x)} & \texttt{np.log10(data)} & Dekadický logaritmus (základ 10). Často se používá pro normalizaci dat. \\
+\texttt{np.linalg.norm(x, p)} & \texttt{np.linalg.norm(x, ord=2)} & Výpočet $L^1, L^2$ nebo $L^\infty$ (\texttt{np.inf}) normy. \\
+\texttt{np.insert / np.delete} & \texttt{np.insert(A, 1, [..], axis=0)} & Vloží/Smaže řádek (\texttt{axis=0}) nebo sloupec (\texttt{axis=1}). \\
 \texttt{stats.gmean(x)} & \texttt{stats.gmean(x)} & Geometrický průměr (knihovna Scipy). \\
 \texttt{stats.hmean(x)} & \texttt{stats.hmean(x, weights=[...])} & Harmonický průměr (knihovna Scipy). \\
+\texttt{np.var(x, ddof=0)} & \texttt{np.var(data, ddof=0)} & \textbf{Klasický rozptyl} $s_x^2$ (děleno $n$). \\
+\texttt{np.var(x, ddof=1)} & \texttt{np.var(data, ddof=1)} & \textbf{Výběrový rozptyl} $S^2$ (děleno $n-1$). \\
+\texttt{np.std(x, ddof=0)} & \texttt{np.std(data, ddof=0)} & Klasická směrodatná odchylka $s_x$. \\
+\texttt{np.std(x, ddof=1)} & \texttt{np.std(data, ddof=1)} & Výběrová směrodatná odchylka $S$. \\
+\texttt{np.ptp(x)} & \texttt{np.ptp(data)} & \textbf{Variační rozpětí} $R = x_{max} - x_{min}$. \\
+\texttt{v\_x = std / mean} & \texttt{np.std(x) / np.mean(x)} & \textbf{Variační koeficient} $v_x$ (relativní variabilita). \\
+\texttt{np.where(cond, x, y)} & \texttt{np.where(df['am'] == 0, 'aut', 'man')} & \textbf{Podmíněný sloupec}: Pokud platí \texttt{cond}, vlož \texttt{x}, jinak \texttt{y} (jako IF v Excelu). \\
 \end{funkcedict}
 
 \subsection{Pandas: Analýza dat}
