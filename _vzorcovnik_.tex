@@ -1657,26 +1657,57 @@ Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky c
 \texttt{plt.legend()} & \texttt{plt.legend(loc='upper right')} & Zobrazí legendu (nutný parametr \texttt{label} u dat). \\
 \texttt{plt.savefig()} & \texttt{plt.savefig("graf.pdf")} & Uloží graf na disk. \\
 \end{funkcedict}
-\subsection{Náhodné veličiny}
-\begin{funkcedict}
-\texttt{Importy:} & 
+\subsection{Náhodné veličiny a rozdělení}
+\texttt{Importy:}
 \begin{lstlisting}
-from scipy.stats import norm, binom, poisson, hypergeom
-\end{lstlisting}} \\
-\texttt{norm.cdf(x, mu, sigma)} & \texttt{norm.cdf(16, loc=20, scale=4)} & \textbf{Pravděpodobnost "MÉNĚ NEŽ"}: Šance, že hodnota bude maximálně $x$. \\
-\texttt{norm.sf(x, mu, sigma)} & \texttt{norm.sf(20, loc=20, scale=4)} & \textbf{Pravděpodobnost "VÍCE NEŽ"}: Šance, že hodnota bude větší než $x$. \\
-\texttt{norm.cdf(b) - norm.cdf(a)} & \texttt{norm.cdf(28, 20, 4) - norm.cdf(12, 20, 4)} & \textbf{Pravděpodobnost "MEZI"}: Šance, že se hodnota trefí do intervalu $(a, b)$. \\
-\texttt{norm.ppf(q, mu, sigma)} & \texttt{norm.ppf(0.1, loc=20, scale=4)} & \textbf{Hledání bodu $x$}: Když známe pravděpodobnost (např. spodních 10 \%) a hledáme hodnotu. \\
-\texttt{binom.pmf(k, n, p)} & \texttt{binom.pmf(5, n=10, p=0.5)} & \textbf{Pravděpodobnost PŘESNĚ}: Šance, že se něco stane přesně $k$-krát (např. 5 hlav z 10 hodů). \\
-\texttt{binom.cdf(k, n, p)} & \texttt{binom.cdf(2, n=10, p=0.5)} & \textbf{Pravděpodobnost NEJVÝŠE}: Šance, že úspěchů bude $0$ až $k$ (včetně). \\
-\texttt{poisson.pmf(k, mu)} & \texttt{poisson.pmf(3, mu=2)} & \textbf{Počet událostí}: Pravděpodobnost, že nastanou přesně 3 události, když průměr je 2. \\
-\texttt{hypergeom.pmf(k, M, n, N)} & \texttt{hypergeom.pmf(k=0, M=200, n=10, N=5)} & \textbf{Výběr bez vracení}: Šance na $k$ zmetků ve výběru $N$ z populace $M$, kde je $n$ zmetků. \\
-\texttt{t.pdf(x, df)} & \texttt{t.pdf(x, df=15)} & \textbf{Studentovo t-rozdělení}: Hustota pravděpodobnosti. Používá se pro malé výběry ($n < 30$) s neznámým rozptylem. \\
+from scipy.stats import norm, binom, poisson, hypergeom, t
+\end{lstlisting}
 
+\subsubsection*{Normální rozdělení (\texttt{norm})}
+Spojité rozdělení pro modelování např. času, délky či chyby měření.\\
+\\
+\textbf{Parametry:} \texttt{x} = zkoumaná hodnota (hranice), \texttt{mu} (\texttt{loc}) = střední hodnota, \texttt{sigma} (\texttt{scale}) = směrodatná odchylka, \texttt{q} = zadaná pravděpodobnost (pro hledání kvantilu).\\
+\begin{funkcedict}
+\texttt{norm.cdf(x, mu, sigma)} & \texttt{norm.cdf(16, loc=20, scale=4)} & \texttt{MÉNĚ NEŽ}: Šance, že hodnota bude maximálně $x$. \\
+\texttt{norm.sf(x, mu, sigma)} & \texttt{norm.sf(20, loc=20, scale=4)} & \texttt{VÍCE NEŽ}: Ekvivalent \texttt{1 - cdf}. Šance, že hodnota překročí $x$. \\
+\texttt{norm.cdf(b) - norm.cdf(a)} & \texttt{norm.cdf(28, 20, 4) - norm.cdf(12, 20, 4)} & \texttt{MEZI}: Šance, že se hodnota trefí do intervalu $(a, b)$. \\
+\texttt{norm.ppf(q, mu, sigma)} & \texttt{norm.ppf(0.4, loc=20, scale=4)} & \texttt{Hledání kvantilu (bodu $x$)}: Najde hodnotu $x$, pro kterou platí, že šance na výsledek menší než $x$ je $q$. \\
+\end{funkcedict}
+
+\subsubsection*{Binomické rozdělení (\texttt{binom})}
+Diskrétní rozdělení. Počet úspěchů v pevně daném počtu nezávislých pokusů (např. hody kostkou).\\
+\textbf{Parametry:} \texttt{k} = zkoumaný počet úspěchů, \texttt{n} = celkový počet pokusů, \texttt{p} = pravděpodobnost úspěchu v jednom pokusu.\\
+\begin{funkcedict}
+\texttt{binom.pmf(k, n, p)} & \texttt{binom.pmf(4, n=10, p=1/6)} & \texttt{Pravděpodobnost PŘESNĚ}: Šance, že úspěch nastane přesně $k$-krát. \\
+\texttt{binom.cdf(k, n, p)} & \texttt{binom.cdf(2, n=10, p=1/6)} & \texttt{Pravděpodobnost NEJVÝŠE}: Šance, že úspěchů bude $0$ až $k$ (včetně). \\
+\texttt{1 - binom.cdf(k, n, p)} & \texttt{1 - binom.cdf(2, n=10, p=1/6)} & \texttt{Pravděpodobnost VÍCE NEŽ}: Šance, že úspěchů bude striktně více než $k$. \\
+\end{funkcedict}
+
+\subsubsection*{Poissonovo rozdělení (\texttt{poisson})}
+Diskrétní rozdělení. Počet výskytů události za určitou jednotku času nebo prostoru (např. překlepy na stránce), když známe průměr.\\
+\textbf{Parametry:} \texttt{k} = zkoumaný počet událostí, \texttt{mu} = průměrný počet událostí ($\lambda$).\\
+\begin{funkcedict}
+\texttt{poisson.pmf(k, mu)} & \texttt{poisson.pmf(2, mu=0.4)} & \texttt{Pravděpodobnost PŘESNĚ}: Šance, že nastanou přesně $k$ události při průměru $\mu$. \\
+\texttt{poisson.cdf(k, mu)} & \texttt{poisson.cdf(2, mu=0.4)} & \texttt{Pravděpodobnost NEJVÝŠE}: Šance, že událostí bude $0$ až $k$ (včetně). \\
+\texttt{1 - poisson.cdf(k, mu)} & \texttt{1 - poisson.cdf(2, mu=0.4)} & \texttt{Pravděpodobnost VÍCE NEŽ}: Šance na více než $k$ událostí (doplněk k cdf). \\
+\end{funkcedict}
+
+\subsubsection*{Hypergeometrické rozdělení (\texttt{hypergeom})}
+Diskrétní rozdělení. Výběr \texttt{bez vracení} z konečné populace (např. namátková kontrola zmetků v zásilce).\\
+\textbf{Parametry:} \texttt{k} = počet hledaných prvků (zmetků) ve výběru, \texttt{M} = celková velikost populace, \texttt{n} = celkový počet hledaných prvků (zmetků) v populaci, \texttt{N} = velikost výběru.\\
+\begin{funkcedict}
+\texttt{hypergeom.pmf(k, M, n, N)} & \texttt{hypergeom.pmf(k=0, M=200, n=10, N=5)} & \texttt{Pravděpodobnost PŘESNĚ}: Šance na přesně $k$ zmetků ve výběru $N$ z populace $M$, ve které je celkem $n$ zmetků. \\
+\end{funkcedict}
+
+\subsubsection*{Studentovo t-rozdělení (\texttt{t})}
+Spojité rozdělení. Používá se pro konstrukci intervalů spolehlivosti a testování (typicky pro výběry, kde neznáme rozptyl populace).\\
+\begin{funkcedict}
+\texttt{t.pdf(x, df)} & \texttt{t.pdf(x, df=15)} & \texttt{Hustota pravděpodobnosti}: Hodnota křivky pro bod $x$ při stupních volnosti $df$. \\
+\texttt{t.ppf(q, df)} & \texttt{t.ppf(1 - 0.05/2, df=19)} & \texttt{Kritická hodnota}: Kvantil pro t-rozdělení (např. pro výpočet mezí intervalu spolehlivosti). \\
 \end{funkcedict}
 
 
-\subsection{Testování hypotéz v Pythonu}
+\subsection{Testování hypotéz v Pythonu (SciPy)}
 \begin{funkcedict}
 \texttt{stats.ttest\_1samp( x, m)} & \texttt{stats.ttest\_1samp(x, popmean=$\mu_0$)} & Jednovýběrový t-test střední hodnoty. Vrací testovou statistiku a p-hodnotu. \\
 \texttt{stats.f\_oneway( *args)} & \texttt{stats.f\_oneway(A, B, C)} & Jednofaktorová ANOVA pro porovnání průměrů ve třech a více skupinách. \\
