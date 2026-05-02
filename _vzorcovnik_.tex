@@ -1692,6 +1692,7 @@ Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky c
 \texttt{plt.legend()} & \texttt{plt.legend(loc='upper right')} & Zobrazí legendu (nutný parametr \texttt{label} u dat). \\
 \texttt{plt.savefig()} & \texttt{plt.savefig("graf.pdf")} & Uloží graf na disk. \\
 \end{funkcedict}
+
 \subsection{Náhodné veličiny a rozdělení}
 \texttt{Importy:}
 \begin{lstlisting}
@@ -1699,19 +1700,25 @@ from scipy.stats import norm, binom, poisson, hypergeom, t
 \end{lstlisting}
 
 \subsubsection*{Normální rozdělení (\texttt{norm})}
-Spojité rozdělení pro modelování např. času, délky či chyby měření.\\
-\\
-\textbf{Parametry:} \texttt{x} = zkoumaná hodnota (hranice), \texttt{mu} (\texttt{loc}) = střední hodnota, \texttt{sigma} (\texttt{scale}) = směrodatná odchylka, \texttt{q} = zadaná pravděpodobnost (pro hledání kvantilu).\\
+\begin{itemize}[label={}, leftmargin=1.5em, nosep]
+    \item Spojité rozdělení pro modelování např. času, délky či chyby měření.
+    \item \textbf{Parametry:} \texttt{x} = zkoumaná hodnota (hranice), \texttt{mu} (\texttt{loc}) = střední hodnota, \texttt{sigma} (\texttt{scale}) = směrodatná odchylka, \texttt{q} = zadaná pravděpodobnost (pro hledání kvantilu).
+\end{itemize}
+
 \begin{funkcedict}
 \texttt{norm.cdf(x, mu, sigma)} & \texttt{norm.cdf(16, loc=20, scale=4)} & \texttt{MÉNĚ NEŽ}: Šance, že hodnota bude maximálně $x$. \\
 \texttt{norm.sf(x, mu, sigma)} & \texttt{norm.sf(20, loc=20, scale=4)} & \texttt{VÍCE NEŽ}: Ekvivalent \texttt{1 - cdf}. Šance, že hodnota překročí $x$. \\
 \texttt{norm.cdf(b) - norm.cdf(a)} & \texttt{norm.cdf(28, 20, 4) - norm.cdf(12, 20, 4)} & \texttt{MEZI}: Šance, že se hodnota trefí do intervalu $(a, b)$. \\
-\texttt{norm.ppf(q, mu, sigma)} & \texttt{norm.ppf(0.4, loc=20, scale=4)} & \texttt{Hledání kvantilu (bodu $x$)}: Najde hodnotu $x$, pro kterou platí, že šance na výsledek menší než $x$ je $q$. \\
+\texttt{norm.ppf(q, mu, sigma)} & \texttt{norm.ppf(0.4, loc=20, scale=4)} & \texttt{Hledání kvantilu}: Najde hodnotu $x$, pro kterou platí $P(X < x) = q$. \\
 \end{funkcedict}
 
 \subsubsection*{Binomické rozdělení (\texttt{binom})}
-Diskrétní rozdělení. Počet úspěchů v pevně daném počtu nezávislých pokusů (např. hody kostkou).\\
-\textbf{Parametry:} \texttt{k} = zkoumaný počet úspěchů, \texttt{n} = celkový počet pokusů, \texttt{p} = pravděpodobnost úspěchu v jednom pokusu.\\
+\begin{itemize}[label={}, leftmargin=1.5em, nosep]
+    \item Diskrétní rozdělení. Počet úspěchů v pevně daném počtu nezávislých pokusů.
+    \item \textbf{Aproximace:} Pokud je počet pokusů $n \ge 30$ a pravděpodobnost úspěchu $p \le 0.05$, blíží se Poissonovu rozdělení.
+    \item \textbf{Parametry:} \texttt{k} = zkoumaný počet úspěchů, \texttt{n} = celkový počet pokusů, \texttt{p} = pravděpodobnost úspěchu.
+\end{itemize}
+
 \begin{funkcedict}
 \texttt{binom.pmf(k, n, p)} & \texttt{binom.pmf(4, n=10, p=1/6)} & \texttt{Pravděpodobnost PŘESNĚ}: Šance, že úspěch nastane přesně $k$-krát. \\
 \texttt{binom.cdf(k, n, p)} & \texttt{binom.cdf(2, n=10, p=1/6)} & \texttt{Pravděpodobnost NEJVÝŠE}: Šance, že úspěchů bude $0$ až $k$ (včetně). \\
@@ -1719,42 +1726,101 @@ Diskrétní rozdělení. Počet úspěchů v pevně daném počtu nezávislých 
 \end{funkcedict}
 
 \subsubsection*{Poissonovo rozdělení (\texttt{poisson})}
-Diskrétní rozdělení. Počet výskytů události za určitou jednotku času nebo prostoru (např. překlepy na stránce), když známe průměr.\\
-\textbf{Parametry:} \texttt{k} = zkoumaný počet událostí, \texttt{mu} = průměrný počet událostí ($\lambda$).\\
+\begin{itemize}[label={}, leftmargin=1.5em, nosep]
+    \item Diskrétní rozdělení. Počet výskytů události za jednotku času nebo prostoru, když známe průměr.
+    \item \textbf{Parametry:} \texttt{k} = zkoumaný počet událostí, \texttt{mu} = průměrný počet událostí ($\lambda$).
+\end{itemize}
+
 \begin{funkcedict}
 \texttt{poisson.pmf(k, mu)} & \texttt{poisson.pmf(2, mu=0.4)} & \texttt{Pravděpodobnost PŘESNĚ}: Šance, že nastanou přesně $k$ události při průměru $\mu$. \\
 \texttt{poisson.cdf(k, mu)} & \texttt{poisson.cdf(2, mu=0.4)} & \texttt{Pravděpodobnost NEJVÝŠE}: Šance, že událostí bude $0$ až $k$ (včetně). \\
-\texttt{1 - poisson.cdf(k, mu)} & \texttt{1 - poisson.cdf(2, mu=0.4)} & \texttt{Pravděpodobnost VÍCE NEŽ}: Šance na více než $k$ událostí (doplněk k cdf). \\
+\texttt{1 - poisson.cdf(k, mu)} & \texttt{1 - poisson.cdf(2, mu=0.4)} & \texttt{Pravděpodobnost VÍCE NEŽ}: Šance na více než $k$ událostí. \\
 \end{funkcedict}
 
 \subsubsection*{Hypergeometrické rozdělení (\texttt{hypergeom})}
-Diskrétní rozdělení. Výběr \texttt{bez vracení} z konečné populace (např. namátková kontrola zmetků v zásilce).\\
-\textbf{Parametry:} \texttt{k} = počet hledaných prvků (zmetků) ve výběru, \texttt{M} = celková velikost populace, \texttt{n} = celkový počet hledaných prvků (zmetků) v populaci, \texttt{N} = velikost výběru.\\
+\begin{itemize}[label={}, leftmargin=1.5em, nosep]
+    \item Diskrétní rozdělení. Výběr \textbf{bez vracení} z konečné populace (např. zmetky v zásilce).
+    \item \textbf{Aproximace:} Pokud $N/M \le 0.05$, výběr bez vracení se chová téměř jako výběr s vracením (Binomické).
+    \item \textbf{Parametry:} \texttt{k} = hledané prvky ve výběru, \texttt{M} = populace, \texttt{n} = hledané prvky v populaci, \texttt{N} = velikost výběru.
+\end{itemize}
+
 \begin{funkcedict}
-\texttt{hypergeom.pmf(k, M, n, N)} & \texttt{hypergeom.pmf(k=0, M=200, n=10, N=5)} & \texttt{Pravděpodobnost PŘESNĚ}: Šance na přesně $k$ zmetků ve výběru $N$ z populace $M$, ve které je celkem $n$ zmetků. \\
+\texttt{hypergeom.pmf(k, M, n, N)} & \texttt{hypergeom.pmf(0, 200, 10, 5)} & \texttt{Pravděpodobnost PŘESNĚ}: Šance na $k$ zmetků ve výběru $N$ z $M$, kde je celkem $n$ zmetků. \\
 \end{funkcedict}
 
 \subsubsection*{Studentovo t-rozdělení (\texttt{t})}
-Spojité rozdělení. Používá se pro konstrukci intervalů spolehlivosti a testování (typicky pro výběry, kde neznáme rozptyl populace).\\
+\begin{itemize}[label={}, leftmargin=1.5em, nosep]
+    \item Spojité rozdělení. Používá se pro konstrukci intervalů spolehlivosti a testování (neznáme-li rozptyl populace).
+    \item \textbf{Parametry:} \texttt{df} = stupně volnosti, \texttt{q} = hladina (pravděpodobnost).
+\end{itemize}
+
 \begin{funkcedict}
-\texttt{t.pdf(x, df)} & \texttt{t.pdf(x, df=15)} & \texttt{Hustota pravděpodobnosti}: Hodnota křivky pro bod $x$ při stupních volnosti $df$. \\
-\texttt{t.ppf(q, df)} & \texttt{t.ppf(1 - 0.05/2, df=19)} & \texttt{Kritická hodnota}: Kvantil pro t-rozdělení (např. pro výpočet mezí intervalu spolehlivosti). \\
+\texttt{t.pdf(x, df)} & \texttt{t.pdf(x, df=15)} & \texttt{Hustota pravděpodobnosti}: Hodnota křivky pro bod $x$. \\
+\texttt{t.ppf(q, df)} & \texttt{t.ppf(1 - 0.05/2, df=19)} & \texttt{Kritická hodnota}: Kvantil pro t-rozdělení (pro meze intervalu spolehlivosti). \\
 \end{funkcedict}
 
 \subsection{Intervaly spolehlivosti a velikost výběru}
+
+% 1. Sekce pro průměr (střední hodnotu)
+\subsubsection*{Interval pro průměr ($\mu$)}
+\textbf{Kdy použít:} Pro odhad průměrné hodnoty měřitelného znaku (váha, čas, délka).
+\begin{itemize}
+    \item \textbf{Normální rozdělení (\texttt{norm}):} Pokud známe rozptyl populace $\sigma^2$ nebo je výběr velký ($n \ge 30$).
+    \item \textbf{Studentovo t-rozdělení (\texttt{t}):} Pokud rozptyl populace neznáme a výběr je malý ($n < 30$).
+    \item \textbf{Typy kvantilů:} Pro \textbf{oboustranný} interval používáme $1 - \alpha/2$, pro \textbf{jednostranný} (jen horní nebo dolní mez) používáme $1 - \alpha$.
+\end{itemize}
+
+\textbf{Parametry:} \texttt{x\_bar} (výběrový průměr), \texttt{s} (výběrová směr. odchylka), \texttt{n} (rozsah výběru), \texttt{alpha} ($\alpha$, hladina významnosti).
+
 \begin{funkcedict}
-\texttt{Kritická hodnota Z} & \texttt{z\_crit = norm.ppf(1 - 0.05 / 2)} & Výpočet kvantilu pro oboustranný interval. Pro 95\% spolehlivost je $\alpha = 0.05$. Pro 99\% je $\alpha = 0.01$. \\
-\texttt{Mezní chyba odhadu} & \texttt{err = z\_crit * np.sqrt(p * (1-p) / n)} & Výpočet maximální odchylky odhadu proporce $p$ pro vzorek velikosti $n$. \\
-\texttt{Meze intervalu} & \texttt{lower = p - err} \newline \texttt{upper = p + err} & Skutečná hodnota leží s danou pravděpodobností v intervalu \texttt{(lower, upper)}. \\
-\texttt{Potřebná velikost} & \texttt{n = math.ceil((z\_crit * np.sqrt(p * (1-p)) / delta)**2)} & Výpočet velikosti výběru $n$, aby mezní chyba nepřesáhla limit $\Delta$ (\texttt{delta}). \\
+\texttt{Kritická hodnota} & \texttt{crit = t.ppf(1 - alpha/2} & Kvantil pro t-interval (neznámé $\sigma$). Pro velké $n$ lze nahradit \texttt{norm.ppf}. \\
+\texttt{Mezní chyba (Mean)} & \texttt{err = crit * (s / np.sqrt(n))} & Výpočet odchylky pro průměr. \texttt{s} je výběrová směrodatná odchylka. \\
+\texttt{Meze intervalu} & \texttt{lower, upper = p - err, p + err} & Skutečný parametr leží v intervalu s pravděpodobností $1 - \alpha$. \\
 \end{funkcedict}
 
-\subsection{Testování hypotéz v Pythonu (SciPy)}
+\vspace{3mm}
+
+% 2. Sekce pro podíl (relativní četnost)
+\subsubsection*{Interval pro podíl ($\pi$)}
+\textbf{Kdy použít:} Pro odhad procentuálního zastoupení (např. podíl zmetků, preference voličů).
+\begin{itemize}
+    \item Vždy využíváme \textbf{normální rozdělení} (Z-kvantil).
+    \item \textbf{Typy kvantilů:} Obdobně jako u průměru platí $1 - \alpha/2$ pro oboustranný a $1 - \alpha$ pro jednostranný odhad.
+\end{itemize}
+
+\textbf{Parametry:} \texttt{p} (výběrová relativní četnost), \texttt{n} (celkový počet testovaných jednotek).
+
 \begin{funkcedict}
-\texttt{stats.ttest\_1samp( x, m)} & \texttt{stats.ttest\_1samp(x, popmean=$\mu_0$)} & Jednovýběrový t-test střední hodnoty. Vrací testovou statistiku a p-hodnotu. \\
-\texttt{stats.f\_oneway( *args)} & \texttt{stats.f\_oneway(A, B, C)} & Jednofaktorová ANOVA pro porovnání průměrů ve třech a více skupinách. \\
-\texttt{stats.chi2 \_contingency} & \texttt{stats.chi2\_contingency(obs, correction=False)} & Chí-kvadrát test nezávislosti. \texttt{obs} představuje kontingenční tabulku. \\
-\texttt{stats.chisquare( obs, exp)} & \texttt{stats.chisquare(f\_obs=poz, f\_exp=ocek)} & Chí-kvadrát test dobré shody. Porovnává zjištěné četnosti s očekávanými. \\
+\texttt{Kritická hodnota} & \texttt{z\_crit = norm.ppf(1 - alpha / 2)} & Pro podíl se vždy používá normální rozdělení (Z-kvantil). \\
+\texttt{Mezní chyba (Prop)} & \texttt{err = z\_crit * np.sqrt(p * (1-p) / n)} & Výpočet odchylky pro proporci $p$. \\
+\texttt{Meze intervalu} & \texttt{lower, upper = p - err, p + err} & Skutečný parametr leží v intervalu s pravděpodobností $1 - \alpha$. \\
+\end{funkcedict}
+
+\vspace{3mm}
+
+% 3. Výpočet potřebného rozsahu výběru
+\subsubsection*{Potřebná velikost výběru ($n$)}
+\textbf{Kdy použít:} Hledáme, kolik jednotek musíme vybrat ($n$), aby se náš odhad nemýlil o více než stanovenou chybu $\Delta$ (\texttt{delta}).
+\begin{itemize}
+    \item \textbf{Zaokrouhlování:} Protože $n$ musí být celé číslo, výsledek se \textbf{vždy zaokrouhluje nahoru} (funkce \texttt{math.ceil}), jinak by chyba byla větší než povolená.
+\end{itemize}
+
+\textbf{Parametry:} \texttt{delta} ($\Delta$, požadovaná přesnost), \texttt{sigma} (předpokládaná směr. odchylka).
+
+\begin{funkcedict}
+\texttt{Minimální n (Mean)} & \texttt{n = math.ceil((z\_crit * sigma / delta)**2)} & Pro průměr. $\Delta$ je cílová přesnost. Výsledek \textbf{vždy} zaokrouhli nahoru. \\
+\texttt{Minimální n (Prop)} & \texttt{n = math.ceil(p*(1-p) * (z\_crit/delta)**2)} & Pro podíl. Používá se pro plánování reprezentativního výzkumu. \\
+\end{funkcedict}
+
+\subsection{Testování hypotéz}
+\begin{itemize}
+    \item \textbf{Oboustranný test:} $H_1: \mu \neq \mu_0$. Zamítáme, pokud statistika $|U| \ge \text{kvantil}(1-\alpha/2)$.
+    \item \textbf{Jednostranný test:} $H_1: \mu > \mu_0$ (pravý) nebo $\mu < \mu_0$ (levý). Zamítáme při překročení kvantilu $(1-\alpha)$.
+\end{itemize}
+
+\begin{funkcedict}
+\texttt{Testová statistika} & \texttt{u = (x\_bar - mu0) / (s / np.sqrt(n))} & Vzorec pro průměr. Porovnáváme naměřený průměr s předpokladem $\mu_0$. \\
+\texttt{p-hodnota (oboustr.)} & \texttt{2 * (1 - norm.cdf(abs(u)))} & Pokud je $p < \alpha$, nulovou hypotézu zamítáme. \\
 \end{funkcedict}
 \end{document}
 
