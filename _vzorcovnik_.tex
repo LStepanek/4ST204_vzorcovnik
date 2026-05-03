@@ -1534,17 +1534,307 @@ kde
 \end{itemize}
 
 %%_____________________________________________________________________________
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Kombinatorika a Metriky}
+%%_____________________________________________________________________________
+\subsection{Kombinatorika}
+Mějme množinu $n$ prvků, ze které vybíráme $k$ prvků.
+\begin{itemize}[noitemsep]
+    \item \textbf{Permutace (Pořadí všech $n$ prvků):}
+        Bez opakování: $P(n) = n!$ \\
+        S opakováním: $P'_{k_1, \dots, k_m}(n) = \frac{n!}{k_1! \cdot \dots \cdot k_m!}$
+    \item \textbf{Variace (Výběr $k$ prvků z $n$, záleží na pořadí):}
+        Bez opakování: $V(k, n) = \frac{n!}{(n-k)!}$ \\
+        S opakováním: $V'(k, n) = n^k$
+    \item \textbf{Kombinace (Výběr $k$ prvků z $n$, nezáleží na pořadí):}
+        Bez opakování: $K(k, n) = \binom{n}{k} = \frac{n!}{k!(n-k)!}$ \\
+        S opakováním: $K'(k, n) = \binom{n+k-1}{k} = \frac{(n+k-1)!}{k!(n-1)!}$
+\end{itemize}
+
+\subsection{$L^p$ Normy (Vzdálenosti a penalizace)}
+Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky chyb a regularizaci.
+\begin{itemize}[noitemsep]
+    \item \textbf{$L^1$ (Manhattan):} $\|x\|_1 = \sum |x_i|$. Využití: Lasso regrese.
+    \item \textbf{$L^2$ (Euklid):} $\|x\|_2 = \sqrt{\sum x_i^2}$. Využití: Ridge regrese (metoda nejmenších čtverců).
+    \item \textbf{$L^\infty$ (Max):} $\|x\|_\infty = \max(|x_i|)$. Reprezentuje nejhorší možnou chybu.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
+\section{Práce s daty v Pythonu (Cheatsheet)}
 
+\subsection{Užitečné knihovny a základy}
+\begin{funkcedict}
+\texttt{import numpy as np} & \texttt{np.array([...])} & Matice, vektory a rychlé matematické operace. \\
+\texttt{import pandas as pd} & \texttt{pd.DataFrame(matice)} & Analýza tabulek a práce s CSV. \\
+\texttt{import matplotlib.pyplot as plt} & \texttt{plt.hist(data)} & Tvorba grafů a vizualizace dat. \\
+\texttt{math.comb(n, k)} & \texttt{math.comb(10, 3)} & Kombinační číslo (výběr $k$ z $n$). \\
+\texttt{List Comprehension} & \texttt{[x**2 for x in range(5)]} & Dynamické generování pole pomocí cyklu. \\
+\end{funkcedict}
+
+\subsection{Práce s poli (Standardní Python)}
+\begin{funkcedict}
+\textbf{List Comprehension} & \texttt{[x**2 for x in range(5)]} & Dynamické generování pole pomocí cyklu. \\
+\texttt{x[start:stop:krok]} & \texttt{pole[1:10:2]} & Výřez (stop je exkluzivní). \texttt{[::-1]} pro otočení. \\
+\texttt{x.copy()} vs \texttt{deepcopy} & \texttt{a = b.copy()} & \texttt{copy} je plytká, \texttt{deepcopy} kopíruje i vnořená pole. \\
+\texttt{x.append(v)} & \texttt{data.append(10)} & Přidání jednoho prvku na konec pole. \\
+\texttt{x.extend(a)} & \texttt{data.extend([1,2,3])} & Přidání více prvků na konec pole. \\
+\end{funkcedict}
+
+\subsection{Základní Python (Built-in \& Math)}
+\begin{funkcedict}
+\texttt{help(funkce)} & \texttt{help(print)} & Dokumentace pro zadanou funkci. \\
+\texttt{range(start, stop)} & \texttt{list(range(0, 5))} & Vygeneruje sekvenci \texttt{[0, 1, 2, 3, 4]}. \\
+\texttt{math.log(x, b)} & \texttt{math.log(8, 2)} & Logaritmus čísla $x$ o základu $b$. \\
+\texttt{math.sqrt(x)} & \texttt{math.sqrt(16)} & Druhá odmocnina čísla. \\
+\texttt{math.ceil / floor} & \texttt{math.ceil(2.1)} & Zaokrouhlení nahoru (3) / dolů (2). \\
+\texttt{math.trunc(x)} & \texttt{math.trunc(2.9)} & Odříznutí desetinné části (2). \\
+\texttt{math.comb(n, k)} & \texttt{math.comb(10, 3)} & Kombinační číslo (počet kombinací $k$ prvků z $n$). \\
+\texttt{def function(...):} & \texttt{def funkce(x, y, z):} & Definice vlastní funkce s parametry. \\
+\end{funkcedict}
+
+\subsection{Statistika a Matice (Knihovna NumPy a jiné)}
+\begin{funkcedict}
+\texttt{np.sum(x)} & \texttt{np.sum(data, axis=0)} & Součet všech prvků v poli (nebo podél zvolené osy). \\
+\texttt{np.mean(x)} & \texttt{np.mean(data)} & Průměr všech prvků v poli. \\
+\texttt{np.prod(x)} & \texttt{np.prod(data)} & Součin všech prvků v poli. \\
+\texttt{np.sqrt(x)} & \texttt{np.sqrt(data)} & Druhá odmocnina z každého prvku v poli. \\
+\texttt{np.random.rand(n)} & \texttt{np.random.rand(100)} & Generování pole $n$ náhodných čísel z rovnoměrného rozdělení na $[0, 1)$. \\
+\texttt{np.random.uniform(a, b, n)} & \texttt{np.random.uniform(10, 50, 100)} & Generuje $n$ náhodných \textbf{desetinných} čísel v rozsahu $[a, b)$. \\
+\texttt{np.quantile(x, q)} & \texttt{np.quantile(x, 0.75, method='midpoint')} & Výpočet kvantilu ($q \in [0, 1]$). \\
+\texttt{Modus} & \texttt{statistics.multimode(data)} & \texttt{Vrací modus z pole (i více prvků)} \\
+\texttt{np.log10(x)} & \texttt{np.log10(data)} & Dekadický logaritmus (základ 10). Často se používá pro normalizaci dat. \\
+\texttt{np.linalg.norm(x, p)} & \texttt{np.linalg.norm(x, ord=2)} & Výpočet $L^1, L^2$ nebo $L^\infty$ (\texttt{np.inf}) normy. \\
+\texttt{np.insert / np.delete} & \texttt{np.insert(A, 1, [..], axis=0)} & Vloží/Smaže řádek (\texttt{axis=0}) nebo sloupec (\texttt{axis=1}). \\
+\texttt{stats.gmean(x)} & \texttt{stats.gmean(x)} & Geometrický průměr (knihovna Scipy). \\
+\texttt{stats.hmean(x)} & \texttt{stats.hmean(x, weights=[...])} & Harmonický průměr (knihovna Scipy). \\
+\texttt{np.var(x, ddof=0)} & \texttt{np.var(data, ddof=0)} & \textbf{Klasický rozptyl} $s_x^2$ (děleno $n$). \\
+\texttt{np.var(x, ddof=1)} & \texttt{np.var(data, ddof=1)} & \textbf{Výběrový rozptyl} $S^2$ (děleno $n-1$). \\
+\texttt{np.std(x, ddof=0)} & \texttt{np.std(data, ddof=0)} & Klasická směrodatná odchylka $s_x$. \\
+\texttt{np.std(x, ddof=1)} & \texttt{np.std(data, ddof=1)} & Výběrová směrodatná odchylka $S$. \\
+\texttt{np.ptp(x)} & \texttt{np.ptp(data)} & \textbf{Variační rozpětí} $R = x_{max} - x_{min}$. \\
+\texttt{v\_x = std / mean} & \texttt{np.std(x) / np.mean(x)} & \textbf{Variační koeficient} $v_x$ (relativní variabilita). \\
+\texttt{np.where(cond, x, y)} & \texttt{np.where(df['am'] == 0, 'aut', 'man')} & \textbf{Podmíněný sloupec}: Pokud platí \texttt{cond}, vlož \texttt{x}, jinak \texttt{y} (jako IF v Excelu). \\
+\end{funkcedict}
+
+\subsection{Pandas: Analýza dat}
+\begin{funkcedict}
+\texttt{pd.read\_csv(file)} & \texttt{pd.read\_csv('data.csv')} & Načte data z CSV souboru a vytvoří DataFrame. \\
+\texttt{df.describe()} & \texttt{df.describe()} & Souhrnné statistiky (průměr, std, kvartily, atd.). \\
+\texttt{df[columns]} & \texttt{df[["A", "B", "C"]]} & Výběr určitých sloupců. \\
+\texttt{Filtrování} & \texttt{df[df['Věk'] >= 18]} & Vybere pouze řádky splňující danou podmínku. \\
+\texttt{df['A']. isin([list])} & \texttt{df[df['mesto'].isin(['Praha', 'Brno'])]} & Vybere řádky, kde hodnota sloupce odpovídá prvkům v seznamu. \\
+\texttt{df.loc} vs \texttt{df.iloc} & \texttt{df.loc[0, 'Sloupec']} & Výběr dat podle \textbf{názvů} (\texttt{loc}) vs. \textbf{pozice} (\texttt{iloc}). \\
+\texttt{df.isna().sum()} & \texttt{df.isna().sum()} & Počet chybějících (null) hodnot v tabulce. \\
+\texttt{df.value\_counts()} & \texttt{df['A'].value\_counts()} & Tabulka četností pro kategorická data. \\
+\texttt{df.groupby('A')} & \texttt{df.groupby('A').mean()} & Výpočet statistik podle kategorií ve sloupci 'A'. \\
+\texttt{df.cumsum()} & \texttt{df['cetnost'].cumsum()} & \textbf{Kumulativní součet}: Pro výpočet kumulativních absolutních/relativních četností. \\
+\texttt{pd.crosstab()} & \texttt{pd.crosstab(df['A'], df['B'])} & Kontingenční tabulka četností dvou kategorií. \\
+\texttt{pd.pivot\_table()} & \texttt{df.pivot\_table(values='C', \dots)} & Univerzální pivotní tabulka. \\
+\texttt{df['A'].between(a, b)} & \texttt{df[df['mzda'].between(30000, 50000)]} & Filtrování hodnot v uzavřeném intervalu [a, b]. \\
+\end{funkcedict}
+
+\subsection{Matplotlib a Seaborn: Vizualizace}
+\begin{funkcedict}
+\texttt{df.boxplot()} & \texttt{df.boxplot(column='Y', by='X')} & \textbf{Boxplot (Pandas)}: Rozdělení dat do kvartilů dle skupiny. \\
+\texttt{plt.hist(x)} & \texttt{plt.hist(data, bins=15)} & \textbf{Histogram}: Rozdělení četností. \texttt{bins} určuje intervaly. \\
+\texttt{plt.scatter(x, y)} & \texttt{plt.scatter(x, y, alpha=0.5)} & \textbf{Bodový graf}: Závislost dvou proměnných. \\
+\texttt{plt.title(s)} & \texttt{plt.title("Název", fontsize=16)} & Nastaví hlavní nadpis grafu. \\
+\texttt{plt.xlabel / ylabel} & \texttt{plt.xlabel("Čas [s]")} & Nastaví popisky os $x$ a $y$. \\
+\texttt{plt.legend()} & \texttt{plt.legend(loc='upper right')} & Zobrazí legendu (nutný parametr \texttt{label} u dat). \\
+\texttt{plt.savefig()} & \texttt{plt.savefig("graf.pdf")} & Uloží graf na disk. \\
+\end{funkcedict}
+
+\subsection{Náhodné veličiny a rozdělení}
+\texttt{Importy:}
+\begin{lstlisting}
+from scipy.stats import norm, binom, poisson, hypergeom, t
+\end{lstlisting}
+
+\subsubsection*{Normální rozdělení (\texttt{norm})}
+\begin{itemize}[label={}, leftmargin=1.5em, nosep]
+    \item Spojité rozdělení pro modelování např. času, délky či chyby měření.
+    \item \textbf{Parametry:} \texttt{x} = zkoumaná hodnota (hranice), \texttt{mu} (\texttt{loc}) = střední hodnota, \texttt{sigma} (\texttt{scale}) = směrodatná odchylka, \texttt{q} = zadaná pravděpodobnost (pro hledání kvantilu).
+\end{itemize}
+
+\begin{funkcedict}
+\texttt{norm.cdf(x, mu, sigma)} & \texttt{norm.cdf(16, loc=20, scale=4)} & \texttt{MÉNĚ NEŽ}: Šance, že hodnota bude maximálně $x$. \\
+\texttt{norm.sf(x, mu, sigma)} & \texttt{norm.sf(20, loc=20, scale=4)} & \texttt{VÍCE NEŽ}: Ekvivalent \texttt{1 - cdf}. Šance, že hodnota překročí $x$. \\
+\texttt{norm.cdf(b) - norm.cdf(a)} & \texttt{norm.cdf(28, 20, 4) - norm.cdf(12, 20, 4)} & \texttt{MEZI}: Šance, že se hodnota trefí do intervalu $(a, b)$. \\
+\texttt{norm.ppf(q, mu, sigma)} & \texttt{norm.ppf(0.4, loc=20, scale=4)} & \texttt{Hledání kvantilu}: Najde hodnotu $x$, pro kterou platí $P(X < x) = q$. \\
+\end{funkcedict}
+
+\subsubsection*{Binomické rozdělení (\texttt{binom})}
+\begin{itemize}[label={}, leftmargin=1.5em, nosep]
+    \item Diskrétní rozdělení. Počet úspěchů v pevně daném počtu nezávislých pokusů.
+    \item \textbf{Aproximace:} Pokud je počet pokusů $n \ge 30$ a pravděpodobnost úspěchu $p \le 0.05$, blíží se Poissonovu rozdělení.
+    \item \textbf{Parametry:} \texttt{k} = zkoumaný počet úspěchů, \texttt{n} = celkový počet pokusů, \texttt{p} = pravděpodobnost úspěchu.
+\end{itemize}
+
+\begin{funkcedict}
+\texttt{binom.pmf(k, n, p)} & \texttt{binom.pmf(4, n=10, p=1/6)} & \texttt{Pravděpodobnost PŘESNĚ}: Šance, že úspěch nastane přesně $k$-krát. \\
+\texttt{binom.cdf(k, n, p)} & \texttt{binom.cdf(2, n=10, p=1/6)} & \texttt{Pravděpodobnost NEJVÝŠE}: Šance, že úspěchů bude $0$ až $k$ (včetně). \\
+\texttt{1 - binom.cdf(k, n, p)} & \texttt{1 - binom.cdf(2, n=10, p=1/6)} & \texttt{Pravděpodobnost VÍCE NEŽ}: Šance, že úspěchů bude striktně více než $k$. \\
+\end{funkcedict}
+
+\subsubsection*{Poissonovo rozdělení (\texttt{poisson})}
+\begin{itemize}[label={}, leftmargin=1.5em, nosep]
+    \item Diskrétní rozdělení. Počet výskytů události za jednotku času nebo prostoru, když známe průměr.
+    \item \textbf{Parametry:} \texttt{k} = zkoumaný počet událostí, \texttt{mu} = průměrný počet událostí ($\lambda$).
+\end{itemize}
+
+\begin{funkcedict}
+\texttt{poisson.pmf(k, mu)} & \texttt{poisson.pmf(2, mu=0.4)} & \texttt{Pravděpodobnost PŘESNĚ}: Šance, že nastanou přesně $k$ události při průměru $\mu$. \\
+\texttt{poisson.cdf(k, mu)} & \texttt{poisson.cdf(2, mu=0.4)} & \texttt{Pravděpodobnost NEJVÝŠE}: Šance, že událostí bude $0$ až $k$ (včetně). \\
+\texttt{1 - poisson.cdf(k, mu)} & \texttt{1 - poisson.cdf(2, mu=0.4)} & \texttt{Pravděpodobnost VÍCE NEŽ}: Šance na více než $k$ událostí. \\
+\end{funkcedict}
+
+\subsubsection*{Hypergeometrické rozdělení (\texttt{hypergeom})}
+\begin{itemize}[label={}, leftmargin=1.5em, nosep]
+    \item Diskrétní rozdělení. Výběr \textbf{bez vracení} z konečné populace (např. zmetky v zásilce).
+    \item \textbf{Aproximace:} Pokud $N/M \le 0.05$, výběr bez vracení se chová téměř jako výběr s vracením (Binomické).
+    \item \textbf{Parametry:} \texttt{k} = hledané prvky ve výběru, \texttt{M} = populace, \texttt{n} = hledané prvky v populaci, \texttt{N} = velikost výběru.
+\end{itemize}
+
+\begin{funkcedict}
+\texttt{hypergeom.pmf(k, M, n, N)} & \texttt{hypergeom.pmf(0, 200, 10, 5)} & \texttt{Pravděpodobnost PŘESNĚ}: Šance na $k$ zmetků ve výběru $N$ z $M$, kde je celkem $n$ zmetků. \\
+\end{funkcedict}
+
+\subsubsection*{Studentovo t-rozdělení (\texttt{t})}
+\begin{itemize}[label={}, leftmargin=1.5em, nosep]
+    \item Spojité rozdělení. Používá se pro konstrukci intervalů spolehlivosti a testování (neznáme-li rozptyl populace).
+    \item \textbf{Parametry:} \texttt{df} = stupně volnosti, \texttt{q} = hladina (pravděpodobnost).
+\end{itemize}
+
+\begin{funkcedict}
+\texttt{t.pdf(x, df)} & \texttt{t.pdf(x, df=15)} & \texttt{Hustota pravděpodobnosti}: Hodnota křivky pro bod $x$. \\
+\texttt{t.ppf(q, df)} & \texttt{t.ppf(1 - 0.05/2, df=19)} & \texttt{Kritická hodnota}: Kvantil pro t-rozdělení (pro meze intervalu spolehlivosti). \\
+\end{funkcedict}
+
+\subsection{Intervaly spolehlivosti a velikost výběru}
+
+% 1. Sekce pro průměr (střední hodnotu)
+\subsubsection*{Interval pro průměr ($\mu$)}
+\textbf{Kdy použít:} Pro odhad průměrné hodnoty měřitelného znaku (váha, čas, délka).
+\begin{itemize}
+    \item \textbf{Normální rozdělení (\texttt{norm}):} Pokud známe rozptyl populace $\sigma^2$ nebo je výběr velký ($n \ge 30$).
+    \item \textbf{Studentovo t-rozdělení (\texttt{t}):} Pokud rozptyl populace neznáme a výběr je malý ($n < 30$).
+    \item \textbf{Typy kvantilů:} Pro \textbf{oboustranný} interval používáme $1 - \alpha/2$, pro \textbf{jednostranný} (jen horní nebo dolní mez) používáme $1 - \alpha$.
+\end{itemize}
+
+\textbf{Parametry:} \texttt{x\_bar} (výběrový průměr), \texttt{s} (výběrová směr. odchylka), \texttt{n} (rozsah výběru), \texttt{alpha} ($\alpha$, hladina významnosti).
+
+\begin{funkcedict}
+\texttt{Kritická hodnota} & \texttt{crit = t.ppf(1 - alpha/2, df=n-1)} & Kvantil pro t-interval (neznámé $\sigma$). Pro velké $n$ lze nahradit \texttt{norm.ppf}. \\
+\texttt{Mezní chyba (Mean)} & \texttt{err = crit * (s / np.sqrt(n))} & Výpočet odchylky pro průměr. \texttt{s} je výběrová směrodatná odchylka. \\
+\texttt{Meze intervalu} & \texttt{lower, upper = p - err, p + err} & Skutečný parametr leží v intervalu s pravděpodobností $1 - \alpha$. \\
+\end{funkcedict}
+
+\vspace{3mm}
+
+% 2. Sekce pro podíl (relativní četnost)
+\subsubsection*{Interval pro podíl ($\pi$)}
+\textbf{Kdy použít:} Pro odhad procentuálního zastoupení (např. podíl zmetků, preference voličů).
+\begin{itemize}
+    \item Vždy využíváme \textbf{normální rozdělení} (Z-kvantil).
+    \item \textbf{Typy kvantilů:} Obdobně jako u průměru platí $1 - \alpha/2$ pro oboustranný a $1 - \alpha$ pro jednostranný odhad.
+\end{itemize}
+
+\textbf{Parametry:} \texttt{p} (výběrová relativní četnost), \texttt{n} (celkový počet testovaných jednotek).
+
+\begin{funkcedict}
+\texttt{Kritická hodnota} & \texttt{z\_crit = norm.ppf(1 - alpha / 2)} & Pro podíl se vždy používá normální rozdělení (Z-kvantil). \\
+\texttt{Mezní chyba (Prop)} & \texttt{err = z\_crit * np.sqrt(p * (1-p) / n)} & Výpočet odchylky pro proporci $p$. \\
+\texttt{Meze intervalu} & \texttt{lower, upper = p - err, p + err} & Skutečný parametr leží v intervalu s pravděpodobností $1 - \alpha$. \\
+\end{funkcedict}
+
+\vspace{3mm}
+
+% 3. Výpočet potřebného rozsahu výběru
+\subsubsection*{Potřebná velikost výběru ($n$)}
+\textbf{Kdy použít:} Hledáme, kolik jednotek musíme vybrat ($n$), aby se náš odhad nemýlil o více než stanovenou chybu $\Delta$ (\texttt{delta}).
+\begin{itemize}
+    \item \textbf{Zaokrouhlování:} Protože $n$ musí být celé číslo, výsledek se \textbf{vždy zaokrouhluje nahoru} (funkce \texttt{math.ceil}), jinak by chyba byla větší než povolená.
+\end{itemize}
+
+\textbf{Parametry:} \texttt{delta} ($\Delta$, požadovaná přesnost), \texttt{sigma} (předpokládaná směr. odchylka).
+
+\begin{funkcedict}
+\texttt{Minimální n (Mean)} & \texttt{n = math.ceil((z\_crit * sigma / delta)**2)} & Pro průměr. $\Delta$ je cílová přesnost. Výsledek \textbf{vždy} zaokrouhli nahoru. \\
+\texttt{Minimální n (Prop)} & \texttt{n = math.ceil(p*(1-p) * (z\_crit/delta)**2)} & Pro podíl. Používá se pro plánování reprezentativního výzkumu. \\
+\end{funkcedict}
+
+\subsection{Testování hypotéz o průměru ($\mu$)}
+
+\textbf{Volba rozdělení:} Pro $n \ge 30$ využíváme \texttt{norm}, pro $n < 30$ využíváme \texttt{t} s \texttt{df = n-1}. \\
+\textbf{Parametry:} \texttt{mu0} (testovaná hodnota), \texttt{x\_bar} (naměřený průměr), \texttt{s} (odchylka), \texttt{n} (rozsah).
+
+\subsubsection*{1. Výpočet testového kritéria}
+\texttt{u = (x\_bar - mu0) / (s / np.sqrt(n))}
+
+\subsubsection*{2. Vyhodnocení testu ($p$-hodnota nebo kritická hodnota)}
+
+\noindent \begin{tabular}{|l|l|l|}
+\hline
+\textbf{Typ testu} & \textbf{Alternativa $H_1$} & \textbf{Vzorec pro $p$-hodnotu (Python)} \\ \hline
+Levostranný & $E(X) < \mu_0$ & \texttt{p = norm.cdf(u)} \\ \hline
+Pravostranný & $E(X) > \mu_0$ & \texttt{p = 1 - norm.cdf(u)} \\ \hline
+Oboustranný & $E(X) \neq \mu_0$ & \texttt{p = 2 * (1 - norm.cdf(abs(u)))} \\ \hline
+\end{tabular} \vspace{12pt}
+
+\noindent \textbf{Rozhodnutí pomocí $p$-hodnoty:} \vspace{4pt}
+
+\noindent \begin{tabular}{|l|l|}
+\hline
+\textbf{Podmínka} & \textbf{Výsledek testu} \\ \hline
+$p < \alpha$ & \textbf{ZAMÍTÁME $H_0$} (rozdíl je statisticky významný) \\ \hline
+$p \ge \alpha$ & \textbf{NEZAMÍTÁME $H_0$} (rozdíl je pravděpodobně náhodný) \\ \hline
+\end{tabular} \vspace{12pt}
+
+\noindent \textbf{Rozhodnutí pomocí kritické hodnoty ($u_{\text{krit}}$):} \vspace{4pt}\\
+\texttt{u\_krit = norm.ppf(1 - alpha)} \hspace{10pt} (u oboustranného testu \texttt{1 - alpha/2}) \vspace{8pt}
+
+\noindent \begin{tabular}{|l|l|l|}
+\hline
+\textbf{Typ testu} & \textbf{Alternativa $H_1$} & \textbf{Zamítáme $H_0$, pokud platí:} \\ \hline
+Levostranný & $E(X) < \mu_0$ & $u < -u_{\text{krit}}$ \\ \hline
+Pravostranný & $E(X) > \mu_0$ & $u > u_{\text{krit}}$ \\ \hline
+Oboustranný & $E(X) \neq \mu_0$ & $|u| \ge u_{\text{krit}}$ \\ \hline
+\end{tabular} \vspace{8pt}
+
+\noindent \hspace{15pt} \textit{Poznámka: U malého vzorku zaměňujeme \texttt{norm} za \texttt{t} s parametrem \texttt{df=n-1}.}
+
+\subsubsection*{3. Automatické statistické testy (z pole dat)}
+\noindent Využíváme funkce z knihovny \texttt{scipy.stats}, které provádějí kompletní výpočet přímo z naměřených hodnot.
+
+\noindent \textbf{Vstupní parametry:}
+\begin{itemize}
+    \item \texttt{data, A, B, C}: Nezávislé vzorky měření (např. různé skupiny studentů nebo odrůd).
+    \item \texttt{pred, po}: Závislá (párová) měření na stejných objektech (typicky testování „před a po“).
+    \item \texttt{O, E}: Pozorované (\texttt{O}) a očekávané (\texttt{E}) četnosti výskytů.
+    \item \texttt{table}: Kontingenční tabulka četností zadaná jako 2D pole (matice).
+    \item \texttt{x, y}: Dvě sady proměnných pro zjištění síly jejich vzájemné závislosti.
+\end{itemize}
+
+\noindent \begin{funkcedict}
+\texttt{Jednovýběrový t-test} & \texttt{stats.ttest\_1samp(data, popmean=mu0)} & Porovnání průměru vzorku s pevnou hodnotou $\mu_0$. \\
+\texttt{Dvouvýběrový t-test} & \texttt{stats.ttest\_ind(A, B, equal\_var=False)} & Porovnání průměrů dvou nezávislých skupin (Welchův test). \\
+\texttt{Párový t-test} & \texttt{stats.ttest\_rel(po, pred)} & Porovnání stejné skupiny ve dvou různých situacích. \\
+\texttt{ANOVA (Analýza rozptylu)} & \texttt{stats.f\_oneway(A, B, C)} & Testování shody průměrů u tří a více skupin. \\
+\texttt{Chí-kvadrát shoda} & \texttt{stats.chisquare(O, f\_exp=E)} & Test dobré shody (např. spravedlivost kostky nebo náhodnost). \\
+\texttt{Chí-kvadrát nezávislost} & \texttt{stats.chi2\_contingency(table)} & Test závislosti kategoriálních znaků z kontingenční tabulky. \\
+\texttt{Pearsonova korelace} & \texttt{stats.pearsonr(x, y)} & Měření síly lineární závislosti dvou spojitých proměnných. \\
+\texttt{Spearmanova korelace} & \texttt{stats.spearmanr(x, y)} & Měření síly monotónní závislosti (i pro nelineární vztahy). \\
+\end{funkcedict}
+
+\noindent \textbf{Návratové hodnoty a rozhodnutí:}
+\begin{itemize}
+    \item \texttt{res.pvalue}: Klíčová hodnota pro rozhodnutí. Pokud \textbf{$p < \alpha$}, nulovou hypotézu $H_0$ \textbf{zamítáme}.
+    \item \texttt{res.statistic}: Hodnota testového kritéria (čím je vyšší, tím více se data liší od hypotézy).
+    \item \textit{Výjimka:} \texttt{chi2\_contingency} vrací výsledky jako n-tici \texttt{(statistika, p-hodnota, df, expected\_table)}.
+\end{itemize}
 \end{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-
-
