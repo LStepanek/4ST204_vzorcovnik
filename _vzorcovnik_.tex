@@ -1774,22 +1774,35 @@ from scipy.stats import norm, binom, poisson, hypergeom, t
 \subsubsection*{1. Výpočet testového kritéria}
 \texttt{u = (x\_bar - mu0) / (s / np.sqrt(n))}
 
-\subsubsection*{2. Určení p-hodnoty podle směru alternativy $H_1$}
+\subsubsection*{2. Vyhodnocení testu ($p$-hodnota nebo kritická hodnota)}
 
 \noindent \begin{tabular}{|l|l|l|}
 \hline
-\textbf{Typ testu} & \textbf{Alternativa $H_1$} & \textbf{Vzorec v Pythonu (pro velké $n$)} \\ \hline
+\textbf{Typ testu} & \textbf{Alternativa $H_1$} & \textbf{Vzorec pro $p$-hodnotu (Python)} \\ \hline
 Levostranný & $E(X) < \mu_0$ & \texttt{p = norm.cdf(u)} \\ \hline
 Pravostranný & $E(X) > \mu_0$ & \texttt{p = 1 - norm.cdf(u)} \\ \hline
 Oboustranný & $E(X) \neq \mu_0$ & \texttt{p = 2 * (1 - norm.cdf(abs(u)))} \\ \hline
-\end{tabular} \vspace{8pt}
+\end{tabular} \vspace{12pt}
+
+\noindent \textbf{Rozhodnutí pomocí $p$-hodnoty:} \vspace{4pt}
 
 \noindent \begin{tabular}{|l|l|}
 \hline
 \textbf{Podmínka} & \textbf{Výsledek testu} \\ \hline
-$p < \alpha$ & \textbf{ZAMÍTÁME $H_0$} (rozdíl je významný) \\ \hline
-$p \ge \alpha$ & \textbf{NEZAMÍTÁME $H_0$} (rozdíl je náhodný) \\ \hline
-\end{tabular} \\ 
+$p < \alpha$ & \textbf{ZAMÍTÁME $H_0$} (rozdíl je statisticky významný) \\ \hline
+$p \ge \alpha$ & \textbf{NEZAMÍTÁME $H_0$} (rozdíl je pravděpodobně náhodný) \\ \hline
+\end{tabular} \vspace{12pt}
+
+\noindent \textbf{Rozhodnutí pomocí kritické hodnoty ($u_{\text{krit}}$):} \vspace{4pt}\\
+\texttt{u\_krit = norm.ppf(1 - alpha)} \hspace{10pt} (u oboustranného testu \texttt{1 - alpha/2}) \vspace{8pt}
+
+\noindent \begin{tabular}{|l|l|l|}
+\hline
+\textbf{Typ testu} & \textbf{Alternativa $H_1$} & \textbf{Zamítáme $H_0$, pokud platí:} \\ \hline
+Levostranný & $E(X) < \mu_0$ & $u < -u_{\text{krit}}$ \\ \hline
+Pravostranný & $E(X) > \mu_0$ & $u > u_{\text{krit}}$ \\ \hline
+Oboustranný & $E(X) \neq \mu_0$ & $|u| \ge u_{\text{krit}}$ \\ \hline
+\end{tabular} \vspace{8pt}
 
 \noindent \hspace{15pt} \textit{Poznámka: U malého vzorku zaměňujeme \texttt{norm} za \texttt{t} s parametrem \texttt{df=n-1}.}
 
