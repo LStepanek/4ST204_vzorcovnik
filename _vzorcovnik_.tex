@@ -2001,6 +2001,203 @@ ceiling(p*(1-p)*(z_kr/delta)^2)
 & Pro podíl. Pro nejhorší případ $p = 0{,}5$. \\
 \end{funkcedict}
 
+\subsection{Testování hypotéz}
+
+\textbf{Volba rozdělení:} Pro $n \ge 30$ lze použít \texttt{qnorm}/\texttt{pnorm}, pro $n < 30$ nutně \texttt{qt}/\texttt{pt} s \texttt{df = n-1}. \\
+\textbf{Parametry:} \texttt{mu0} (testovaná hodnota), \texttt{xbar} (výběrový průměr), \texttt{s} (výb. sm. odchylka), \texttt{n} (rozsah), \texttt{alpha} ($\alpha$).
+
+\subsubsection*{1. Jednovýběrový t-test (střední hodnota)}
+
+\texttt{T = (xbar - mu0) / (s / sqrt(n))} \quad $\sim t(n-1)$
+
+\vspace{4pt}
+\noindent \begin{tabular}{|l|l|l|}
+\hline
+\textbf{Typ testu} & \textbf{Alternativa $H_1$} & \textbf{p-hodnota v R} \\ \hline
+Levostranný & $\mu < \mu_0$ & \texttt{pt(T, df=n-1)} \\ \hline
+Pravostranný & $\mu > \mu_0$ & \texttt{1 - pt(T, df=n-1)} \\ \hline
+Oboustranný & $\mu \ne \mu_0$ & \texttt{2*(1 - pt(abs(T), df=n-1))} \\ \hline
+\end{tabular} \vspace{8pt}
+
+\begin{funkcedict}
+\texttt{t.test(x, mu=mu0, alternative=...)} &
+\begin{lstlisting}
+t.test(x, mu = 25000,
+       alternative = "less")
+# "greater" / "two.sided"
+\end{lstlisting}
+& Automatický t-test z vektoru dat. \\
+
+\texttt{Ručně} &
+\begin{lstlisting}
+n <- 49; xbar <- 23500
+mu0 <- 25000; s <- 5500
+T <- (xbar - mu0)/(s/sqrt(n))
+p_val <- pt(T, df = n - 1)
+t_kr  <- qt(0.05, df = n - 1)
+\end{lstlisting}
+& Ruční výpočet (jednostranný, levý). \\
+\end{funkcedict}
+
+\subsubsection*{2. Test proporce}
+
+$Z = \dfrac{\hat{p} - \pi_0}{\sqrt{\pi_0(1-\pi_0)/n}} \sim N(0,1)$
+
+\begin{funkcedict}
+\texttt{prop.test(x, n, p=p0, ...)} &
+\begin{lstlisting}
+prop.test(x=90, n=150, p=0.5,
+  alternative="two.sided",
+  correct=FALSE)
+\end{lstlisting}
+& Bez Yatesovy korekce = ruční Z-test. \\
+
+\texttt{Ručně} &
+\begin{lstlisting}
+p0 <- 0.5; n <- 150; orel <- 90
+phat <- orel/n
+Z <- (phat-p0)/sqrt(p0*(1-p0)/n)
+z_kr <- qnorm(1 - 0.01/2)
+p_val <- 2*(1 - pnorm(abs(Z)))
+\end{lstlisting}
+& Oboustranný Z-test symetrie mince. \\
+\end{funkcedict}
+
+\subsubsection*{3. Dvouvýběrový t-test (Welchův)}
+
+$T = \dfrac{\bar{x}_1 - \bar{x}_2}{\sqrt{s_1^2/n_1 + s_2^2/n_2}}$
+
+\begin{funkcedict}
+\texttt{t.test(x1, x2, var.equal=FALSE)} &
+\begin{lstlisting}
+t.test(x1, x2,
+       var.equal = FALSE,
+       alternative = "two.sided")
+\end{lstlisting}
+& Welchův test (různé rozptyly). \\
+
+\texttt{Ručně (ze souhrnných stat.)} &
+\begin{lstlisting}
+n1<-38; x1<-5.3875; s1_2<-0.2698
+n2<-35; x2<-4.7;    s2_2<-0.24
+T <- (x1-x2)/sqrt(s1_2/n1+s2_2/n2)
+df_w <- (s1_2/n1+s2_2/n2)^2 /
+  ((s1_2/n1)^2/(n1-1)+
+   (s2_2/n2)^2/(n2-1))
+p_val <- 2*(1-pt(abs(T), df=df_w))
+\end{lstlisting}
+& Welch-Satterthwaite stupně volnosti. \\
+\end{funkcedict}
+
+\subsection{ANOVA (Jednocestná analýza rozptylu)}
+
+\textbf{H$_0$:} $\mu_1 = \mu_2 = \dots = \mu_k$, \textbf{H$_1$:} alespoň dva průměry se liší. \\
+Test je vždy \textbf{pravostranný}: zamítáme $H_0$ pokud $F \ge F_{1-\alpha}(k-1, n-k)$.
+
+$$F = \frac{S_m/(k-1)}{S_v/(n-k)} \sim F(k-1, n-k)$$
+
+\begin{funkcedict}
+\texttt{aov(y \textasciitilde\ skupina)} &
+\begin{lstlisting}
+y <- c(91,81,74,57, 83,72,63,47,
+       71,69,58,40)
+skupina <- factor(rep(c("A","B","C"),
+                      each=4))
+m <- aov(y ~ skupina)
+summary(m)
+\end{lstlisting}
+& Automatická ANOVA s tabulkou výsledků. \\
+
+\texttt{Skupinové průměry} &
+\begin{lstlisting}
+tapply(y, skupina, mean)
+\end{lstlisting}
+& Průměry v každé skupině. \\
+
+\texttt{Kritická hodnota F} &
+\begin{lstlisting}
+qf(0.95, df1 = k-1, df2 = n-k)
+\end{lstlisting}
+& Kvantil F-rozdělení pro $\alpha = 0{,}05$. \\
+
+\texttt{Ručně (SS)} &
+\begin{lstlisting}
+grand <- mean(y)
+SS_m <- sum(tapply(y,skupina,
+  function(g) length(g)*(mean(g)-grand)^2))
+SS_v <- sum(tapply(y,skupina,
+  function(g) sum((g-mean(g))^2)))
+F_stat <- (SS_m/(k-1))/(SS_v/(n-k))
+\end{lstlisting}
+& Ruční výpočet SS mezi a uvnitř skupin. \\
+\end{funkcedict}
+
+\subsection{Chí-kvadrát testy}
+
+\subsubsection*{Test dobré shody}
+\textbf{H$_0$:} výběr odpovídá předpokládanému rozdělení. \\
+$G = \sum_j \dfrac{(n_j - e_j)^2}{e_j} \sim \chi^2(k-1)$, kde $e_j = n \cdot \pi_{0,j}$.
+
+\begin{funkcedict}
+\texttt{chisq.test(emp, p=p\_teor)} &
+\begin{lstlisting}
+emp <- c(A=82, B=38, AB=26, O=69)
+p0  <- c(A=0.41,B=0.14,AB=0.07,O=0.38)
+chisq.test(emp, p = p0)
+\end{lstlisting}
+& Automatický test dobré shody. \\
+
+\texttt{Ručně} &
+\begin{lstlisting}
+teor <- sum(emp) * p0
+G <- sum((emp - teor)^2 / teor)
+p_val <- 1 - pchisq(G, df=length(emp)-1)
+chi_kr <- qchisq(0.99, df=length(emp)-1)
+\end{lstlisting}
+& Ruční výpočet testové statistiky a p-hodnoty. \\
+\end{funkcedict}
+
+\subsubsection*{Test nezávislosti (kontingenční tabulka)}
+\textbf{H$_0$:} řádkový a sloupcový znak jsou nezávislé. \\
+$e_{ij} = \dfrac{n_{i\bullet}\, n_{\bullet j}}{n}$, \quad $G \sim \chi^2\bigl((r-1)(s-1)\bigr)$.
+
+\begin{funkcedict}
+\texttt{chisq.test(tabulka)} &
+\begin{lstlisting}
+kt <- matrix(c(1768,807,189,47,
+               946,1387,746,53,
+               115,438,288,16),
+             nrow=3, byrow=TRUE)
+res <- chisq.test(kt)
+res$p.value      # p-hodnota
+res$expected     # teoreticke cetnosti
+\end{lstlisting}
+& Test nezávislosti z kontingenční tabulky. \\
+
+\texttt{Cramérovo V} &
+\begin{lstlisting}
+G <- as.numeric(res$statistic)
+n_celk <- sum(kt)
+r <- nrow(kt); s <- ncol(kt)
+V <- sqrt(G / (n_celk*(min(r,s)-1)))
+C <- sqrt(G / (G + n_celk))
+\end{lstlisting}
+& Síla závislosti: $V \in [0,1]$. Pearsonův $C$ závisí na rozměrech tabulky. \\
+\end{funkcedict}
+
+\noindent \textbf{Interpretace Cramérova V} (orientační, $df^* = \min(r,s)-1$):
+$< 0{,}1$ zanedbatelná $\cdot$ $0{,}1$--$0{,}3$ slabá $\cdot$ $0{,}3$--$0{,}5$ střední $\cdot$ $> 0{,}5$ silná závislost.
+
+\vspace{4pt}
+\noindent \textbf{Rozhodnutí:}
+
+\noindent \begin{tabular}{|l|l|}
+\hline
+\textbf{Podmínka} & \textbf{Výsledek testu} \\ \hline
+$p < \alpha$ & \textbf{ZAMÍTÁME $H_0$} (statisticky významný výsledek) \\ \hline
+$p \ge \alpha$ & \textbf{NEZAMÍTÁME $H_0$} (nemáme dostatek důkazů) \\ \hline
+\end{tabular}
+
 \end{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
