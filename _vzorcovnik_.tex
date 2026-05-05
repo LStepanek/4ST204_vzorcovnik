@@ -1840,11 +1840,12 @@ Oboustranný & $E(X) \neq \mu_0$ & $|u| \ge u_{\text{krit}}$ \\ \hline
 \section{Práce s daty v R (Cheatsheet)}
 
 \subsection{Náhodné veličiny a rozdělení}
-\texttt{Funkce:} \texttt{d}xxx = hustota/pravd., \texttt{p}xxx = distribuční funkce $F(x)$, \texttt{q}xxx = kvantil, \texttt{r}xxx = náhodné číslo.
+\texttt{d}xxx = hustota pravděpodobnosti, \texttt{p}xxx = distribuční funkce $F(x)$, \texttt{q}xxx = kvantil, \texttt{r}xxx = náhodné číslo.
 
 \subsubsection*{Normální rozdělení (\texttt{norm})}
 \begin{itemize}[label={}, leftmargin=1.5em, nosep]
-    \item Spojité rozdělení. Parametry: \texttt{mean} ($\mu$) = střední hodnota, \texttt{sd} ($\sigma$) = směrodatná odchylka.
+    \item Spojité rozdělení pro modelování např. výšky, chyby měření či doby čekání.
+    \item \textbf{Parametry:} \texttt{mean} ($\mu$) = střední hodnota, \texttt{sd} ($\sigma$) = směrodatná odchylka.
 \end{itemize}
 
 \begin{funkcedict}
@@ -1856,46 +1857,50 @@ Oboustranný & $E(X) \neq \mu_0$ & $|u| \ge u_{\text{krit}}$ \\ \hline
 
 \subsubsection*{Binomické rozdělení (\texttt{binom})}
 \begin{itemize}[label={}, leftmargin=1.5em, nosep]
-    \item Diskrétní. Parametry: \texttt{size} ($n$) = počet pokusů, \texttt{prob} ($p$) = pravděpodobnost úspěchu.
-    \item \textbf{Aproximace:} Pro $n \ge 30$ a $p \le 0{,}05$ lze nahradit Poissonovým rozdělením ($\lambda = np$).
+    \item Diskrétní rozdělení. Počet úspěchů v pevně daném počtu nezávislých pokusů.
+    \item \textbf{Aproximace:} Pokud je počet pokusů $n \ge 30$ a pravděpodobnost úspěchu $p \le 0{,}05$, blíží se Poissonovu rozdělení ($\lambda = np$).
+    \item \textbf{Parametry:} \texttt{size} ($n$) = celkový počet pokusů, \texttt{prob} ($p$) = pravděpodobnost úspěchu.
 \end{itemize}
 
 \begin{funkcedict}
-\texttt{dbinom(k, size, prob)} & \texttt{dbinom(4, size=10, prob=1/6)} & \texttt{PŘESNĚ $k$}: $P(X = k)$. \\
-\texttt{pbinom(k, size, prob)} & \texttt{pbinom(2, size=10, prob=1/6)} & \texttt{NEJVÝŠE $k$}: $P(X \le k)$. \\
-\texttt{1 - pbinom(k, size, prob)} & \texttt{1 - pbinom(2, size=10, prob=1/6)} & \texttt{VÍCE NEŽ $k$}: $P(X > k)$. \\
+\texttt{dbinom(k, size, prob)} & \texttt{dbinom(4, size=10, prob=1/6)} & \texttt{PŘESNĚ}: $P(X = k)$. \\
+\texttt{pbinom(k, size, prob)} & \texttt{pbinom(2, size=10, prob=1/6)} & \texttt{NEJVÝŠE}: $P(X \le k)$. \\
+\texttt{1 - pbinom(k, size, prob)} & \texttt{1 - pbinom(2, size=10, prob=1/6)} & \texttt{VÍCE NEŽ}: $P(X > k)$. \\
 \end{funkcedict}
 
 \subsubsection*{Poissonovo rozdělení (\texttt{pois})}
 \begin{itemize}[label={}, leftmargin=1.5em, nosep]
-    \item Diskrétní. Parametr: \texttt{lambda} ($\lambda$) = průměrný počet událostí za interval.
+    \item Diskrétní rozdělení. Počet výskytů události za jednotku času nebo prostoru, když známe průměr.
+    \item \textbf{Parametry:} \texttt{lambda} ($\lambda$) = průměrný počet událostí za interval.
 \end{itemize}
 
 \begin{funkcedict}
-\texttt{dpois(k, lambda)} & \texttt{dpois(2, lambda=0.4)} & \texttt{PŘESNĚ $k$}: $P(X = k)$. \\
-\texttt{ppois(k, lambda)} & \texttt{ppois(2, lambda=0.4)} & \texttt{NEJVÝŠE $k$}: $P(X \le k)$. \\
-\texttt{1 - ppois(k, lambda)} & \texttt{1 - ppois(2, lambda=0.4)} & \texttt{VÍCE NEŽ $k$}: $P(X > k)$. \\
+\texttt{dpois(k, lambda)} & \texttt{dpois(2, lambda=0.4)} & \texttt{PŘESNĚ}: $P(X = k)$. \\
+\texttt{ppois(k, lambda)} & \texttt{ppois(2, lambda=0.4)} & \texttt{NEJVÝŠE}: $P(X \le k)$. \\
+\texttt{1 - ppois(k, lambda)} & \texttt{1 - ppois(2, lambda=0.4)} & \texttt{VÍCE NEŽ}: $P(X > k)$. \\
 \end{funkcedict}
 
 \subsubsection*{Hypergeometrické rozdělení (\texttt{hyper})}
 \begin{itemize}[label={}, leftmargin=1.5em, nosep]
-    \item Diskrétní. Výběr \textbf{bez vracení}. Parametry: \texttt{m} = počet hledaných v populaci, \texttt{n} = počet ostatních, \texttt{k} = velikost výběru.
-    \item \textbf{Aproximace:} Pokud $\frac{k}{m+n} \le 0{,}05$, lze použít Binomické rozdělení.
+    \item Diskrétní rozdělení. Výběr \textbf{bez vracení} z konečné populace (např. zmetky v zásilce).
+    \item \textbf{Aproximace:} Pokud $\frac{k}{m+n} \le 0{,}05$, výběr bez vracení se chová téměř jako výběr s vracením (Binomické).
+    \item \textbf{Parametry:} \texttt{m} = počet hledaných prvků v populaci, \texttt{n} = počet ostatních prvků v populaci, \texttt{k} = velikost výběru.
 \end{itemize}
 
 \begin{funkcedict}
-\texttt{dhyper(x, m, n, k)} & \texttt{dhyper(0, m=10, n=190, k=5)} & \texttt{PŘESNĚ $x$}: $P(X = x)$ -- zde: 0 zmetků z 10 v zásilce 200, výběr 5. \\
-\texttt{phyper(x, m, n, k)} & \texttt{phyper(2, m=10, n=190, k=5)} & \texttt{NEJVÝŠE $x$}: $P(X \le x)$. \\
+\texttt{dhyper(x, m, n, k)} & \texttt{dhyper(0, m=10, n=190, k=5)} & \texttt{PŘESNĚ}: $P(X = x)$, zde: 0 zmetků z populace 200 (10 zmetků), výběr 5. \\
+\texttt{phyper(x, m, n, k)} & \texttt{phyper(2, m=10, n=190, k=5)} & \texttt{NEJVÝŠE}: $P(X \le x)$. \\
 \end{funkcedict}
 
 \subsubsection*{Studentovo t-rozdělení (\texttt{t})}
 \begin{itemize}[label={}, leftmargin=1.5em, nosep]
-    \item Spojité. Parametr: \texttt{df} = stupně volnosti ($n - 1$ pro jednovýběrový t-test).
+    \item Spojité rozdělení. Používá se pro intervaly spolehlivosti a testování, pokud neznáme rozptyl populace.
+    \item \textbf{Parametry:} \texttt{df} = stupně volnosti ($n - 1$ pro jednovýběrový t-test).
 \end{itemize}
 
 \begin{funkcedict}
 \texttt{pt(x, df)} & \texttt{pt(-1.96, df=19)} & Distribuční funkce $F(x) = P(T \le x)$. \\
-\texttt{qt(q, df)} & \texttt{qt(0.975, df=19)} & Kvantil: kritická hodnota pro t-test. \\
+\texttt{qt(q, df)} & \texttt{qt(0.975, df=19)} & Kvantil: kritická hodnota pro t-test nebo IS. \\
 \end{funkcedict}
 
 \subsubsection*{Chí-kvadrát rozdělení (\texttt{chisq}) a F-rozdělení (\texttt{f})}
@@ -1903,21 +1908,21 @@ Oboustranný & $E(X) \neq \mu_0$ & $|u| \ge u_{\text{krit}}$ \\ \hline
 \begin{funkcedict}
 \texttt{pchisq(x, df)} & \texttt{pchisq(7.81, df=3)} & $P(\chi^2 \le x)$ -- distribuční funkce. \\
 \texttt{qchisq(q, df)} & \texttt{qchisq(0.99, df=3)} & Kritická hodnota pro $\chi^2$ test. \\
-\texttt{pf(x, df1, df2)} & \texttt{pf(3.86, df1=2, df2=9)} & $P(F \le x)$ -- pro ANOVA. \\
+\texttt{pf(x, df1, df2)} & \texttt{pf(3.86, df1=2, df2=9)} & $P(F \le x)$ -- distribuční funkce pro ANOVA. \\
 \texttt{qf(q, df1, df2)} & \texttt{qf(0.95, df1=2, df2=9)} & Kritická hodnota pro F-test (ANOVA). \\
 \end{funkcedict}
 
 \subsection{Intervaly spolehlivosti a velikost výběru}
 
 \subsubsection*{Interval pro průměr ($\mu$)}
-\textbf{Kdy použít:} Pro odhad průměrné hodnoty měřitelného znaku.
+\textbf{Kdy použít:} Pro odhad průměrné hodnoty měřitelného znaku (váha, čas, délka).
 \begin{itemize}
-    \item \textbf{Normální rozdělení:} Pokud známe $\sigma^2$ nebo je výběr velký ($n \ge 30$) -- použijeme \texttt{qnorm}.
-    \item \textbf{t-rozdělení:} Neznámý $\sigma^2$, malý výběr ($n < 30$) -- použijeme \texttt{qt} s \texttt{df = n-1}.
+    \item \textbf{Normální rozdělení:} Pokud známe $\sigma^2$ nebo je výběr velký ($n \ge 30$): použijeme \texttt{qnorm}.
+    \item \textbf{t-rozdělení:} Neznámý $\sigma^2$ nebo malý výběr ($n < 30$): použijeme \texttt{qt} s \texttt{df = n-1}.
     \item \textbf{Jednostranný IS:} Kvantil $1 - \alpha$ místo $1 - \alpha/2$.
 \end{itemize}
 
-\textbf{Parametry:} \texttt{x} (vektor dat), \texttt{xbar} (průměr), \texttt{s} (výběrová sm. odchylka), \texttt{n} (rozsah), \texttt{alpha} ($\alpha$).
+\textbf{Parametry:} \texttt{x} (vektor dat), \texttt{xbar} (průměr), \texttt{s} (výběrová směr. odchylka), \texttt{n} (rozsah), \texttt{alpha} ($\alpha$).
 
 \begin{funkcedict}
 \texttt{t.test(x)\$conf.int} &
@@ -1927,7 +1932,7 @@ t.test(x, conf.level = 0.95)$conf.int
 \end{lstlisting}
 & Vrací 95\,\% IS pro $\mu$ (neznámý $\sigma^2$). \\
 
-\texttt{Ručně (t)} &
+\texttt{Ručně (t-rozdělení)} &
 \begin{lstlisting}
 xbar <- mean(x); s <- sd(x)
 n <- length(x); alpha <- 0.05
@@ -1944,15 +1949,16 @@ z_kr <- qnorm(1 - alpha/2)
 c(xbar - z_kr*sigma/sqrt(n),
   xbar + z_kr*sigma/sqrt(n))
 \end{lstlisting}
-& Ruční výpočet IS se Z (normální rozdělení). \\
+& Ruční výpočet IS s normálním rozdělením (Z-kvantil). \\
 \end{funkcedict}
 
 \vspace{3mm}
 
 \subsubsection*{Interval pro podíl ($\pi$)}
-\textbf{Kdy použít:} Pro odhad procentuálního zastoupení (podíl zmetků, preference voličů).
+\textbf{Kdy použít:} Pro odhad procentuálního zastoupení (např. podíl zmetků, preference voličů).
 \begin{itemize}
-    \item Vždy normální rozdělení (Z-kvantil), oboustranný: $1 - \alpha/2$, jednostranný: $1 - \alpha$.
+    \item Vždy využíváme \textbf{normální rozdělení} (Z-kvantil).
+    \item \textbf{Typy kvantilů:} Oboustranný: $1 - \alpha/2$, jednostranný: $1 - \alpha$.
 \end{itemize}
 
 \textbf{Parametry:} \texttt{x} (počet úspěchů), \texttt{n} (celkový počet), \texttt{p} = \texttt{x/n}.
@@ -1960,10 +1966,10 @@ c(xbar - z_kr*sigma/sqrt(n),
 \begin{funkcedict}
 \texttt{prop.test(x, n)\$conf.int} &
 \begin{lstlisting}
-prop.test(110, n=200,
+prop.test(x=110, n=200,
   conf.level=0.95)$conf.int
 \end{lstlisting}
-& Wilsonův IS pro proporci (zabudovaná funkce). \\
+& Wilsonův IS pro proporci (vestavěná funkce). \\
 
 \texttt{Ručně (Waldův IS)} &
 \begin{lstlisting}
@@ -1973,16 +1979,18 @@ z_kr <- qnorm(0.975)
 se <- sqrt(p*(1-p)/n_vol)
 c(p - z_kr*se, p + z_kr*se)
 \end{lstlisting}
-& Waldův IS (jednoduchá normální aproximace). \\
+& Waldův IS -- jednoduchá normální aproximace. \\
 \end{funkcedict}
 
 \vspace{3mm}
 
 \subsubsection*{Potřebná velikost výběru ($n$)}
-\textbf{Kdy použít:} Kolik jednotek vybrat, aby chyba odhadu nebyla větší než $\Delta$.
+\textbf{Kdy použít:} Hledáme, kolik jednotek musíme vybrat ($n$), aby se náš odhad nemýlil o více než stanovenou chybu $\Delta$.
 \begin{itemize}
-    \item Výsledek \textbf{vždy zaokrouhlit nahoru} -- funkce \texttt{ceiling()}.
+    \item Výsledek \textbf{vždy zaokrouhlit nahoru} (funkce \texttt{ceiling()}), jinak by chyba byla větší než povolená.
 \end{itemize}
+
+\textbf{Parametry:} \texttt{delta} ($\Delta$, požadovaná přesnost), \texttt{sigma} (předpokládaná směr. odchylka).
 
 \begin{funkcedict}
 \texttt{Minimální n (průměr)} &
@@ -1992,20 +2000,20 @@ delta <- 2  # pozadovana presnost
 z_kr <- qnorm(1 - alpha/2)
 ceiling((z_kr * sigma / delta)^2)
 \end{lstlisting}
-& Pro průměr. $\Delta$ je polovina šířky IS. \\
+& Pro průměr. $\Delta$ je cílová přesnost. Výsledek \textbf{vždy} zaokrouhli nahoru. \\
 
 \texttt{Minimální n (podíl)} &
 \begin{lstlisting}
-p <- 0.5  # konzervativni odhad
-ceiling(p*(1-p)*(z_kr/delta)^2)
+p <- 0.5; delta <- 0.05  # +-5 p.b.
+ceiling(p*(1-p)*(z_kr/delta)^2)  # 385
 \end{lstlisting}
-& Pro podíl. Pro nejhorší případ $p = 0{,}5$. \\
+& Pro podíl. Používá se pro plánování reprezentativního výzkumu. \\
 \end{funkcedict}
 
 \subsection{Testování hypotéz}
 
-\textbf{Volba rozdělení:} Pro $n \ge 30$ lze použít \texttt{qnorm}/\texttt{pnorm}, pro $n < 30$ nutně \texttt{qt}/\texttt{pt} s \texttt{df = n-1}. \\
-\textbf{Parametry:} \texttt{mu0} (testovaná hodnota), \texttt{xbar} (výběrový průměr), \texttt{s} (výb. sm. odchylka), \texttt{n} (rozsah), \texttt{alpha} ($\alpha$).
+\textbf{Volba rozdělení:} Pro $n \ge 30$ lze použít \texttt{qnorm}/\texttt{pnorm}, pro $n < 30$ použijeme \texttt{qt}/\texttt{pt} s \texttt{df = n-1}. \\
+\textbf{Parametry:} \texttt{mu0} (testovaná hodnota), \texttt{xbar} (výběrový průměr), \texttt{s} (výběrová směr. odchylka), \texttt{n} (rozsah), \texttt{alpha} ($\alpha$).
 
 \subsubsection*{1. Jednovýběrový t-test (střední hodnota)}
 
@@ -2031,16 +2039,28 @@ t.test(x, mu = 25000,
 
 \texttt{Ručně} &
 \begin{lstlisting}
-n <- 49; xbar <- 23500
+n <- 49; xbar <- 23500; alpha <- 0.05
 mu0 <- 25000; s <- 5500
 T <- (xbar - mu0)/(s/sqrt(n))
 p_val <- pt(T, df = n - 1)
-t_kr  <- qt(0.05, df = n - 1)
+t_kr  <- qt(alpha, df = n - 1)
 \end{lstlisting}
-& Ruční výpočet (jednostranný, levý). \\
+& Ruční výpočet (jednostranný levostranný). \\
 \end{funkcedict}
 
-\subsubsection*{2. Test proporce}
+\subsubsection*{2. Párový t-test}
+
+\begin{funkcedict}
+\texttt{t.test(pred, po, paired=TRUE)} &
+\begin{lstlisting}
+t.test(pred, po,
+       paired = TRUE,
+       alternative = "two.sided")
+\end{lstlisting}
+& Porovnání stejné skupiny ve dvou různých situacích (např. před a po zásahu). \\
+\end{funkcedict}
+
+\subsubsection*{3. Test proporce}
 
 $Z = \dfrac{\hat{p} - \pi_0}{\sqrt{\pi_0(1-\pi_0)/n}} \sim N(0,1)$
 
@@ -2051,7 +2071,7 @@ prop.test(x=90, n=150, p=0.5,
   alternative="two.sided",
   correct=FALSE)
 \end{lstlisting}
-& Bez Yatesovy korekce = ruční Z-test. \\
+& Bez Yatesovy korekce odpovídá ručnímu Z-testu. \\
 
 \texttt{Ručně} &
 \begin{lstlisting}
@@ -2061,10 +2081,10 @@ Z <- (phat-p0)/sqrt(p0*(1-p0)/n)
 z_kr <- qnorm(1 - 0.01/2)
 p_val <- 2*(1 - pnorm(abs(Z)))
 \end{lstlisting}
-& Oboustranný Z-test symetrie mince. \\
+& Oboustranný Z-test symetrie mince ($\alpha = 0{,}01$). \\
 \end{funkcedict}
 
-\subsubsection*{3. Dvouvýběrový t-test (Welchův)}
+\subsubsection*{4. Dvouvýběrový t-test (Welchův)}
 
 $T = \dfrac{\bar{x}_1 - \bar{x}_2}{\sqrt{s_1^2/n_1 + s_2^2/n_2}}$
 
@@ -2077,7 +2097,7 @@ t.test(x1, x2,
 \end{lstlisting}
 & Welchův test (různé rozptyly). \\
 
-\texttt{Ručně (ze souhrnných stat.)} &
+\texttt{Ručně (ze souhrnných statistik)} &
 \begin{lstlisting}
 n1<-38; x1<-5.3875; s1_2<-0.2698
 n2<-35; x2<-4.7;    s2_2<-0.24
@@ -2087,13 +2107,31 @@ df_w <- (s1_2/n1+s2_2/n2)^2 /
    (s2_2/n2)^2/(n2-1))
 p_val <- 2*(1-pt(abs(T), df=df_w))
 \end{lstlisting}
-& Welch-Satterthwaite stupně volnosti. \\
+& Welch-Satterthwaiteovy stupně volnosti ($s_1^2$, $s_2^2$ jsou rozptyly). \\
+\end{funkcedict}
+
+\subsubsection*{5. Korelace}
+
+\begin{funkcedict}
+\texttt{cor.test(x, y)} &
+\begin{lstlisting}
+cor.test(x, y,
+         method = "pearson")
+\end{lstlisting}
+& Pearsonova korelace -- měří sílu lineární závislosti dvou spojitých proměnných. \\
+
+\texttt{cor.test(x, y, method=...)} &
+\begin{lstlisting}
+cor.test(x, y,
+         method = "spearman")
+\end{lstlisting}
+& Spearmanova korelace -- měří sílu monotónní závislosti (i pro nelineární vztahy). \\
 \end{funkcedict}
 
 \subsection{ANOVA (Jednocestná analýza rozptylu)}
 
 \textbf{H$_0$:} $\mu_1 = \mu_2 = \dots = \mu_k$, \textbf{H$_1$:} alespoň dva průměry se liší. \\
-Test je vždy \textbf{pravostranný}: zamítáme $H_0$ pokud $F \ge F_{1-\alpha}(k-1, n-k)$.
+Test je vždy \textbf{pravostranný}: zamítáme $H_0$, pokud $F \ge F_{1-\alpha}(k-1, n-k)$.
 
 $$F = \frac{S_m/(k-1)}{S_v/(n-k)} \sim F(k-1, n-k)$$
 
@@ -2117,12 +2155,14 @@ tapply(y, skupina, mean)
 
 \texttt{Kritická hodnota F} &
 \begin{lstlisting}
+k <- nlevels(skupina); n <- length(y)
 qf(0.95, df1 = k-1, df2 = n-k)
 \end{lstlisting}
 & Kvantil F-rozdělení pro $\alpha = 0{,}05$. \\
 
 \texttt{Ručně (SS)} &
 \begin{lstlisting}
+k <- nlevels(skupina); n <- length(y)
 grand <- mean(y)
 SS_m <- sum(tapply(y,skupina,
   function(g) length(g)*(mean(g)-grand)^2))
@@ -2130,7 +2170,7 @@ SS_v <- sum(tapply(y,skupina,
   function(g) sum((g-mean(g))^2)))
 F_stat <- (SS_m/(k-1))/(SS_v/(n-k))
 \end{lstlisting}
-& Ruční výpočet SS mezi a uvnitř skupin. \\
+& Ruční výpočet součtů čtverců mezi skupinami a uvnitř skupin. \\
 \end{funkcedict}
 
 \subsection{Chí-kvadrát testy}
@@ -2146,7 +2186,7 @@ emp <- c(A=82, B=38, AB=26, O=69)
 p0  <- c(A=0.41,B=0.14,AB=0.07,O=0.38)
 chisq.test(emp, p = p0)
 \end{lstlisting}
-& Automatický test dobré shody. \\
+& Automatický test dobré shody. Vektor \texttt{p0} musí mít součet 1. \\
 
 \texttt{Ručně} &
 \begin{lstlisting}
@@ -2179,24 +2219,24 @@ res$expected     # teoreticke cetnosti
 \begin{lstlisting}
 G <- as.numeric(res$statistic)
 n_celk <- sum(kt)
-r <- nrow(kt); s <- ncol(kt)
-V <- sqrt(G / (n_celk*(min(r,s)-1)))
+r <- nrow(kt); s_kt <- ncol(kt)
+V <- sqrt(G / (n_celk*(min(r,s_kt)-1)))
 C <- sqrt(G / (G + n_celk))
 \end{lstlisting}
 & Síla závislosti: $V \in [0,1]$. Pearsonův $C$ závisí na rozměrech tabulky. \\
 \end{funkcedict}
 
 \noindent \textbf{Interpretace Cramérova V} (orientační, $df^* = \min(r,s)-1$):
-$< 0{,}1$ zanedbatelná $\cdot$ $0{,}1$--$0{,}3$ slabá $\cdot$ $0{,}3$--$0{,}5$ střední $\cdot$ $> 0{,}5$ silná závislost.
+$< 0{,}1$ zanedbatelná $\cdot$ $0{,}1$--$0{,}3$ slabá $\cdot$ $0{,}3$--$0{,}5$ středně silná $\cdot$ $> 0{,}5$ silná závislost.
 
 \vspace{4pt}
-\noindent \textbf{Rozhodnutí:}
+\noindent \textbf{Rozhodnutí pomocí p-hodnoty:}
 
 \noindent \begin{tabular}{|l|l|}
 \hline
 \textbf{Podmínka} & \textbf{Výsledek testu} \\ \hline
-$p < \alpha$ & \textbf{ZAMÍTÁME $H_0$} (statisticky významný výsledek) \\ \hline
-$p \ge \alpha$ & \textbf{NEZAMÍTÁME $H_0$} (nemáme dostatek důkazů) \\ \hline
+$p < \alpha$ & \textbf{ZAMÍTÁME $H_0$} (rozdíl je statisticky významný) \\ \hline
+$p \ge \alpha$ & \textbf{NEZAMÍTÁME $H_0$} (rozdíl je pravděpodobně náhodný) \\ \hline
 \end{tabular}
 
 \end{document}
