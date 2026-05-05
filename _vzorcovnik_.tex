@@ -1835,6 +1835,77 @@ Oboustranný & $E(X) \neq \mu_0$ & $|u| \ge u_{\text{krit}}$ \\ \hline
     \item \texttt{res.statistic}: Hodnota testového kritéria (čím je vyšší, tím více se data liší od hypotézy).
     \item \textit{Výjimka:} \texttt{chi2\_contingency} vrací výsledky jako n-tici \texttt{(statistika, p-hodnota, df, expected\_table)}.
 \end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Práce s daty v R (Cheatsheet)}
+
+\subsection{Náhodné veličiny a rozdělení}
+\texttt{Funkce:} \texttt{d}xxx = hustota/pravd., \texttt{p}xxx = distribuční funkce $F(x)$, \texttt{q}xxx = kvantil, \texttt{r}xxx = náhodné číslo.
+
+\subsubsection*{Normální rozdělení (\texttt{norm})}
+\begin{itemize}[label={}, leftmargin=1.5em, nosep]
+    \item Spojité rozdělení. Parametry: \texttt{mean} ($\mu$) = střední hodnota, \texttt{sd} ($\sigma$) = směrodatná odchylka.
+\end{itemize}
+
+\begin{funkcedict}
+\texttt{pnorm(x, mean, sd)} & \texttt{pnorm(16, mean=20, sd=4)} & \texttt{MÉNĚ NEŽ}: $P(X \le x)$. \\
+\texttt{1 - pnorm(x, mean, sd)} & \texttt{1 - pnorm(20, mean=20, sd=4)} & \texttt{VÍCE NEŽ}: $P(X > x)$. \\
+\texttt{pnorm(b,m,s) - pnorm(a,m,s)} & \texttt{pnorm(28,20,4) - pnorm(12,20,4)} & \texttt{MEZI}: $P(a < X \le b)$. \\
+\texttt{qnorm(q, mean, sd)} & \texttt{qnorm(0.975, mean=0, sd=1)} & Kvantil: najde $x$ pro $P(X \le x) = q$. \\
+\end{funkcedict}
+
+\subsubsection*{Binomické rozdělení (\texttt{binom})}
+\begin{itemize}[label={}, leftmargin=1.5em, nosep]
+    \item Diskrétní. Parametry: \texttt{size} ($n$) = počet pokusů, \texttt{prob} ($p$) = pravděpodobnost úspěchu.
+    \item \textbf{Aproximace:} Pro $n \ge 30$ a $p \le 0{,}05$ lze nahradit Poissonovým rozdělením ($\lambda = np$).
+\end{itemize}
+
+\begin{funkcedict}
+\texttt{dbinom(k, size, prob)} & \texttt{dbinom(4, size=10, prob=1/6)} & \texttt{PŘESNĚ $k$}: $P(X = k)$. \\
+\texttt{pbinom(k, size, prob)} & \texttt{pbinom(2, size=10, prob=1/6)} & \texttt{NEJVÝŠE $k$}: $P(X \le k)$. \\
+\texttt{1 - pbinom(k, size, prob)} & \texttt{1 - pbinom(2, size=10, prob=1/6)} & \texttt{VÍCE NEŽ $k$}: $P(X > k)$. \\
+\end{funkcedict}
+
+\subsubsection*{Poissonovo rozdělení (\texttt{pois})}
+\begin{itemize}[label={}, leftmargin=1.5em, nosep]
+    \item Diskrétní. Parametr: \texttt{lambda} ($\lambda$) = průměrný počet událostí za interval.
+\end{itemize}
+
+\begin{funkcedict}
+\texttt{dpois(k, lambda)} & \texttt{dpois(2, lambda=0.4)} & \texttt{PŘESNĚ $k$}: $P(X = k)$. \\
+\texttt{ppois(k, lambda)} & \texttt{ppois(2, lambda=0.4)} & \texttt{NEJVÝŠE $k$}: $P(X \le k)$. \\
+\texttt{1 - ppois(k, lambda)} & \texttt{1 - ppois(2, lambda=0.4)} & \texttt{VÍCE NEŽ $k$}: $P(X > k)$. \\
+\end{funkcedict}
+
+\subsubsection*{Hypergeometrické rozdělení (\texttt{hyper})}
+\begin{itemize}[label={}, leftmargin=1.5em, nosep]
+    \item Diskrétní. Výběr \textbf{bez vracení}. Parametry: \texttt{m} = počet hledaných v populaci, \texttt{n} = počet ostatních, \texttt{k} = velikost výběru.
+    \item \textbf{Aproximace:} Pokud $\frac{k}{m+n} \le 0{,}05$, lze použít Binomické rozdělení.
+\end{itemize}
+
+\begin{funkcedict}
+\texttt{dhyper(x, m, n, k)} & \texttt{dhyper(0, m=10, n=190, k=5)} & \texttt{PŘESNĚ $x$}: $P(X = x)$ -- zde: 0 zmetků z 10 v zásilce 200, výběr 5. \\
+\texttt{phyper(x, m, n, k)} & \texttt{phyper(2, m=10, n=190, k=5)} & \texttt{NEJVÝŠE $x$}: $P(X \le x)$. \\
+\end{funkcedict}
+
+\subsubsection*{Studentovo t-rozdělení (\texttt{t})}
+\begin{itemize}[label={}, leftmargin=1.5em, nosep]
+    \item Spojité. Parametr: \texttt{df} = stupně volnosti ($n - 1$ pro jednovýběrový t-test).
+\end{itemize}
+
+\begin{funkcedict}
+\texttt{pt(x, df)} & \texttt{pt(-1.96, df=19)} & Distribuční funkce $F(x) = P(T \le x)$. \\
+\texttt{qt(q, df)} & \texttt{qt(0.975, df=19)} & Kvantil: kritická hodnota pro t-test. \\
+\end{funkcedict}
+
+\subsubsection*{Chí-kvadrát rozdělení (\texttt{chisq}) a F-rozdělení (\texttt{f})}
+
+\begin{funkcedict}
+\texttt{pchisq(x, df)} & \texttt{pchisq(7.81, df=3)} & $P(\chi^2 \le x)$ -- distribuční funkce. \\
+\texttt{qchisq(q, df)} & \texttt{qchisq(0.99, df=3)} & Kritická hodnota pro $\chi^2$ test. \\
+\texttt{pf(x, df1, df2)} & \texttt{pf(3.86, df1=2, df2=9)} & $P(F \le x)$ -- pro ANOVA. \\
+\texttt{qf(q, df1, df2)} & \texttt{qf(0.95, df1=2, df2=9)} & Kritická hodnota pro F-test (ANOVA). \\
+\end{funkcedict}
+
 \end{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
