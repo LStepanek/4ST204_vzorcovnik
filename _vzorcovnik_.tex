@@ -1906,6 +1906,101 @@ Oboustranný & $E(X) \neq \mu_0$ & $|u| \ge u_{\text{krit}}$ \\ \hline
 \texttt{qf(q, df1, df2)} & \texttt{qf(0.95, df1=2, df2=9)} & Kritická hodnota pro F-test (ANOVA). \\
 \end{funkcedict}
 
+\subsection{Intervaly spolehlivosti a velikost výběru}
+
+\subsubsection*{Interval pro průměr ($\mu$)}
+\textbf{Kdy použít:} Pro odhad průměrné hodnoty měřitelného znaku.
+\begin{itemize}
+    \item \textbf{Normální rozdělení:} Pokud známe $\sigma^2$ nebo je výběr velký ($n \ge 30$) -- použijeme \texttt{qnorm}.
+    \item \textbf{t-rozdělení:} Neznámý $\sigma^2$, malý výběr ($n < 30$) -- použijeme \texttt{qt} s \texttt{df = n-1}.
+    \item \textbf{Jednostranný IS:} Kvantil $1 - \alpha$ místo $1 - \alpha/2$.
+\end{itemize}
+
+\textbf{Parametry:} \texttt{x} (vektor dat), \texttt{xbar} (průměr), \texttt{s} (výběrová sm. odchylka), \texttt{n} (rozsah), \texttt{alpha} ($\alpha$).
+
+\begin{funkcedict}
+\texttt{t.test(x)\$conf.int} &
+\begin{lstlisting}
+x <- c(163,175,177,165,171,174)
+t.test(x, conf.level = 0.95)$conf.int
+\end{lstlisting}
+& Vrací 95\,\% IS pro $\mu$ (neznámý $\sigma^2$). \\
+
+\texttt{Ručně (t)} &
+\begin{lstlisting}
+xbar <- mean(x); s <- sd(x)
+n <- length(x); alpha <- 0.05
+t_kr <- qt(1 - alpha/2, df = n - 1)
+c(xbar - t_kr*s/sqrt(n),
+  xbar + t_kr*s/sqrt(n))
+\end{lstlisting}
+& Ruční výpočet IS s t-rozdělením. \\
+
+\texttt{Ručně (Z, známý $\sigma$)} &
+\begin{lstlisting}
+sigma <- 7
+z_kr <- qnorm(1 - alpha/2)
+c(xbar - z_kr*sigma/sqrt(n),
+  xbar + z_kr*sigma/sqrt(n))
+\end{lstlisting}
+& Ruční výpočet IS se Z (normální rozdělení). \\
+\end{funkcedict}
+
+\vspace{3mm}
+
+\subsubsection*{Interval pro podíl ($\pi$)}
+\textbf{Kdy použít:} Pro odhad procentuálního zastoupení (podíl zmetků, preference voličů).
+\begin{itemize}
+    \item Vždy normální rozdělení (Z-kvantil), oboustranný: $1 - \alpha/2$, jednostranný: $1 - \alpha$.
+\end{itemize}
+
+\textbf{Parametry:} \texttt{x} (počet úspěchů), \texttt{n} (celkový počet), \texttt{p} = \texttt{x/n}.
+
+\begin{funkcedict}
+\texttt{prop.test(x, n)\$conf.int} &
+\begin{lstlisting}
+prop.test(110, n=200,
+  conf.level=0.95)$conf.int
+\end{lstlisting}
+& Wilsonův IS pro proporci (zabudovaná funkce). \\
+
+\texttt{Ručně (Waldův IS)} &
+\begin{lstlisting}
+x_vol <- 110; n_vol <- 200
+p <- x_vol / n_vol
+z_kr <- qnorm(0.975)
+se <- sqrt(p*(1-p)/n_vol)
+c(p - z_kr*se, p + z_kr*se)
+\end{lstlisting}
+& Waldův IS (jednoduchá normální aproximace). \\
+\end{funkcedict}
+
+\vspace{3mm}
+
+\subsubsection*{Potřebná velikost výběru ($n$)}
+\textbf{Kdy použít:} Kolik jednotek vybrat, aby chyba odhadu nebyla větší než $\Delta$.
+\begin{itemize}
+    \item Výsledek \textbf{vždy zaokrouhlit nahoru} -- funkce \texttt{ceiling()}.
+\end{itemize}
+
+\begin{funkcedict}
+\texttt{Minimální n (průměr)} &
+\begin{lstlisting}
+alpha <- 0.05; sigma <- 10
+delta <- 2  # pozadovana presnost
+z_kr <- qnorm(1 - alpha/2)
+ceiling((z_kr * sigma / delta)^2)
+\end{lstlisting}
+& Pro průměr. $\Delta$ je polovina šířky IS. \\
+
+\texttt{Minimální n (podíl)} &
+\begin{lstlisting}
+p <- 0.5  # konzervativni odhad
+ceiling(p*(1-p)*(z_kr/delta)^2)
+\end{lstlisting}
+& Pro podíl. Pro nejhorší případ $p = 0{,}5$. \\
+\end{funkcedict}
+
 \end{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
