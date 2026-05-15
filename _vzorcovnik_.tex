@@ -2688,84 +2688,304 @@ model.predict(X_new)
 
 \subsection{Užitečné knihovny a základy}
 \begin{funkcedict}
-\texttt{import numpy as np} & \texttt{np.array([...])} & Matice, vektory a rychlé matematické operace. \\
-\texttt{import pandas as pd} & \texttt{pd.DataFrame(matice)} & Analýza tabulek a práce s CSV. \\
-\texttt{import matplotlib.pyplot as plt} & \texttt{plt.hist(data)} & Tvorba grafů a vizualizace dat. \\
-\texttt{math.comb(n, k)} & \texttt{math.comb(10, 3)} & Kombinační číslo (výběr $k$ z $n$). \\
-\texttt{List Comprehension} & \texttt{[x**2 for x in range(5)]} & Dynamické generování pole pomocí cyklu. \\
+\texttt{import numpy as np} &
+\begin{lstlisting}
+np.array([...])
+\end{lstlisting}
+& Matice, vektory a rychlé matematické operace. \\
+\texttt{import pandas as pd} &
+\begin{lstlisting}
+pd.DataFrame(matice)
+\end{lstlisting}
+& Analýza tabulek a práce s CSV. \\
+\texttt{import matplotlib.pyplot as plt} &
+\begin{lstlisting}
+plt.hist(data)
+\end{lstlisting}
+& Tvorba grafů a vizualizace dat. \\
+\texttt{math.comb(n, k)} &
+\begin{lstlisting}
+math.comb(10, 3)
+\end{lstlisting}
+& Kombinační číslo (výběr $k$ z $n$). \\
+\texttt{List Comprehension} &
+\begin{lstlisting}
+[x**2 for x in range(5)]
+\end{lstlisting}
+& Dynamické generování pole pomocí cyklu. \\
 \end{funkcedict}
 
 \subsection{Práce s poli (Standardní Python)}
 \begin{funkcedict}
-\textbf{List Comprehension} & \texttt{[x**2 for x in range(5)]} & Dynamické generování pole pomocí cyklu. \\
-\texttt{x[start:stop:krok]} & \texttt{pole[1:10:2]} & Výřez (stop je exkluzivní). \texttt{[::-1]} pro otočení. \\
-\texttt{x.copy()} vs \texttt{deepcopy} & \texttt{a = b.copy()} & \texttt{copy} je plytká, \texttt{deepcopy} kopíruje i vnořená pole. \\
-\texttt{x.append(v)} & \texttt{data.append(10)} & Přidání jednoho prvku na konec pole. \\
-\texttt{x.extend(a)} & \texttt{data.extend([1,2,3])} & Přidání více prvků na konec pole. \\
+\textbf{List Comprehension} &
+\begin{lstlisting}
+[x**2 for x in range(5)]
+\end{lstlisting}
+& Dynamické generování pole pomocí cyklu. \\
+\texttt{x[start:stop:krok]} &
+\begin{lstlisting}
+pole[1:10:2]
+\end{lstlisting}
+& Výřez (stop je exkluzivní). \texttt{[::-1]} pro otočení. \\
+\texttt{x.copy()} vs \texttt{deepcopy} &
+\begin{lstlisting}
+a = b.copy()
+\end{lstlisting}
+& \texttt{copy} je plytká, \texttt{deepcopy} kopíruje i vnořená pole. \\
+\texttt{x.append(v)} &
+\begin{lstlisting}
+data.append(10)
+\end{lstlisting}
+& Přidání jednoho prvku na konec pole. \\
+\texttt{x.extend(a)} &
+\begin{lstlisting}
+data.extend([1,2,3])
+\end{lstlisting}
+& Přidání více prvků na konec pole. \\
 \end{funkcedict}
 
 \subsection{Základní Python (Built-in \& Math)}
 \begin{funkcedict}
-\texttt{help(funkce)} & \texttt{help(print)} & Dokumentace pro zadanou funkci. \\
-\texttt{range(start, stop)} & \texttt{list(range(0, 5))} & Vygeneruje sekvenci \texttt{[0, 1, 2, 3, 4]}. \\
-\texttt{math.log(x, b)} & \texttt{math.log(8, 2)} & Logaritmus čísla $x$ o základu $b$. \\
-\texttt{math.sqrt(x)} & \texttt{math.sqrt(16)} & Druhá odmocnina čísla. \\
-\texttt{math.ceil / floor} & \texttt{math.ceil(2.1)} & Zaokrouhlení nahoru (3) / dolů (2). \\
-\texttt{math.trunc(x)} & \texttt{math.trunc(2.9)} & Odříznutí desetinné části (2). \\
-\texttt{math.comb(n, k)} & \texttt{math.comb(10, 3)} & Kombinační číslo (počet kombinací $k$ prvků z $n$). \\
-\texttt{def function(...):} & \texttt{def funkce(x, y, z):} & Definice vlastní funkce s parametry. \\
+\texttt{help(funkce)} &
+\begin{lstlisting}
+help(print)
+\end{lstlisting}
+& Dokumentace pro zadanou funkci. \\
+\texttt{range(start, stop)} &
+\begin{lstlisting}
+list(range(0, 5))
+\end{lstlisting}
+& Vygeneruje sekvenci \texttt{[0, 1, 2, 3, 4]}. \\
+\texttt{math.log(x, b)} &
+\begin{lstlisting}
+math.log(8, 2)
+\end{lstlisting}
+& Logaritmus čísla $x$ o základu $b$. \\
+\texttt{math.sqrt(x)} &
+\begin{lstlisting}
+math.sqrt(16)
+\end{lstlisting}
+& Druhá odmocnina čísla. \\
+\texttt{math.ceil / floor} &
+\begin{lstlisting}
+math.ceil(2.1)
+\end{lstlisting}
+& Zaokrouhlení nahoru (3) / dolů (2). \\
+\texttt{math.trunc(x)} &
+\begin{lstlisting}
+math.trunc(2.9)
+\end{lstlisting}
+& Odříznutí desetinné části (2). \\
+\texttt{math.comb(n, k)} &
+\begin{lstlisting}
+math.comb(10, 3)
+\end{lstlisting}
+& Kombinační číslo (počet kombinací $k$ prvků z $n$). \\
+\texttt{def function(...):} &
+\begin{lstlisting}
+def funkce(x, y, z):
+\end{lstlisting}
+& Definice vlastní funkce s parametry. \\
 \end{funkcedict}
 
 \subsection{Statistika a Matice (Knihovna NumPy a jiné)}
 \begin{funkcedict}
-\texttt{np.sum(x)} & \texttt{np.sum(data, axis=0)} & Součet všech prvků v poli (nebo podél zvolené osy). \\
-\texttt{np.mean(x)} & \texttt{np.mean(data)} & Průměr všech prvků v poli. \\
-\texttt{np.prod(x)} & \texttt{np.prod(data)} & Součin všech prvků v poli. \\
-\texttt{np.sqrt(x)} & \texttt{np.sqrt(data)} & Druhá odmocnina z každého prvku v poli. \\
-\texttt{np.random.rand(n)} & \texttt{np.random.rand(100)} & Generování pole $n$ náhodných čísel z rovnoměrného rozdělení na $[0, 1)$. \\
-\texttt{np.random.uniform(a, b, n)} & \texttt{np.random.uniform(10, 50, 100)} & Generuje $n$ náhodných \textbf{desetinných} čísel v rozsahu $[a, b)$. \\
-\texttt{np.quantile(x, q)} & \texttt{np.quantile(x, 0.75, method='midpoint')} & Výpočet kvantilu ($q \in [0, 1]$). \\
-\texttt{Modus} & \texttt{statistics.multimode(data)} & \texttt{Vrací modus z pole (i více prvků)} \\
-\texttt{np.log10(x)} & \texttt{np.log10(data)} & Dekadický logaritmus (základ 10). Často se používá pro normalizaci dat. \\
-\texttt{np.linalg.norm(x, p)} & \texttt{np.linalg.norm(x, ord=2)} & Výpočet $L^1, L^2$ nebo $L^\infty$ (\texttt{np.inf}) normy. \\
-\texttt{np.insert / np.delete} & \texttt{np.insert(A, 1, [..], axis=0)} & Vloží/Smaže řádek (\texttt{axis=0}) nebo sloupec (\texttt{axis=1}). \\
-\texttt{stats.gmean(x)} & \texttt{stats.gmean(x)} & Geometrický průměr (knihovna Scipy). \\
-\texttt{stats.hmean(x)} & \texttt{stats.hmean(x, weights=[...])} & Harmonický průměr (knihovna Scipy). \\
-\texttt{np.var(x, ddof=0)} & \texttt{np.var(data, ddof=0)} & \textbf{Klasický rozptyl} $s_x^2$ (děleno $n$). \\
-\texttt{np.var(x, ddof=1)} & \texttt{np.var(data, ddof=1)} & \textbf{Výběrový rozptyl} $S^2$ (děleno $n-1$). \\
-\texttt{np.std(x, ddof=0)} & \texttt{np.std(data, ddof=0)} & Klasická směrodatná odchylka $s_x$. \\
-\texttt{np.std(x, ddof=1)} & \texttt{np.std(data, ddof=1)} & Výběrová směrodatná odchylka $S$. \\
-\texttt{np.ptp(x)} & \texttt{np.ptp(data)} & \textbf{Variační rozpětí} $R = x_{max} - x_{min}$. \\
-\texttt{v\_x = std / mean} & \texttt{np.std(x) / np.mean(x)} & \textbf{Variační koeficient} $v_x$ (relativní variabilita). \\
-\texttt{np.where(cond, x, y)} & \texttt{np.where(df['am'] == 0, 'aut', 'man')} & \textbf{Podmíněný sloupec}: Pokud platí \texttt{cond}, vlož \texttt{x}, jinak \texttt{y} (jako IF v Excelu). \\
+\texttt{np.sum(x)} &
+\begin{lstlisting}
+np.sum(data, axis=0)
+\end{lstlisting}
+& Součet všech prvků v poli (nebo podél zvolené osy). \\
+\texttt{np.mean(x)} &
+\begin{lstlisting}
+np.mean(data)
+\end{lstlisting}
+& Průměr všech prvků v poli. \\
+\texttt{np.prod(x)} &
+\begin{lstlisting}
+np.prod(data)
+\end{lstlisting}
+& Součin všech prvků v poli. \\
+\texttt{np.sqrt(x)} &
+\begin{lstlisting}
+np.sqrt(data)
+\end{lstlisting}
+& Druhá odmocnina z každého prvku v poli. \\
+\texttt{np.random.rand(n)} &
+\begin{lstlisting}
+np.random.rand(100)
+\end{lstlisting}
+& Generování pole $n$ náhodných čísel z rovnoměrného rozdělení na $[0, 1)$. \\
+\texttt{np.random.uniform(a, b, n)} &
+\begin{lstlisting}
+np.random.uniform(10, 50, 100)
+\end{lstlisting}
+& Generuje $n$ náhodných \textbf{desetinných} čísel v rozsahu $[a, b)$. \\
+\texttt{np.quantile(x, q)} &
+\begin{lstlisting}
+np.quantile(x, 0.75, method='midpoint')
+\end{lstlisting}
+& Výpočet kvantilu ($q \in [0, 1]$). \\
+\texttt{Modus} &
+\begin{lstlisting}
+statistics.multimode(data)
+\end{lstlisting}
+& \texttt{Vrací modus z pole (i více prvků)} \\
+\texttt{np.log10(x)} &
+\begin{lstlisting}
+np.log10(data)
+\end{lstlisting}
+& Dekadický logaritmus (základ 10). Často se používá pro normalizaci dat. \\
+\texttt{np.linalg.norm(x, p)} &
+\begin{lstlisting}
+np.linalg.norm(x, ord=2)
+\end{lstlisting}
+& Výpočet $L^1, L^2$ nebo $L^\infty$ (\texttt{np.inf}) normy. \\
+\texttt{np.insert / np.delete} &
+\begin{lstlisting}
+np.insert(A, 1, [..], axis=0)
+\end{lstlisting}
+& Vloží/Smaže řádek (\texttt{axis=0}) nebo sloupec (\texttt{axis=1}). \\
+\texttt{stats.gmean(x)} &
+\begin{lstlisting}
+stats.gmean(x)
+\end{lstlisting}
+& Geometrický průměr (knihovna Scipy). \\
+\texttt{stats.hmean(x)} &
+\begin{lstlisting}
+stats.hmean(x, weights=[...])
+\end{lstlisting}
+& Harmonický průměr (knihovna Scipy). \\
+\texttt{np.var(x, ddof=0)} &
+\begin{lstlisting}
+np.var(data, ddof=0)
+\end{lstlisting}
+& \textbf{Klasický rozptyl} $s_x^2$ (děleno $n$). \\
+\texttt{np.var(x, ddof=1)} &
+\begin{lstlisting}
+np.var(data, ddof=1)
+\end{lstlisting}
+& \textbf{Výběrový rozptyl} $S^2$ (děleno $n-1$). \\
+\texttt{np.std(x, ddof=0)} &
+\begin{lstlisting}
+np.std(data, ddof=0)
+\end{lstlisting}
+& Klasická směrodatná odchylka $s_x$. \\
+\texttt{np.std(x, ddof=1)} &
+\begin{lstlisting}
+np.std(data, ddof=1)
+\end{lstlisting}
+& Výběrová směrodatná odchylka $S$. \\
+\texttt{np.ptp(x)} &
+\begin{lstlisting}
+np.ptp(data)
+\end{lstlisting}
+& \textbf{Variační rozpětí} $R = x_{max} - x_{min}$. \\
+\texttt{v\_x = std / mean} &
+\begin{lstlisting}
+np.std(x) / np.mean(x)
+\end{lstlisting}
+& \textbf{Variační koeficient} $v_x$ (relativní variabilita). \\
+\texttt{np.where(cond, x, y)} &
+\begin{lstlisting}
+np.where(df['am'] == 0, 'aut', 'man')
+\end{lstlisting}
+& \textbf{Podmíněný sloupec}: Pokud platí \texttt{cond}, vlož \texttt{x}, jinak \texttt{y} (jako IF v Excelu). \\
 \end{funkcedict}
 
 \subsection{Pandas: Analýza dat}
 \begin{funkcedict}
-\texttt{pd.read\_csv(file)} & \texttt{pd.read\_csv('data.csv')} & Načte data z CSV souboru a vytvoří DataFrame. \\
-\texttt{df.describe()} & \texttt{df.describe()} & Souhrnné statistiky (průměr, std, kvartily, atd.). \\
-\texttt{df[columns]} & \texttt{df[["A", "B", "C"]]} & Výběr určitých sloupců. \\
+\texttt{pd.read\_csv(file)} &
+\begin{lstlisting}
+pd.read_csv('data.csv')
+\end{lstlisting}
+& Načte data z CSV souboru a vytvoří DataFrame. \\
+\texttt{df.describe()} &
+\begin{lstlisting}
+df.describe()
+\end{lstlisting}
+& Souhrnné statistiky (průměr, std, kvartily, atd.). \\
+\texttt{df[columns]} &
+\begin{lstlisting}
+df[["A", "B", "C"]]
+\end{lstlisting}
+& Výběr určitých sloupců. \\
 \texttt{Filtrování} & \texttt{df[df['Věk'] >= 18]} & Vybere pouze řádky splňující danou podmínku. \\
-\texttt{df['A']. isin([list])} & \texttt{df[df['mesto'].isin(['Praha', 'Brno'])]} & Vybere řádky, kde hodnota sloupce odpovídá prvkům v seznamu. \\
-\texttt{df.loc} vs \texttt{df.iloc} & \texttt{df.loc[0, 'Sloupec']} & Výběr dat podle \textbf{názvů} (\texttt{loc}) vs. \textbf{pozice} (\texttt{iloc}). \\
-\texttt{df.isna().sum()} & \texttt{df.isna().sum()} & Počet chybějících (null) hodnot v tabulce. \\
-\texttt{df.value\_counts()} & \texttt{df['A'].value\_counts()} & Tabulka četností pro kategorická data. \\
-\texttt{df.groupby('A')} & \texttt{df.groupby('A').mean()} & Výpočet statistik podle kategorií ve sloupci 'A'. \\
-\texttt{df.cumsum()} & \texttt{df['cetnost'].cumsum()} & \textbf{Kumulativní součet}: Pro výpočet kumulativních absolutních/relativních četností. \\
-\texttt{pd.crosstab()} & \texttt{pd.crosstab(df['A'], df['B'])} & Kontingenční tabulka četností dvou kategorií. \\
-\texttt{pd.pivot\_table()} & \texttt{df.pivot\_table(values='C', \dots)} & Univerzální pivotní tabulka. \\
-\texttt{df['A'].between(a, b)} & \texttt{df[df['mzda'].between(30000, 50000)]} & Filtrování hodnot v uzavřeném intervalu [a, b]. \\
+\texttt{df['A']. isin([list])} &
+\begin{lstlisting}
+df[df['mesto'].isin(['Praha', 'Brno'])]
+\end{lstlisting}
+& Vybere řádky, kde hodnota sloupce odpovídá prvkům v seznamu. \\
+\texttt{df.loc} vs \texttt{df.iloc} &
+\begin{lstlisting}
+df.loc[0, 'Sloupec']
+\end{lstlisting}
+& Výběr dat podle \textbf{názvů} (\texttt{loc}) vs. \textbf{pozice} (\texttt{iloc}). \\
+\texttt{df.isna().sum()} &
+\begin{lstlisting}
+df.isna().sum()
+\end{lstlisting}
+& Počet chybějících (null) hodnot v tabulce. \\
+\texttt{df.value\_counts()} &
+\begin{lstlisting}
+df['A'].value_counts()
+\end{lstlisting}
+& Tabulka četností pro kategorická data. \\
+\texttt{df.groupby('A')} &
+\begin{lstlisting}
+df.groupby('A').mean()
+\end{lstlisting}
+& Výpočet statistik podle kategorií ve sloupci 'A'. \\
+\texttt{df.cumsum()} &
+\begin{lstlisting}
+df['cetnost'].cumsum()
+\end{lstlisting}
+& \textbf{Kumulativní součet}: Pro výpočet kumulativních absolutních/relativních četností. \\
+\texttt{pd.crosstab()} &
+\begin{lstlisting}
+pd.crosstab(df['A'], df['B'])
+\end{lstlisting}
+& Kontingenční tabulka četností dvou kategorií. \\
+\texttt{pd.pivot\_table()} &
+\begin{lstlisting}
+df.pivot_table(values='C', \dots)
+\end{lstlisting}
+& Univerzální pivotní tabulka. \\
+\texttt{df['A'].between(a, b)} &
+\begin{lstlisting}
+df[df['mzda'].between(30000, 50000)]
+\end{lstlisting}
+& Filtrování hodnot v uzavřeném intervalu [a, b]. \\
 \end{funkcedict}
 
 \subsection{Matplotlib a Seaborn: Vizualizace}
 \begin{funkcedict}
-\texttt{df.boxplot()} & \texttt{df.boxplot(column='Y', by='X')} & \textbf{Boxplot (Pandas)}: Rozdělení dat do kvartilů dle skupiny. \\
-\texttt{plt.hist(x)} & \texttt{plt.hist(data, bins=15)} & \textbf{Histogram}: Rozdělení četností. \texttt{bins} určuje intervaly. \\
-\texttt{plt.scatter(x, y)} & \texttt{plt.scatter(x, y, alpha=0.5)} & \textbf{Bodový graf}: Závislost dvou proměnných. \\
+\texttt{df.boxplot()} &
+\begin{lstlisting}
+df.boxplot(column='Y', by='X')
+\end{lstlisting}
+& \textbf{Boxplot (Pandas)}: Rozdělení dat do kvartilů dle skupiny. \\
+\texttt{plt.hist(x)} &
+\begin{lstlisting}
+plt.hist(data, bins=15)
+\end{lstlisting}
+& \textbf{Histogram}: Rozdělení četností. \texttt{bins} určuje intervaly. \\
+\texttt{plt.scatter(x, y)} &
+\begin{lstlisting}
+plt.scatter(x, y, alpha=0.5)
+\end{lstlisting}
+& \textbf{Bodový graf}: Závislost dvou proměnných. \\
 \texttt{plt.title(s)} & \texttt{plt.title("Název", fontsize=16)} & Nastaví hlavní nadpis grafu. \\
 \texttt{plt.xlabel / ylabel} & \texttt{plt.xlabel("Čas [s]")} & Nastaví popisky os $x$ a $y$. \\
-\texttt{plt.legend()} & \texttt{plt.legend(loc='upper right')} & Zobrazí legendu (nutný parametr \texttt{label} u dat). \\
-\texttt{plt.savefig()} & \texttt{plt.savefig("graf.pdf")} & Uloží graf na disk. \\
+\texttt{plt.legend()} &
+\begin{lstlisting}
+plt.legend(loc='upper right')
+\end{lstlisting}
+& Zobrazí legendu (nutný parametr \texttt{label} u dat). \\
+\texttt{plt.savefig()} &
+\begin{lstlisting}
+plt.savefig("graf.pdf")
+\end{lstlisting}
+& Uloží graf na disk. \\
 \end{funkcedict}
 
 \subsection{Náhodné veličiny a rozdělení}
@@ -2781,10 +3001,26 @@ from scipy.stats import norm, binom, poisson, hypergeom, t
 \end{itemize}
 
 \begin{funkcedict}
-\texttt{norm.cdf(x, mu, sigma)} & \texttt{norm.cdf(16, loc=20, scale=4)} & \texttt{MÉNĚ NEŽ}: Šance, že hodnota bude maximálně $x$. \\
-\texttt{norm.sf(x, mu, sigma)} & \texttt{norm.sf(20, loc=20, scale=4)} & \texttt{VÍCE NEŽ}: Ekvivalent \texttt{1 - cdf}. Šance, že hodnota překročí $x$. \\
-\texttt{norm.cdf(b) - norm.cdf(a)} & \texttt{norm.cdf(28, 20, 4) - norm.cdf(12, 20, 4)} & \texttt{MEZI}: Šance, že se hodnota trefí do intervalu $(a, b)$. \\
-\texttt{norm.ppf(q, mu, sigma)} & \texttt{norm.ppf(0.4, loc=20, scale=4)} & \texttt{Hledání kvantilu}: Najde hodnotu $x$, pro kterou platí $P(X < x) = q$. \\
+\texttt{norm.cdf(x, mu, sigma)} &
+\begin{lstlisting}
+norm.cdf(16, loc=20, scale=4)
+\end{lstlisting}
+& \texttt{MÉNĚ NEŽ}: Šance, že hodnota bude maximálně $x$. \\
+\texttt{norm.sf(x, mu, sigma)} &
+\begin{lstlisting}
+norm.sf(20, loc=20, scale=4)
+\end{lstlisting}
+& \texttt{VÍCE NEŽ}: Ekvivalent \texttt{1 - cdf}. Šance, že hodnota překročí $x$. \\
+\texttt{norm.cdf(b) - norm.cdf(a)} &
+\begin{lstlisting}
+norm.cdf(28, 20, 4) - norm.cdf(12, 20, 4)
+\end{lstlisting}
+& \texttt{MEZI}: Šance, že se hodnota trefí do intervalu $(a, b)$. \\
+\texttt{norm.ppf(q, mu, sigma)} &
+\begin{lstlisting}
+norm.ppf(0.4, loc=20, scale=4)
+\end{lstlisting}
+& \texttt{Hledání kvantilu}: Najde hodnotu $x$, pro kterou platí $P(X < x) = q$. \\
 \end{funkcedict}
 
 \subsubsection*{Binomické rozdělení (\texttt{binom})}
@@ -2795,9 +3031,21 @@ from scipy.stats import norm, binom, poisson, hypergeom, t
 \end{itemize}
 
 \begin{funkcedict}
-\texttt{binom.pmf(k, n, p)} & \texttt{binom.pmf(4, n=10, p=1/6)} & \texttt{Pravděpodobnost PŘESNĚ}: Šance, že úspěch nastane přesně $k$-krát. \\
-\texttt{binom.cdf(k, n, p)} & \texttt{binom.cdf(2, n=10, p=1/6)} & \texttt{Pravděpodobnost NEJVÝŠE}: Šance, že úspěchů bude $0$ až $k$ (včetně). \\
-\texttt{1 - binom.cdf(k, n, p)} & \texttt{1 - binom.cdf(2, n=10, p=1/6)} & \texttt{Pravděpodobnost VÍCE NEŽ}: Šance, že úspěchů bude striktně více než $k$. \\
+\texttt{binom.pmf(k, n, p)} &
+\begin{lstlisting}
+binom.pmf(4, n=10, p=1/6)
+\end{lstlisting}
+& \texttt{Pravděpodobnost PŘESNĚ}: Šance, že úspěch nastane přesně $k$-krát. \\
+\texttt{binom.cdf(k, n, p)} &
+\begin{lstlisting}
+binom.cdf(2, n=10, p=1/6)
+\end{lstlisting}
+& \texttt{Pravděpodobnost NEJVÝŠE}: Šance, že úspěchů bude $0$ až $k$ (včetně). \\
+\texttt{1 - binom.cdf(k, n, p)} &
+\begin{lstlisting}
+1 - binom.cdf(2, n=10, p=1/6)
+\end{lstlisting}
+& \texttt{Pravděpodobnost VÍCE NEŽ}: Šance, že úspěchů bude striktně více než $k$. \\
 \end{funkcedict}
 
 \subsubsection*{Poissonovo rozdělení (\texttt{poisson})}
@@ -2807,9 +3055,21 @@ from scipy.stats import norm, binom, poisson, hypergeom, t
 \end{itemize}
 
 \begin{funkcedict}
-\texttt{poisson.pmf(k, mu)} & \texttt{poisson.pmf(2, mu=0.4)} & \texttt{Pravděpodobnost PŘESNĚ}: Šance, že nastanou přesně $k$ události při průměru $\mu$. \\
-\texttt{poisson.cdf(k, mu)} & \texttt{poisson.cdf(2, mu=0.4)} & \texttt{Pravděpodobnost NEJVÝŠE}: Šance, že událostí bude $0$ až $k$ (včetně). \\
-\texttt{1 - poisson.cdf(k, mu)} & \texttt{1 - poisson.cdf(2, mu=0.4)} & \texttt{Pravděpodobnost VÍCE NEŽ}: Šance na více než $k$ událostí. \\
+\texttt{poisson.pmf(k, mu)} &
+\begin{lstlisting}
+poisson.pmf(2, mu=0.4)
+\end{lstlisting}
+& \texttt{Pravděpodobnost PŘESNĚ}: Šance, že nastanou přesně $k$ události při průměru $\mu$. \\
+\texttt{poisson.cdf(k, mu)} &
+\begin{lstlisting}
+poisson.cdf(2, mu=0.4)
+\end{lstlisting}
+& \texttt{Pravděpodobnost NEJVÝŠE}: Šance, že událostí bude $0$ až $k$ (včetně). \\
+\texttt{1 - poisson.cdf(k, mu)} &
+\begin{lstlisting}
+1 - poisson.cdf(2, mu=0.4)
+\end{lstlisting}
+& \texttt{Pravděpodobnost VÍCE NEŽ}: Šance na více než $k$ událostí. \\
 \end{funkcedict}
 
 \subsubsection*{Hypergeometrické rozdělení (\texttt{hypergeom})}
@@ -2820,7 +3080,11 @@ from scipy.stats import norm, binom, poisson, hypergeom, t
 \end{itemize}
 
 \begin{funkcedict}
-\texttt{hypergeom.pmf(k, M, n, N)} & \texttt{hypergeom.pmf(0, 200, 10, 5)} & \texttt{Pravděpodobnost PŘESNĚ}: Šance na $k$ zmetků ve výběru $N$ z $M$, kde je celkem $n$ zmetků. \\
+\texttt{hypergeom.pmf(k, M, n, N)} &
+\begin{lstlisting}
+hypergeom.pmf(0, 200, 10, 5)
+\end{lstlisting}
+& \texttt{Pravděpodobnost PŘESNĚ}: Šance na $k$ zmetků ve výběru $N$ z $M$, kde je celkem $n$ zmetků. \\
 \end{funkcedict}
 
 \subsubsection*{Studentovo t-rozdělení (\texttt{t})}
@@ -2830,8 +3094,16 @@ from scipy.stats import norm, binom, poisson, hypergeom, t
 \end{itemize}
 
 \begin{funkcedict}
-\texttt{t.pdf(x, df)} & \texttt{t.pdf(x, df=15)} & \texttt{Hustota pravděpodobnosti}: Hodnota křivky pro bod $x$. \\
-\texttt{t.ppf(q, df)} & \texttt{t.ppf(1 - 0.05/2, df=19)} & \texttt{Kritická hodnota}: Kvantil pro t-rozdělení (pro meze intervalu spolehlivosti). \\
+\texttt{t.pdf(x, df)} &
+\begin{lstlisting}
+t.pdf(x, df=15)
+\end{lstlisting}
+& \texttt{Hustota pravděpodobnosti}: Hodnota křivky pro bod $x$. \\
+\texttt{t.ppf(q, df)} &
+\begin{lstlisting}
+t.ppf(1 - 0.05/2, df=19)
+\end{lstlisting}
+& \texttt{Kritická hodnota}: Kvantil pro t-rozdělení (pro meze intervalu spolehlivosti). \\
 \end{funkcedict}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2849,10 +3121,26 @@ from scipy.stats import norm, binom, poisson, hypergeom, t
 \end{itemize}
 
 \begin{funkcedict}
-\texttt{pnorm(x, mean, sd)} & \texttt{pnorm(16, mean=20, sd=4)} & \texttt{MÉNĚ NEŽ}: $P(X \le x)$. \\
-\texttt{1 - pnorm(x, mean, sd)} & \texttt{1 - pnorm(20, mean=20, sd=4)} & \texttt{VÍCE NEŽ}: $P(X > x)$. \\
-\texttt{pnorm(b,m,s) - pnorm(a,m,s)} & \texttt{pnorm(28,20,4) - pnorm(12,20,4)} & \texttt{MEZI}: $P(a < X \le b)$. \\
-\texttt{qnorm(q, mean, sd)} & \texttt{qnorm(0.975, mean=0, sd=1)} & Kvantil: najde $x$ pro $P(X \le x) = q$. \\
+\texttt{pnorm(x, mean, sd)} &
+\begin{lstlisting}
+pnorm(16, mean=20, sd=4)
+\end{lstlisting}
+& \texttt{MÉNĚ NEŽ}: $P(X \le x)$. \\
+\texttt{1 - pnorm(x, mean, sd)} &
+\begin{lstlisting}
+1 - pnorm(20, mean=20, sd=4)
+\end{lstlisting}
+& \texttt{VÍCE NEŽ}: $P(X > x)$. \\
+\texttt{pnorm(b,m,s) - pnorm(a,m,s)} &
+\begin{lstlisting}
+pnorm(28,20,4) - pnorm(12,20,4)
+\end{lstlisting}
+& \texttt{MEZI}: $P(a < X \le b)$. \\
+\texttt{qnorm(q, mean, sd)} &
+\begin{lstlisting}
+qnorm(0.975, mean=0, sd=1)
+\end{lstlisting}
+& Kvantil: najde $x$ pro $P(X \le x) = q$. \\
 \end{funkcedict}
 
 \subsubsection*{Binomické rozdělení (\texttt{binom})}
@@ -2863,9 +3151,21 @@ from scipy.stats import norm, binom, poisson, hypergeom, t
 \end{itemize}
 
 \begin{funkcedict}
-\texttt{dbinom(k, size, prob)} & \texttt{dbinom(4, size=10, prob=1/6)} & \texttt{PŘESNĚ}: $P(X = k)$. \\
-\texttt{pbinom(k, size, prob)} & \texttt{pbinom(2, size=10, prob=1/6)} & \texttt{NEJVÝŠE}: $P(X \le k)$. \\
-\texttt{1 - pbinom(k, size, prob)} & \texttt{1 - pbinom(2, size=10, prob=1/6)} & \texttt{VÍCE NEŽ}: $P(X > k)$. \\
+\texttt{dbinom(k, size, prob)} &
+\begin{lstlisting}
+dbinom(4, size=10, prob=1/6)
+\end{lstlisting}
+& \texttt{PŘESNĚ}: $P(X = k)$. \\
+\texttt{pbinom(k, size, prob)} &
+\begin{lstlisting}
+pbinom(2, size=10, prob=1/6)
+\end{lstlisting}
+& \texttt{NEJVÝŠE}: $P(X \le k)$. \\
+\texttt{1 - pbinom(k, size, prob)} &
+\begin{lstlisting}
+1 - pbinom(2, size=10, prob=1/6)
+\end{lstlisting}
+& \texttt{VÍCE NEŽ}: $P(X > k)$. \\
 \end{funkcedict}
 
 \subsubsection*{Poissonovo rozdělení (\texttt{pois})}
@@ -2875,9 +3175,21 @@ from scipy.stats import norm, binom, poisson, hypergeom, t
 \end{itemize}
 
 \begin{funkcedict}
-\texttt{dpois(k, lambda)} & \texttt{dpois(2, lambda=0.4)} & \texttt{PŘESNĚ}: $P(X = k)$. \\
-\texttt{ppois(k, lambda)} & \texttt{ppois(2, lambda=0.4)} & \texttt{NEJVÝŠE}: $P(X \le k)$. \\
-\texttt{1 - ppois(k, lambda)} & \texttt{1 - ppois(2, lambda=0.4)} & \texttt{VÍCE NEŽ}: $P(X > k)$. \\
+\texttt{dpois(k, lambda)} &
+\begin{lstlisting}
+dpois(2, lambda=0.4)
+\end{lstlisting}
+& \texttt{PŘESNĚ}: $P(X = k)$. \\
+\texttt{ppois(k, lambda)} &
+\begin{lstlisting}
+ppois(2, lambda=0.4)
+\end{lstlisting}
+& \texttt{NEJVÝŠE}: $P(X \le k)$. \\
+\texttt{1 - ppois(k, lambda)} &
+\begin{lstlisting}
+1 - ppois(2, lambda=0.4)
+\end{lstlisting}
+& \texttt{VÍCE NEŽ}: $P(X > k)$. \\
 \end{funkcedict}
 
 \subsubsection*{Hypergeometrické rozdělení (\texttt{hyper})}
@@ -2888,8 +3200,16 @@ from scipy.stats import norm, binom, poisson, hypergeom, t
 \end{itemize}
 
 \begin{funkcedict}
-\texttt{dhyper(x, m, n, k)} & \texttt{dhyper(0, m=10, n=190, k=5)} & \texttt{PŘESNĚ}: $P(X = x)$, zde: 0 zmetků z populace 200 (10 zmetků), výběr 5. \\
-\texttt{phyper(x, m, n, k)} & \texttt{phyper(2, m=10, n=190, k=5)} & \texttt{NEJVÝŠE}: $P(X \le x)$. \\
+\texttt{dhyper(x, m, n, k)} &
+\begin{lstlisting}
+dhyper(0, m=10, n=190, k=5)
+\end{lstlisting}
+& \texttt{PŘESNĚ}: $P(X = x)$, zde: 0 zmetků z populace 200 (10 zmetků), výběr 5. \\
+\texttt{phyper(x, m, n, k)} &
+\begin{lstlisting}
+phyper(2, m=10, n=190, k=5)
+\end{lstlisting}
+& \texttt{NEJVÝŠE}: $P(X \le x)$. \\
 \end{funkcedict}
 
 \subsubsection*{Studentovo t-rozdělení (\texttt{t})}
@@ -2899,17 +3219,41 @@ from scipy.stats import norm, binom, poisson, hypergeom, t
 \end{itemize}
 
 \begin{funkcedict}
-\texttt{pt(x, df)} & \texttt{pt(-1.96, df=19)} & Distribuční funkce $F(x) = P(T \le x)$. \\
-\texttt{qt(q, df)} & \texttt{qt(0.975, df=19)} & Kvantil: kritická hodnota pro t-test nebo IS. \\
+\texttt{pt(x, df)} &
+\begin{lstlisting}
+pt(-1.96, df=19)
+\end{lstlisting}
+& Distribuční funkce $F(x) = P(T \le x)$. \\
+\texttt{qt(q, df)} &
+\begin{lstlisting}
+qt(0.975, df=19)
+\end{lstlisting}
+& Kvantil: kritická hodnota pro t-test nebo IS. \\
 \end{funkcedict}
 
 \subsubsection*{Chí-kvadrát rozdělení (\texttt{chisq}) a F-rozdělení (\texttt{f})}
 
 \begin{funkcedict}
-\texttt{pchisq(x, df)} & \texttt{pchisq(7.81, df=3)} & $P(\chi^2 \le x)$ -- distribuční funkce. \\
-\texttt{qchisq(q, df)} & \texttt{qchisq(0.99, df=3)} & Kritická hodnota pro $\chi^2$ test. \\
-\texttt{pf(x, df1, df2)} & \texttt{pf(3.86, df1=2, df2=9)} & $P(F \le x)$ -- distribuční funkce pro ANOVA. \\
-\texttt{qf(q, df1, df2)} & \texttt{qf(0.95, df1=2, df2=9)} & Kritická hodnota pro F-test (ANOVA). \\
+\texttt{pchisq(x, df)} &
+\begin{lstlisting}
+pchisq(7.81, df=3)
+\end{lstlisting}
+& $P(\chi^2 \le x)$ -- distribuční funkce. \\
+\texttt{qchisq(q, df)} &
+\begin{lstlisting}
+qchisq(0.99, df=3)
+\end{lstlisting}
+& Kritická hodnota pro $\chi^2$ test. \\
+\texttt{pf(x, df1, df2)} &
+\begin{lstlisting}
+pf(3.86, df1=2, df2=9)
+\end{lstlisting}
+& $P(F \le x)$ -- distribuční funkce pro ANOVA. \\
+\texttt{qf(q, df1, df2)} &
+\begin{lstlisting}
+qf(0.95, df1=2, df2=9)
+\end{lstlisting}
+& Kritická hodnota pro F-test (ANOVA). \\
 \end{funkcedict}
 
 \end{document}
