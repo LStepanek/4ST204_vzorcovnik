@@ -2326,6 +2326,94 @@ predict(m, newdata=data.frame(naklady=80),
 & Bodová predikce i IS pro střední hodnotu $Y$ při nové hodnotě $X$. \\
 \end{funkcedict}
 
+\subsection{Časové řady}
+
+\subsubsection*{Charakteristiky: diference a tempa růstu}
+1.\ diference: $\Delta y_t = y_t - y_{t-1}$ \quad Tempo růstu: $k_t = y_t/y_{t-1}$ \quad Průměrné tempo: $\bar{k} = \sqrt[n-1]{y_n/y_1}$
+
+\begin{funkcedict}
+\texttt{diff(y)} &
+\begin{lstlisting}
+y <- c(5274,5288,5297,5318,5338,5356)
+diff(y)          # 1. diference
+diff(diff(y))    # 2. diference
+\end{lstlisting}
+& Absolutní přírůstky první a druhé řádu. \\
+
+\texttt{Tempo růstu} &
+\begin{lstlisting}
+n <- length(y)
+tempo <- y[-1] / y[-n]
+prum_tempo <- (y[n]/y[1])^(1/(n-1))
+\end{lstlisting}
+& Mezičasové indexy $k_t$ a průměrné tempo růstu (geometrický průměr). \\
+
+\texttt{Chronologický průměr} &
+\begin{lstlisting}
+# Pro okamzikovou CR (stejne intervaly)
+n <- length(y)
+(y[1]/2 + sum(y[2:(n-1)]) +
+  y[n]/2) / (n-1)
+\end{lstlisting}
+& Průměr okamžikové časové řady; krajní hodnoty mají váhu $\tfrac{1}{2}$. \\
+\end{funkcedict}
+
+\subsubsection*{Klouzavé průměry}
+Prostý KP (liché $m = 2p+1$): symetrické okno $\pm p$. Centrovaný KP (sudé $m$): průměr dvou po sobě jdoucích prostých KP délky $m$.
+
+\begin{funkcedict}
+\texttt{filter(y, rep(1/m, m))} &
+\begin{lstlisting}
+m <- 5  # liche m -- prosty KP
+kp <- filter(y, rep(1/m,m), sides=2)
+\end{lstlisting}
+& Prostý klouzavý průměr; \texttt{sides=2} = symetrické okno. Odstraňuje sezónnost liché délky $m$. \\
+
+\texttt{Centrovaný KP (sudé m)} &
+\begin{lstlisting}
+m <- 4  # sude m -- centrovany KP
+kp_l <- filter(y, rep(1/m,m), sides=1)
+kp_c <- (kp_l +
+  c(NA, kp_l[-length(kp_l)])) / 2
+\end{lstlisting}
+& \texttt{sides=1}: průměr posledních $m$ hodnot. Centrovaný KP = průměr dvou sousedních prostých KP. \\
+\end{funkcedict}
+
+\subsubsection*{Trend a sezónnost -- regresní přístup}
+Model: $y_t = \beta_0 + \beta_1 t + \gamma_1 D_1 + \gamma_2 D_2 + \gamma_3 D_3 + \varepsilon_t$ (pro sezónnost délky 4; $D_j$ jsou dummy proměnné; 4. čtvrtletí je referenční kategorie).
+
+\begin{funkcedict}
+\texttt{Dummy proměnné} &
+\begin{lstlisting}
+t <- 1:length(y)
+Q2 <- as.integer(t %% 4 == 2)
+Q3 <- as.integer(t %% 4 == 3)
+Q4 <- as.integer(t %% 4 == 0)
+# Q1 je referencni (t %% 4 == 1)
+\end{lstlisting}
+& Vždy o jednu méně dummy než sezón -- jinak hrozí multikolinearita. \\
+
+\texttt{lm() s trendem} &
+\begin{lstlisting}
+m <- lm(y ~ t + Q2 + Q3 + Q4)
+summary(m)
+fitted(m)   # vyrovnane hodnoty
+\end{lstlisting}
+& Odhaduje lineární trend a sezónní odchylky; $\hat{\gamma}_j$ = odchylka $j$-tého čtvrtletí od referenčního. \\
+
+\texttt{Predikce} &
+\begin{lstlisting}
+t_n <- 21:24
+nd <- data.frame(
+  t  = t_n,
+  Q2 = as.integer(t_n %% 4 == 2),
+  Q3 = as.integer(t_n %% 4 == 3),
+  Q4 = as.integer(t_n %% 4 == 0))
+predict(m, newdata = nd)
+\end{lstlisting}
+& Predikce na budoucí kvartály; sestavit \texttt{data.frame} s $t$ a dummy proměnnými pro každé nové pozorování. \\
+\end{funkcedict}
+
 \end{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
