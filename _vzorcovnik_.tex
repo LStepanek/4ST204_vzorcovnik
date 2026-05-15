@@ -1570,6 +1570,50 @@ kde
 \item $P(B)$ je pravděpodobnost jevu $B$.
 \end{itemize}
 
+\noindent\hrule\medskip
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Podmíněná pravděpodobnost}
+
+Podmíněná pravděpodobnost jevu $A$ za podmínky, že nastal jev $B$,
+je pravděpodobnost současného nastání jevů $A$ a $B$ dělená pravděpodobností $B$.
+
+\begin{equation*}
+P(A \mid B) = \frac{P(A \cap B)}{P(B)}, \quad P(B) > 0
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $P(A \mid B)$ je podmíněná pravděpodobnost jevu $A$ za podmínky $B$,
+\item $P(A \cap B)$ je pravděpodobnost současného nastání jevů $A$ a $B$,
+\item $P(B)$ je pravděpodobnost jevu $B$.
+\end{itemize}
+
+Jevy $A$ a $B$ jsou \textbf{nezávislé}, právě když $P(A \mid B) = P(A)$,
+tj.\ nastání $B$ nemění pravděpodobnost $A$.
+
+\noindent\hrule\medskip
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Věta o úplné pravděpodobnosti}
+
+Je-li $\{B_1, B_2, \ldots, B_k\}$ úplný systém jevů (vzájemně se vylučují
+a jejich sjednocení je jistý jev), pak pro libovolný jev $A$ platí
+
+\begin{equation*}
+P(A) = \sum_{j=1}^{k} P(A \mid B_j)\,P(B_j)
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $P(A)$ je pravděpodobnost jevu $A$,
+\item $B_1, \ldots, B_k$ jsou vzájemně se vylučující jevy pokrývající celý prostor,
+\item $P(A \mid B_j)$ je podmíněná pravděpodobnost $A$ za podmínky $B_j$,
+\item $P(B_j)$ je pravděpodobnost jevu $B_j$.
+\end{itemize}
+
 %%_____________________________________________________________________________
 \subsection{Náhodné veličiny}
 %%-----------------------------------------------------------------------------
