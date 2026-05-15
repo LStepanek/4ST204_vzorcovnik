@@ -866,6 +866,57 @@ Vrací interkvartilové rozpětí pole.
 
 \end{funkcedict}
 
+\noindent\hrule\medskip
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Modus}
+
+Modus je hodnota, která se ve statistickém souboru vyskytuje nejčastěji
+(s nejvyšší absolutní četností). Soubor může mít i více modů.
+U spojitých proměnných se modus stanovuje po diskretizaci do intervalů.
+
+\begin{equation*}
+\hat{x} = x_{\,\arg\max_i\, n_i}
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $\hat{x}$ je modus,
+\item $n_i$ je absolutní četnost $i$-té hodnoty,
+\item $\arg\max_i$ označuje index hodnoty s nejvyšší četností.
+\end{itemize}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{names(which.max(table(x)))} &
+\begin{lstlisting}
+x <- c(1, 2, 2, 3, 3, 3, 4)
+names(which.max(table(x)))
+\end{lstlisting}
+&
+Vrací modus (nejčastější hodnotu) vektoru \texttt{x}.
+\\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{statistics.mode(x)} &
+\begin{lstlisting}
+import statistics
+x = [1, 2, 2, 3, 3, 3, 4]
+statistics.mode(x)
+\end{lstlisting}
+&
+Vrací modus pomocí standardní knihovny Pythonu.
+\\
+
+\end{funkcedict}
 
 %%----------------------------------------------------------------------------
 \subsection{Charakteristiky variability}
