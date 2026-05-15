@@ -2329,6 +2329,29 @@ t = \frac{r_{xy}}{\sqrt{1 - r_{xy}^2}} \sqrt{n-2}
 Testová statistika má Studentovo $t$-rozdělení o $n-2$ stupních volnosti, tedy $T\sim t(n-2)$\\
 Nulovou hypotézu zamítáme na hladině významnosti $\alpha$, pokud $|t| \ge t_{1-\alpha/2}$.
 
+\subsection{Implementace regrese}
+
+\subsubsection{Implementace v R}
+\begin{funkcedict}
+% zakomentovane funkce v R od AI, kdyby se nekomu hodily pro budouci doplneni vzorcovniku ;)
+% \texttt{lm(y \textasciitilde\ x)} & \texttt{m <- lm(mzda \textasciitilde\ vzdelani)} & Vytvoří lineární regresní model. \\
+% \texttt{summary(m)} & \texttt{summary(m)} & Zobrazí koeficienty, $p$-hodnoty a $R^2$. \\
+% \texttt{predict(m, novy)} & \texttt{predict(m, data.frame(x=80))} & Odhad střední hodnoty pro nová data. \\
+\end{funkcedict}
+
+\subsubsection{Implementace v Pythonu}
+\texttt{Importy:}
+\begin{lstlisting}
+import statsmodels.formula.api as smf
+from scipy.stats import pearsonr
+\end{lstlisting}
+\begin{funkcedict}
+\texttt{smf.ols("y $\sim$ x", data).fit()} & \texttt{smf.ols("naklady\_na\_udrzbu $\sim$ cena\_domu", data=df).fit()} & Vytvoří model lineární regrese. \\
+\texttt{model.summary()} & \texttt{model.summary()} & Vrací shrnutí modelu, včetně koeficientů, p-hodnot, $R^2$, $R^2_\text{adj}$ a F-statistiky.\\
+\texttt{pearsonr(x, y)[0]} & \texttt{pearsonr(x, y)[0]} & Vrací korelační koeficient.\\
+\texttt{y = b0 + b1 * x} & \texttt{odhad80 = b0 + b1 * 80} & Odhady hodnot x a y lze manuálně spočítat využitím vzorce a koeficientů získaných z \texttt{model.summary()}.\\
+\end{funkcedict}
+
 \end{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
