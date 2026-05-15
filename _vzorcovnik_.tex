@@ -2264,6 +2264,68 @@ cor.test(x, y, method="spearman")
 
 \noindent \textbf{Interpretace $|r|$:} $< 0{,}3$ slabá $\cdot$ $0{,}3$--$0{,}7$ střední $\cdot$ $> 0{,}7$ silná závislost. Znaménko udává směr.
 
+\subsection{Regresní analýza (jednoduchá lineární)}
+
+\subsubsection*{Koeficienty MNČ}
+$b_1 = \dfrac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sum(x_i-\bar{x})^2}$, \quad $b_0 = \bar{y} - b_1\bar{x}$, \quad model: $\hat{y} = b_0 + b_1 x$
+
+\begin{funkcedict}
+\texttt{lm(y \textasciitilde{} x)} &
+\begin{lstlisting}
+m <- lm(cena ~ naklady)
+summary(m)       # koef., R^2, testy
+coef(m)          # b0 a b1
+fitted(m)        # vyrovnane hodnoty
+residuals(m)     # rezidua e_i
+\end{lstlisting}
+& Fituje lineární model; \texttt{summary} vrací koeficienty, $R^2$, t-testy i F-test automaticky. \\
+
+\texttt{Koeficienty ručně} &
+\begin{lstlisting}
+x_b <- mean(x); y_b <- mean(y)
+b1 <- sum((x-x_b)*(y-y_b)) /
+      sum((x-x_b)^2)
+b0 <- y_b - b1 * x_b
+\end{lstlisting}
+& Ruční výpočet metodou nejmenších čtverců (minimalizace $Q = \sum e_i^2$). \\
+
+\texttt{Součty čtverců a $R^2$} &
+\begin{lstlisting}
+SS_tot <- sum((y - mean(y))^2)     # S_Y
+SS_reg <- sum((fitted(m)-mean(y))^2) # S_T
+SS_res <- sum(residuals(m)^2)      # S_R
+R2 <- SS_reg / SS_tot
+summary(m)$r.squared  # zkratka
+\end{lstlisting}
+& $S_Y = S_T + S_R$; $R^2 = S_T/S_Y \in [0,1]$ -- podíl rozptylu $Y$ vysvětlený modelem. \\
+
+\texttt{t-test pro $b_1$} &
+\begin{lstlisting}
+n <- length(x)
+se_b1 <- sqrt(SS_res/(n-2) /
+         sum((x-mean(x))^2))
+t_stat <- b1 / se_b1
+qt(0.975, df=n-2)   # krit. hodnota
+2*(1-pt(abs(t_stat), df=n-2)) # p-val
+\end{lstlisting}
+& $H_0\colon \beta_1=0$; $T = b_1/s_{b_1} \sim t(n-2)$; zamítáme při $|T| \ge t_{1-\alpha/2}(n-2)$. \\
+
+\texttt{F-test modelu} &
+\begin{lstlisting}
+F_stat <- (SS_reg/1)/(SS_res/(n-2))
+qf(0.95, df1=1, df2=n-2)
+\end{lstlisting}
+& $H_0\colon \beta_1=0$; $F = S_T/\bigl(S_R/(n-2)\bigr) \sim F(1;\,n-2)$; pro jednoduchou regresi ekvivalentní t-testu. \\
+
+\texttt{Predikce} &
+\begin{lstlisting}
+predict(m, newdata=data.frame(naklady=80))
+predict(m, newdata=data.frame(naklady=80),
+        interval="confidence")
+\end{lstlisting}
+& Bodová predikce i IS pro střední hodnotu $Y$ při nové hodnotě $X$. \\
+\end{funkcedict}
+
 \end{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
