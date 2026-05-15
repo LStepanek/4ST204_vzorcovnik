@@ -247,6 +247,111 @@ kde
 \item $p_i$ je relativní četnost $i$-té hodnoty (nebo třídy).
 \end{itemize}
 
+\noindent\hrule\medskip
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Kumulativní absolutní četnost}
+
+Kumulativní absolutní četnost $i$-té hodnoty je součet absolutních četností
+všech hodnot až do $i$-té (včetně).
+
+\begin{equation*}
+N_i = \sum_{j=1}^{i} n_j
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $N_i$ je kumulativní absolutní četnost $i$-té hodnoty,
+\item $n_j$ je absolutní četnost $j$-té hodnoty,
+\item $i$ je index hodnoty nebo třídy.
+\end{itemize}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{cumsum(ni)} &
+\begin{lstlisting}
+ni <- c(5, 10, 8, 7)
+Ni <- cumsum(ni)
+\end{lstlisting}
+&
+Vrací kumulativní součty vektoru absolutních četností.
+\\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{np.cumsum(ni)} &
+\begin{lstlisting}
+import numpy as np
+ni = np.array([5, 10, 8, 7])
+Ni = np.cumsum(ni)
+\end{lstlisting}
+&
+Vrací kumulativní součty pole absolutních četností.
+\\
+
+\end{funkcedict}
+
+\noindent\hrule\medskip
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Kumulativní relativní četnost}
+
+Kumulativní relativní četnost $i$-té hodnoty je součet relativních četností
+všech hodnot až do $i$-té (včetně). Odpovídá hodnotám empirické distribuční
+funkce; platí $P_k = 1$.
+
+\begin{equation*}
+P_i = \sum_{j=1}^{i} p_j
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $P_i$ je kumulativní relativní četnost $i$-té hodnoty,
+\item $p_j$ je relativní četnost $j$-té hodnoty,
+\item $i$ je index hodnoty nebo třídy.
+\end{itemize}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{cumsum(pi)} &
+\begin{lstlisting}
+ni <- c(5, 10, 8, 7)
+pi <- ni / sum(ni)
+Pi <- cumsum(pi)
+\end{lstlisting}
+&
+Vrací kumulativní relativní četnosti.
+\\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{np.cumsum(pi)} &
+\begin{lstlisting}
+import numpy as np
+ni = np.array([5, 10, 8, 7])
+pi = ni / ni.sum()
+Pi = np.cumsum(pi)
+\end{lstlisting}
+&
+Vrací kumulativní relativní četnosti.
+\\
+
+\end{funkcedict}
+
 %%-----------------------------------------------------------------------------
 \subsection{Charakteristiky polohy}
 %%_____________________________________________________________________________
