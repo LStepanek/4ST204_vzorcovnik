@@ -2271,6 +2271,25 @@ norm.rvs(size=100)        # simulace
 \section{Testování hypotéz}
 %%_____________________________________________________________________________
 
+\subsection{Bodový odhad}
+
+Bodový odhad nahrazuje neznámý parametr populace jednou hodnotou
+vypočtenou z výběru. Výběrový průměr $\bar{x}$ a výběrový rozptyl $s^2$
+jsou \textbf{nestranné} odhady (jejich střední hodnota se rovná odhadovanému parametru).
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{p{0.28\textwidth} p{0.38\textwidth} p{0.28\textwidth}}
+\textbf{Parametr} & \textbf{Odhad (vzorec)} & \textbf{Implementace v R} \\
+\midrule
+Střední hodnota $\mu$ & $\hat{\mu} = \bar{x} = \dfrac{1}{n}\sum x_i$ & \texttt{mean(x)} \\
+Rozptyl $\sigma^2$ & $\hat{\sigma}^2 = s^2 = \dfrac{\sum(x_i-\bar{x})^2}{n-1}$ & \texttt{var(x)} \\
+Podíl $\pi$ & $\hat{p} = x/n$ & \texttt{sum(x == k) / length(x)} \\
+\end{tabular}
+\end{center}
+
+\noindent\hrule\medskip
+
 \subsection{Intervaly spolehlivosti a velikost výběru}
 
 \subsubsection{Interval pro průměr ($\mu$)}
