@@ -1561,6 +1561,489 @@ Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky c
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\section{Testování hypotéz}
+%%_____________________________________________________________________________
+
+\subsection{Intervaly spolehlivosti a velikost výběru}
+
+\subsubsection{Interval pro průměr ($\mu$)}
+%%-----------------------------------------------------------------------------
+
+Odhadujeme skutečnou střední hodnotu populace $\mu$ na základě výběrového průměru $\bar{x}$.
+
+\begin{itemize}[noitemsep]
+\item \textbf{Neznámý $\sigma^2$ (nebo $n < 30$):} $\bar{x} \pm t_{1-\alpha/2}(n-1) \cdot \dfrac{s}{\sqrt{n}}$
+\item \textbf{Známý $\sigma^2$ (nebo $n \ge 30$):} $\bar{x} \pm z_{1-\alpha/2} \cdot \dfrac{\sigma}{\sqrt{n}}$
+\end{itemize}
+
+Pro \textbf{oboustranný} interval používáme kvantil $1-\alpha/2$, pro \textbf{jednostranný} $1-\alpha$.
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{t.test(x)\$conf.int} &
+\begin{lstlisting}
+x <- c(163,175,177,165,171,174)
+t.test(x, conf.level = 0.95)$conf.int
+\end{lstlisting}
+&
+Vrací 95\,\% IS pro $\mu$ (neznámý $\sigma^2$). \\
+
+\texttt{Ručně (t-rozdělení)} &
+\begin{lstlisting}
+xbar <- mean(x); s <- sd(x)
+n <- length(x); alpha <- 0.05
+t_kr <- qt(1 - alpha/2, df = n - 1)
+c(xbar - t_kr*s/sqrt(n),
+  xbar + t_kr*s/sqrt(n))
+\end{lstlisting}
+&
+Ruční výpočet IS s t-rozdělením. \\
+
+\texttt{Ručně (Z, známý $\sigma$)} &
+\begin{lstlisting}
+sigma <- 7
+z_kr <- qnorm(1 - alpha/2)
+c(xbar - z_kr*sigma/sqrt(n),
+  xbar + z_kr*sigma/sqrt(n))
+\end{lstlisting}
+&
+Ruční výpočet IS s normálním rozdělením (velký výběr nebo známý $\sigma$). \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{Kritická hodnota} & \texttt{crit = t.ppf(1 - alpha/2, df=n-1)} & Kvantil pro t-interval (neznámé $\sigma$). Pro velké $n$ lze nahradit \texttt{norm.ppf}. \\
+\texttt{Mezní chyba} & \texttt{err = crit * (s / np.sqrt(n))} & Výpočet odchylky; \texttt{s} je výběrová směrodatná odchylka. \\
+\texttt{Meze intervalu} & \texttt{lower, upper = xbar - err, xbar + err} & Parametr leží v intervalu s pravděpodobností $1 - \alpha$. \\
+
+\end{funkcedict}
+
+\noindent\hrule\medskip
+
+\subsubsection{Interval pro podíl ($\pi$)}
+%%-----------------------------------------------------------------------------
+
+Odhadujeme skutečný podíl $\pi$ z výběrové relativní četnosti $\hat{p} = x/n$.
+Vždy použijeme normální rozdělení (Z-kvantil).
+
+\begin{equation*}
+\hat{p} \pm z_{1-\alpha/2} \cdot \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}
+\end{equation*}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{prop.test(x, n)\$conf.int} &
+\begin{lstlisting}
+prop.test(x=110, n=200,
+  conf.level=0.95)$conf.int
+\end{lstlisting}
+&
+Wilsonův IS pro proporci (vestavěná funkce). \\
+
+\texttt{Ručně (Waldův IS)} &
+\begin{lstlisting}
+x_vol <- 110; n_vol <- 200
+p <- x_vol / n_vol
+z_kr <- qnorm(0.975)
+se <- sqrt(p*(1-p)/n_vol)
+c(p - z_kr*se, p + z_kr*se)
+\end{lstlisting}
+&
+Waldův IS -- jednoduchá normální aproximace. \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{Kritická hodnota} & \texttt{z\_crit = norm.ppf(1 - alpha / 2)} & Pro podíl se vždy používá normální rozdělení (Z-kvantil). \\
+\texttt{Mezní chyba} & \texttt{err = z\_crit * np.sqrt(p * (1-p) / n)} & Výpočet odchylky pro proporci $\hat{p}$. \\
+\texttt{Meze intervalu} & \texttt{lower, upper = p - err, p + err} & Parametr leží v intervalu s pravděpodobností $1 - \alpha$. \\
+
+\end{funkcedict}
+
+\noindent\hrule\medskip
+
+\subsubsection{Potřebná velikost výběru ($n$)}
+%%-----------------------------------------------------------------------------
+
+Minimální rozsah výběru, aby se odhad nemýlil o více než $\Delta$.
+Výsledek \textbf{vždy zaokrouhlit nahoru}.
+
+\begin{equation*}
+n \ge \left(\frac{z_{1-\alpha/2} \cdot \sigma}{\Delta}\right)^2 \quad \text{(průměr)}, \qquad
+n \ge \hat{p}(1-\hat{p}) \cdot \left(\frac{z_{1-\alpha/2}}{\Delta}\right)^2 \quad \text{(podíl)}
+\end{equation*}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{Minimální n (průměr)} &
+\begin{lstlisting}
+alpha <- 0.05; sigma <- 10
+delta <- 2  # pozadovana presnost
+z_kr <- qnorm(1 - alpha/2)
+ceiling((z_kr * sigma / delta)^2)
+\end{lstlisting}
+&
+Pro průměr. $\Delta$ je cílová přesnost. Výsledek \textbf{vždy} zaokrouhli nahoru. \\
+
+\texttt{Minimální n (podíl)} &
+\begin{lstlisting}
+p <- 0.5; delta <- 0.05  # +-5 p.b.
+ceiling(p*(1-p)*(z_kr/delta)^2)
+\end{lstlisting}
+&
+Pro podíl. Používá se pro plánování reprezentativního výzkumu. \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{Minimální n (průměr)} & \texttt{n = math.ceil((z\_crit * sigma / delta)**2)} & Pro průměr. $\Delta$ je cílová přesnost. Výsledek \textbf{vždy} zaokrouhli nahoru. \\
+\texttt{Minimální n (podíl)} & \texttt{n = math.ceil(p*(1-p) * (z\_crit/delta)**2)} & Pro podíl. \\
+
+\end{funkcedict}
+
+%%_____________________________________________________________________________
+\subsection{Jednovýběrový t-test (střední hodnota)}
+
+\textbf{H$_0$:} $\mu = \mu_0$. Testové kritérium má t-rozdělení s $n-1$ stupni volnosti.
+
+\begin{equation*}
+T = \frac{\bar{x} - \mu_0}{s/\sqrt{n}} \sim t(n-1)
+\end{equation*}
+
+\noindent \begin{tabular}{|l|l|l|}
+\hline
+\textbf{Typ testu} & \textbf{Alternativa $H_1$} & \textbf{p-hodnota v R} \\ \hline
+Levostranný & $\mu < \mu_0$ & \texttt{pt(T, df=n-1)} \\ \hline
+Pravostranný & $\mu > \mu_0$ & \texttt{1 - pt(T, df=n-1)} \\ \hline
+Oboustranný & $\mu \ne \mu_0$ & \texttt{2*(1 - pt(abs(T), df=n-1))} \\ \hline
+\end{tabular} \vspace{8pt}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{t.test(x, mu=mu0, ...)} &
+\begin{lstlisting}
+t.test(x, mu = 25000,
+       alternative = "less")
+# "greater" / "two.sided"
+\end{lstlisting}
+&
+Automatický t-test z vektoru dat. \\
+
+\texttt{Ručně} &
+\begin{lstlisting}
+n <- 49; xbar <- 23500; alpha <- 0.05
+mu0 <- 25000; s <- 5500
+T <- (xbar - mu0)/(s/sqrt(n))
+p_val <- pt(T, df = n - 1)
+t_kr  <- qt(alpha, df = n - 1)
+\end{lstlisting}
+&
+Ruční výpočet (jednostranný levostranný). \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{stats.ttest\_1samp(data, mu0)} & \texttt{stats.ttest\_1samp(data, popmean=mu0)} & Porovnání průměru vzorku s pevnou hodnotou $\mu_0$. \\
+
+\end{funkcedict}
+
+%%_____________________________________________________________________________
+\subsection{Dvouvýběrový t-test (Welchův)}
+
+\textbf{H$_0$:} $\mu_1 = \mu_2$. Welchova aproximace stupňů volnosti (předpokládáme různé rozptyly).
+
+\begin{equation*}
+T = \frac{\bar{x}_1 - \bar{x}_2}{\sqrt{s_1^2/n_1 + s_2^2/n_2}}
+\end{equation*}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{t.test(x1, x2, var.equal=FALSE)} &
+\begin{lstlisting}
+t.test(x1, x2,
+       var.equal = FALSE,
+       alternative = "two.sided")
+\end{lstlisting}
+&
+Welchův test (různé rozptyly). \\
+
+\texttt{Ručně (ze souhrnných statistik)} &
+\begin{lstlisting}
+n1<-38; x1<-5.3875; s1_2<-0.2698
+n2<-35; x2<-4.7;    s2_2<-0.24
+T <- (x1-x2)/sqrt(s1_2/n1+s2_2/n2)
+df_w <- (s1_2/n1+s2_2/n2)^2 /
+  ((s1_2/n1)^2/(n1-1)+
+   (s2_2/n2)^2/(n2-1))
+p_val <- 2*(1-pt(abs(T), df=df_w))
+\end{lstlisting}
+&
+Welch-Satterthwaiteovy stupně volnosti ($s_1^2$, $s_2^2$ jsou rozptyly). \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{stats.ttest\_ind(A, B)} & \texttt{stats.ttest\_ind(A, B, equal\_var=False)} & Porovnání průměrů dvou nezávislých skupin (Welchův test). \\
+
+\end{funkcedict}
+
+%%_____________________________________________________________________________
+\subsection{Párový t-test}
+
+\textbf{H$_0$:} $\mu_d = 0$, kde $d_i = x_{2i} - x_{1i}$ jsou párové rozdíly.
+Aplikuje jednovýběrový t-test na rozdíly.
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{t.test(pred, po, paired=TRUE)} &
+\begin{lstlisting}
+t.test(pred, po,
+       paired = TRUE,
+       alternative = "two.sided")
+\end{lstlisting}
+&
+Porovnání stejné skupiny ve dvou různých situacích (např. před a po zásahu). \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{stats.ttest\_rel(po, pred)} & \texttt{stats.ttest\_rel(po, pred)} & Porovnání stejné skupiny ve dvou různých situacích. \\
+
+\end{funkcedict}
+
+%%_____________________________________________________________________________
+\subsection{Test proporce (Z-test)}
+
+\textbf{H$_0$:} $\pi = \pi_0$. Testové kritérium:
+
+\begin{equation*}
+Z = \frac{\hat{p} - \pi_0}{\sqrt{\pi_0(1-\pi_0)/n}} \sim N(0,1)
+\end{equation*}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{prop.test(x, n, p=p0, ...)} &
+\begin{lstlisting}
+prop.test(x=90, n=150, p=0.5,
+  alternative="two.sided",
+  correct=FALSE)
+\end{lstlisting}
+&
+Bez Yatesovy korekce odpovídá ručnímu Z-testu. \\
+
+\texttt{Ručně} &
+\begin{lstlisting}
+p0 <- 0.5; n <- 150; orel <- 90
+phat <- orel/n
+Z <- (phat-p0)/sqrt(p0*(1-p0)/n)
+z_kr <- qnorm(1 - 0.01/2)
+p_val <- 2*(1 - pnorm(abs(Z)))
+\end{lstlisting}
+&
+Oboustranný Z-test symetrie mince ($\alpha = 0{,}01$). \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{proportions\_ztest} & \texttt{from statsmodels.stats.proportion import proportions\_ztest} & Z-test proporce. Vrací $(Z, p)$. \\
+
+\end{funkcedict}
+
+%%_____________________________________________________________________________
+\subsection{Jednocestná analýza rozptylu (ANOVA)}
+
+\textbf{H$_0$:} $\mu_1 = \mu_2 = \dots = \mu_k$, \textbf{H$_1$:} alespoň dva průměry se liší. \\
+Test je vždy \textbf{pravostranný}: zamítáme $H_0$, pokud $F \ge F_{1-\alpha}(k-1, n-k)$.
+
+\begin{equation*}
+F = \frac{S_m/(k-1)}{S_v/(n-k)} \sim F(k-1, n-k), \quad
+S_m = \sum_{j=1}^k n_j(\bar{x}_j - \bar{x})^2, \quad
+S_v = \sum_{j=1}^k \sum_{i=1}^{n_j} (x_{ij} - \bar{x}_j)^2
+\end{equation*}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{aov(y \textasciitilde\ skupina)} &
+\begin{lstlisting}
+y <- c(91,81,74,57, 83,72,63,47,
+       71,69,58,40)
+skupina <- factor(rep(c("A","B","C"),
+                      each=4))
+m <- aov(y ~ skupina)
+summary(m)
+\end{lstlisting}
+&
+Automatická ANOVA s tabulkou výsledků. \\
+
+\texttt{Skupinové průměry} &
+\begin{lstlisting}
+tapply(y, skupina, mean)
+\end{lstlisting}
+&
+Průměry v každé skupině. \\
+
+\texttt{Kritická hodnota F} &
+\begin{lstlisting}
+k <- nlevels(skupina); n <- length(y)
+qf(0.95, df1 = k-1, df2 = n-k)
+\end{lstlisting}
+&
+Kvantil F-rozdělení pro $\alpha = 0{,}05$. \\
+
+\texttt{Ručně (SS)} &
+\begin{lstlisting}
+grand <- mean(y)
+SS_m <- sum(tapply(y,skupina,
+  function(g) length(g)*(mean(g)-grand)^2))
+SS_v <- sum(tapply(y,skupina,
+  function(g) sum((g-mean(g))^2)))
+F_stat <- (SS_m/(k-1))/(SS_v/(n-k))
+\end{lstlisting}
+&
+Ruční výpočet součtů čtverců mezi skupinami a uvnitř skupin. \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{stats.f\_oneway(A, B, C)} & \texttt{stats.f\_oneway(A, B, C)} & Testování shody průměrů u tří a více skupin. \\
+
+\end{funkcedict}
+
+%%_____________________________________________________________________________
+\subsection{Chí-kvadrát test dobré shody}
+
+\textbf{H$_0$:} výběr odpovídá předpokládanému rozdělení.
+
+\begin{equation*}
+G = \sum_j \frac{(n_j - e_j)^2}{e_j} \sim \chi^2(k-1), \quad e_j = n \cdot \pi_{0,j}
+\end{equation*}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{chisq.test(emp, p=p\_teor)} &
+\begin{lstlisting}
+emp <- c(A=82, B=38, AB=26, O=69)
+p0  <- c(A=0.41,B=0.14,AB=0.07,O=0.38)
+chisq.test(emp, p = p0)
+\end{lstlisting}
+&
+Automatický test dobré shody. Vektor \texttt{p0} musí mít součet 1. \\
+
+\texttt{Ručně} &
+\begin{lstlisting}
+teor <- sum(emp) * p0
+G <- sum((emp - teor)^2 / teor)
+p_val <- 1 - pchisq(G, df=length(emp)-1)
+chi_kr <- qchisq(0.99, df=length(emp)-1)
+\end{lstlisting}
+&
+Ruční výpočet testové statistiky a p-hodnoty. \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{stats.chisquare(O, f\_exp=E)} & \texttt{stats.chisquare(O, f\_exp=E)} & Test dobré shody. \texttt{O} jsou pozorované, \texttt{E} očekávané četnosti. \\
+
+\end{funkcedict}
+
+%%_____________________________________________________________________________
+\subsection{Chí-kvadrát test nezávislosti}
+
+\textbf{H$_0$:} řádkový a sloupcový znak jsou nezávislé.
+
+\begin{equation*}
+e_{ij} = \frac{n_{i\bullet}\, n_{\bullet j}}{n}, \qquad
+G = \sum_{i,j} \frac{(n_{ij} - e_{ij})^2}{e_{ij}} \sim \chi^2\bigl((r-1)(s-1)\bigr)
+\end{equation*}
+
+Síla závislosti: Cramérovo $V = \sqrt{G / \bigl(n \cdot (\min(r,s)-1)\bigr)} \in [0,1]$. \\
+Interpretace: $< 0{,}1$ zanedbatelná $\cdot$ $0{,}1$--$0{,}3$ slabá $\cdot$ $0{,}3$--$0{,}5$ středně silná $\cdot$ $> 0{,}5$ silná.
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{chisq.test(tabulka)} &
+\begin{lstlisting}
+kt <- matrix(c(1768,807,189,47,
+               946,1387,746,53,
+               115,438,288,16),
+             nrow=3, byrow=TRUE)
+res <- chisq.test(kt)
+res$p.value      # p-hodnota
+res$expected     # teoreticke cetnosti
+\end{lstlisting}
+&
+Test nezávislosti z kontingenční tabulky. \\
+
+\texttt{Cramérovo V} &
+\begin{lstlisting}
+G <- as.numeric(res$statistic)
+n_celk <- sum(kt)
+r <- nrow(kt); s_kt <- ncol(kt)
+V <- sqrt(G / (n_celk*(min(r,s_kt)-1)))
+C <- sqrt(G / (G + n_celk))
+\end{lstlisting}
+&
+Síla závislosti: $V \in [0,1]$. Pearsonův $C$ závisí na rozměrech tabulky. \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{stats.chi2\_contingency(table)} & \texttt{chi2, p, df, exp = stats.chi2\_contingency(table)} & Vrací $(\chi^2, p, df, \text{teoretické četnosti})$. \\
+
+\end{funkcedict}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 
 \section{Práce s daty v Pythonu (Cheatsheet)}
