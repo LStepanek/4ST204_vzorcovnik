@@ -1901,6 +1901,89 @@ kde
 \end{itemize}
 
 %%_____________________________________________________________________________
+\subsection{Vlastnosti střední hodnoty a rozptylu}
+%%-----------------------------------------------------------------------------
+\subsubsection{Vlastnosti střední hodnoty $E(X)$}
+
+Pro libovolné náhodné veličiny $X$, $Y$ a konstantu $c$ platí:
+
+\begin{equation*}
+E(c) = c, \qquad E(cX) = c\,E(X), \qquad E(X + c) = E(X) + c
+\end{equation*}
+\begin{equation*}
+E(X + Y) = E(X) + E(Y)
+\end{equation*}
+
+Pro \textbf{nezávislé} náhodné veličiny $X$ a $Y$ navíc platí:
+
+\begin{equation*}
+E(X \cdot Y) = E(X) \cdot E(Y)
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $E(\cdot)$ označuje střední hodnotu (očekávanou hodnotu),
+\item $c$ je konstanta,
+\item $X$, $Y$ jsou náhodné veličiny.
+\end{itemize}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{mean(c * X)} &
+\begin{lstlisting}
+c1 <- 3
+X  <- c(1, 2, 3, 4, 5)
+mean(c1 * X)   # = c1 * mean(X)
+mean(X + c1)   # = mean(X) + c1
+\end{lstlisting}
+&
+Ověření linearity střední hodnoty. \\
+
+\end{funkcedict}
+
+\noindent\hrule\medskip
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Vlastnosti rozptylu $D(X)$}
+
+Pro libovolnou náhodnou veličinu $X$ a konstantu $c$ platí:
+
+\begin{equation*}
+D(c) = 0, \qquad D(cX) = c^2\,D(X), \qquad D(X + c) = D(X)
+\end{equation*}
+
+Pro \textbf{nezávislé} náhodné veličiny $X$ a $Y$ navíc platí:
+
+\begin{equation*}
+D(X + Y) = D(X) + D(Y)
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $D(\cdot)$ označuje rozptyl,
+\item $c$ je konstanta,
+\item $X$, $Y$ jsou nezávislé náhodné veličiny.
+\end{itemize}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{var\_pop(c * X)} &
+\begin{lstlisting}
+var_pop <- function(x) mean((x-mean(x))^2)
+var_pop(c1 * X)  # = c1^2 * var_pop(X)
+var_pop(X + c1)  # = var_pop(X)
+\end{lstlisting}
+&
+Vlastnosti populačního rozptylu (dělí $n$); \texttt{var()} v R dělí $n-1$. \\
+
+\end{funkcedict}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 \section{Kombinatorika a Metriky}
