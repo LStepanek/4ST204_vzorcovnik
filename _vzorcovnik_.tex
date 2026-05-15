@@ -1333,6 +1333,116 @@ Vrací variační koeficient hodnot ve vektoru \texttt{x}.
 
 \end{funkcedict}
 
+\noindent\hrule\medskip
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Střední absolutní odchylka (MAD)}
+
+Střední absolutní odchylka (medián absolutních odchylek od mediánu)
+je robustní míra variability odolná vůči odlehlým hodnotám.
+
+\begin{equation*}
+\mathrm{MAD} = \mathrm{median}\bigl(|x_i - \tilde{x}|\bigr)
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $\mathrm{MAD}$ je střední absolutní odchylka,
+\item $x_i$ jsou hodnoty statistického souboru,
+\item $\tilde{x}$ je medián,
+\item $|\cdot|$ označuje absolutní hodnotu.
+\end{itemize}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{mad(x)} &
+\begin{lstlisting}
+x <- c(2, 4, 6, 8, 100)
+mad(x)            # skálovaný (x 1.4826)
+mad(x, constant=1)# neškalovaný MAD
+\end{lstlisting}
+&
+R automaticky škáluje MAD faktorem 1,4826 pro konzistenci se~$\sigma$ normálního rozdělení.
+\\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{np.median(np.abs(x - np.median(x)))} &
+\begin{lstlisting}
+import numpy as np
+x = np.array([2, 4, 6, 8, 100])
+np.median(np.abs(x - np.median(x)))
+\end{lstlisting}
+&
+Neškalovaný MAD pomocí knihovny \texttt{numpy}.
+\\
+
+\end{funkcedict}
+
+\noindent\hrule\medskip
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Detekce odlehlých hodnot -- Tukeyovy meze}
+
+Hodnota je považována za odlehlou (outlier), pokud leží mimo interval
+ohraničený Tukeyovými mezemi. Tyto meze zobrazuje boxplot automaticky.
+
+\begin{equation*}
+\text{dolní mez} = Q_1 - 1{,}5 \cdot IQR, \qquad
+\text{horní mez} = Q_3 + 1{,}5 \cdot IQR
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $Q_1$ je první kvartil,
+\item $Q_3$ je třetí kvartil,
+\item $IQR = Q_3 - Q_1$ je interkvartilové rozpětí.
+\end{itemize}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{Tukeyovy meze} &
+\begin{lstlisting}
+q1  <- quantile(x, 0.25)
+q3  <- quantile(x, 0.75)
+iqr <- IQR(x)
+dolni    <- q1 - 1.5 * iqr
+horni    <- q3 + 1.5 * iqr
+outliers <- x[x < dolni | x > horni]
+\end{lstlisting}
+&
+Identifikace odlehlých hodnot. Boxplot tyto meze zobrazuje automaticky jako vousy. \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{Tukeyovy meze} &
+\begin{lstlisting}
+import numpy as np
+q1, q3 = np.quantile(x, [0.25, 0.75])
+iqr = q3 - q1
+outliers = x[(x < q1 - 1.5*iqr) |
+             (x > q3 + 1.5*iqr)]
+\end{lstlisting}
+&
+Identifikace odlehlých hodnot.
+\\
+
+\end{funkcedict}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 \section{Teorie pravděpodobnosti}
