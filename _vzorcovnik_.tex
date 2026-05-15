@@ -2239,6 +2239,31 @@ $p < \alpha$ & \textbf{ZAMÍTÁME $H_0$} (rozdíl je statisticky významný) \\ 
 $p \ge \alpha$ & \textbf{NEZAMÍTÁME $H_0$} (rozdíl je pravděpodobně náhodný) \\ \hline
 \end{tabular}
 
+\subsection{Korelační analýza}
+
+\subsubsection*{Pearsonův a Spearmanův korelační koeficient}
+\textbf{H$_0$:} $\rho = 0$ (žádná lineární/monotónní závislost). Testové kritérium $T = r\sqrt{(n-2)/(1-r^2)} \sim t(n-2)$.
+
+\begin{funkcedict}
+\texttt{cor(x, y)} &
+\begin{lstlisting}
+x <- c(1,2,0,5,3,4,2,6,1,3)
+y <- c(0,1,0,4,2,3,1,5,0,2)
+cor(x, y, method="pearson")   # linearni
+cor(x, y, method="spearman")  # poradovy
+\end{lstlisting}
+& Pearsonův koef.\ $r \in [-1,1]$ měří lineární závislost; Spearmanův $r_s$ měří monotónní závislost (neparametrický, odolný vůči odlehlým hodnotám). \\
+
+\texttt{cor.test(x, y)} &
+\begin{lstlisting}
+cor.test(x, y, method="pearson")
+cor.test(x, y, method="spearman")
+\end{lstlisting}
+& Test $H_0\colon \rho=0$; výstup obsahuje $p$-hodnotu, testovou statistiku $T$ a (pro Pearson) IS pro $\rho$. \\
+\end{funkcedict}
+
+\noindent \textbf{Interpretace $|r|$:} $< 0{,}3$ slabá $\cdot$ $0{,}3$--$0{,}7$ střední $\cdot$ $> 0{,}7$ silná závislost. Znaménko udává směr.
+
 \end{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
