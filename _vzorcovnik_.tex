@@ -3454,7 +3454,6 @@ def funkce(x, y, z):
 \end{lstlisting}
 & Definice vlastní funkce s parametry. \\
 \end{funkcedict}
-
 \subsection{Statistika a Matice (Knihovna NumPy a jiné)}
 \begin{funkcedict}
 \texttt{np.sum(x)} &
@@ -3512,6 +3511,9 @@ np.linalg.norm(x, ord=2)
 np.insert(A, 1, [..], axis=0)
 \end{lstlisting}
 & Vloží/Smaže řádek (\texttt{axis=0}) nebo sloupec (\texttt{axis=1}). \\
+\end{funkcedict}
+\clearpage
+\begin{funkcedict}
 \texttt{stats.gmean(x)} &
 \begin{lstlisting}
 stats.gmean(x)
@@ -3921,6 +3923,231 @@ pf(3.86, df1=2, df2=9)
 qf(0.95, df1=2, df2=9)
 \end{lstlisting}
 & Kritická hodnota pro F-test (ANOVA). \\
+\end{funkcedict}
+
+\clearpage
+\subsection{Práce s daty v R}
+
+\subsubsection*{Datové typy a konverze}
+\begin{funkcedict}
+\texttt{class(x)} &
+\begin{lstlisting}
+class(3.14)    # "numeric"
+class(TRUE)    # "logical"
+class("ahoj")  # "character"
+\end{lstlisting}
+& Vrátí datový typ objektu. \\
+\texttt{is.numeric / is.character \ldots} &
+\begin{lstlisting}
+is.numeric(3.14)   # TRUE
+is.integer(3L)     # TRUE
+is.logical(FALSE)  # TRUE
+\end{lstlisting}
+& Ověří datový typ; vrací \texttt{TRUE/FALSE}. \\
+\texttt{as.numeric(x)} &
+\begin{lstlisting}
+as.numeric("3.14")  # 3.14
+as.integer(3.7)     # 3
+as.character(42)    # "42"
+as.logical(0)       # FALSE
+\end{lstlisting}
+& Konverze na jiný typ. \\
+\texttt{is.na(x)} &
+\begin{lstlisting}
+is.na(NA)    # TRUE
+is.na(NaN)   # TRUE
+is.na(Inf)   # FALSE
+colSums(is.na(df)) # NA po sl.
+\end{lstlisting}
+& Detekce chybějící hodnoty (\texttt{NA/NaN}). \\
+\end{funkcedict}
+
+\subsubsection*{Vektory}
+\begin{funkcedict}
+\texttt{c(...)} &
+\begin{lstlisting}
+c(1, 2, 3)
+c("a", "b")
+c(x, y)        # spojení vektorů
+\end{lstlisting}
+& Vytvoří vektor nebo spojí vektory. \\
+\texttt{seq(from, to, by)} &
+\begin{lstlisting}
+1:10
+seq(2, 10, by = 2) # 2,4,6,8,10
+\end{lstlisting}
+& Vytvoří sekvenci čísel. \\
+\texttt{x[i]} &
+\begin{lstlisting}
+x[1]        # první prvek
+x[1:3]      # prvky 1–3
+x[-2]       # vše kromě 2.
+x[x > 5]   # podmíněný výběr
+\end{lstlisting}
+& Indexování vektoru. \\
+\texttt{length(x) / rev(x)} &
+\begin{lstlisting}
+length(c(1,2,3))  # 3
+rev(c(1,2,3))     # 3 2 1
+\end{lstlisting}
+& Délka vektoru a obrácení pořadí. \\
+\texttt{names(x)} &
+\begin{lstlisting}
+names(x) <- c("a","b","c")
+x["a"]  # výběr dle jména
+\end{lstlisting}
+& Pojmenování prvků vektoru. \\
+\end{funkcedict}
+
+\subsubsection*{Data frames}
+\begin{funkcedict}
+\texttt{str(df) / summary(df)} &
+\begin{lstlisting}
+str(mtcars)
+summary(mtcars)
+dim(mtcars)     # c(32, 11)
+\end{lstlisting}
+& Struktura, přehled a rozměry tabulky. \\
+\texttt{head(df, n) / tail(df, n)} &
+\begin{lstlisting}
+head(mtcars)      # prvních 6
+head(mtcars, 10)  # prvních 10
+tail(mtcars)      # posledních 6
+\end{lstlisting}
+& Náhled na prvních / posledních \texttt{n} řádků. \\
+\texttt{df[r, c] / df\$col} &
+\begin{lstlisting}
+df[2, 3]           # jeden prvek
+df[1, ]            # 1. řádek
+df[, 2]            # 2. sloupec
+df$mpg             # sloupec mpg
+df[df$mpg > 20, ]  # podmíněný výběr
+\end{lstlisting}
+& Indexování data.frameu. \\
+\texttt{colSums / colMeans} &
+\begin{lstlisting}
+colSums(df)
+colMeans(df, na.rm = TRUE)
+apply(df, 2, mean, na.rm = TRUE)
+\end{lstlisting}
+& Součet / průměr každého sloupce. \\
+\texttt{cbind / rbind} &
+\begin{lstlisting}
+cbind(df, novy = c(...)) # sloupec
+rbind(df, c(...))        # řádek
+df[-1, ]   # odebrání 1. řádku
+df[, -2]   # odebrání 2. sloupce
+\end{lstlisting}
+& Přidání nebo odebrání řádků / sloupců. \\
+\end{funkcedict}
+
+\subsubsection*{Import a export dat}
+\begin{funkcedict}
+\texttt{read.table()} &
+\begin{lstlisting}
+read.table("data.csv",
+  sep = ";", header = TRUE)
+\end{lstlisting}
+& Načte textový soubor do data.frameu. \\
+\texttt{read.csv()} &
+\begin{lstlisting}
+read.csv("data.csv")
+read.csv("data.csv", sep = ",")
+\end{lstlisting}
+& Zkratka pro CSV soubory. \\
+\texttt{write.table()} &
+\begin{lstlisting}
+write.table(mtcars,
+  file = "out.csv", sep = ";",
+  row.names = FALSE)
+\end{lstlisting}
+& Uloží data.frame do textového souboru. \\
+\texttt{getwd() / setwd()} &
+\begin{lstlisting}
+getwd()
+setwd("C:/Users/.../data")
+\end{lstlisting}
+& Zjistí nebo nastaví pracovní složku. \\
+\end{funkcedict}
+
+\subsubsection*{Četnosti a diskretizace}
+\begin{funkcedict}
+\texttt{table(x)} &
+\begin{lstlisting}
+ni <- table(data$kraj)
+pi <- prop.table(ni)
+\end{lstlisting}
+& Absolutní a relativní četnosti. \\
+\texttt{cumsum(x)} &
+\begin{lstlisting}
+Ni <- cumsum(ni)
+Pi <- cumsum(pi)
+\end{lstlisting}
+& Kumulativní (absolutní / relativní) četnosti. \\
+\texttt{cut(x, breaks)} &
+\begin{lstlisting}
+cut(x,
+  breaks = seq(0, 20, by = 2),
+  include.lowest = TRUE)
+\end{lstlisting}
+& Diskretizuje spojitou proměnnou do intervalů. \\
+\end{funkcedict}
+
+\subsubsection*{Balíček dplyr}
+Roura (\texttt{|>} nebo \texttt{\%>\%}) předává výsledek vlevo jako první argument funkce vpravo.
+\begin{funkcedict}
+\texttt{filter()} &
+\begin{lstlisting}
+mtcars |> filter(mpg > 20)
+mtcars |> filter(mpg > 20,
+                 cyl == 6)
+\end{lstlisting}
+& Výběr řádků splňujících podmínku. \\
+\texttt{select()} &
+\begin{lstlisting}
+mtcars |> select(mpg, cyl, hp)
+\end{lstlisting}
+& Výběr (podmnožiny) sloupců. \\
+\texttt{mutate()} &
+\begin{lstlisting}
+mtcars |> mutate(
+  pwr_wt = hp / wt)
+\end{lstlisting}
+& Přidá nový sloupec odvozený od existujících. \\
+\texttt{summarise()} &
+\begin{lstlisting}
+mtcars |> summarise(
+  prumer = mean(mpg),
+  odch   = sd(mpg))
+\end{lstlisting}
+& Souhrnné statistiky (redukuje tabulku na 1 řádek). \\
+\texttt{group\_by()} &
+\begin{lstlisting}
+mtcars |>
+  group_by(cyl) |>
+  summarise(n = n(),
+            prumer = mean(mpg))
+\end{lstlisting}
+& Seskupení řádků; \texttt{summarise} pak počítá za každou skupinu. \\
+\texttt{count()} &
+\begin{lstlisting}
+mtcars |> count(cyl)
+data |> count(kraj) |>
+  arrange(desc(n))
+\end{lstlisting}
+& Absolutní četnosti pro každou hodnotu. \\
+\texttt{arrange()} &
+\begin{lstlisting}
+mtcars |> arrange(mpg)
+mtcars |> arrange(desc(mpg))
+\end{lstlisting}
+& Seřadí řádky vzestupně / sestupně. \\
+\texttt{pull()} &
+\begin{lstlisting}
+mtcars |>
+  filter(cyl==6) |> pull(mpg)
+\end{lstlisting}
+& Extrahuje sloupec jako prostý vektor. \\
 \end{funkcedict}
 
 \end{document}
