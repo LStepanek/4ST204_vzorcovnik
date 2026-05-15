@@ -2044,6 +2044,246 @@ Síla závislosti: $V \in [0,1]$. Pearsonův $C$ závisí na rozměrech tabulky.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\section{Analýza závislosti}
+%%_____________________________________________________________________________
+
+\subsection{Korelační analýza}
+
+\subsubsection{Pearsonův korelační koeficient}
+%%-----------------------------------------------------------------------------
+
+Měří sílu \textbf{lineární} závislosti dvou spojitých proměnných.
+
+\begin{equation*}
+r = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^n (x_i - \bar{x})^2 \cdot \sum_{i=1}^n (y_i - \bar{y})^2}}, \quad r \in [-1, 1]
+\end{equation*}
+
+Test $H_0\colon \rho = 0$: $T = r\sqrt{(n-2)/(1-r^2)} \sim t(n-2)$. \\
+Interpretace $|r|$: $< 0{,}3$ slabá $\cdot$ $0{,}3$--$0{,}7$ střední $\cdot$ $> 0{,}7$ silná závislost. Znaménko udává směr.
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{cor(x, y, method="pearson")} &
+\begin{lstlisting}
+x <- c(1,2,0,5,3,4,2,6,1,3)
+y <- c(0,1,0,4,2,3,1,5,0,2)
+cor(x, y, method = "pearson")
+\end{lstlisting}
+&
+Hodnota korelačního koeficientu $r \in [-1,1]$. \\
+
+\texttt{cor.test(x, y)} &
+\begin{lstlisting}
+cor.test(x, y, method = "pearson")
+\end{lstlisting}
+&
+Test $H_0\colon \rho=0$; vrací $p$-hodnotu, $T$ a IS pro $\rho$. \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{stats.pearsonr(x, y)} & \texttt{r, p = stats.pearsonr(x, y)} & Vrací korelační koeficient $r$ a p-hodnotu testu $H_0\colon \rho = 0$. \\
+
+\end{funkcedict}
+
+\noindent\hrule\medskip
+
+\subsubsection{Spearmanův korelační koeficient}
+%%-----------------------------------------------------------------------------
+
+Měří sílu \textbf{monotónní} závislosti (neparametrický, odolný vůči odlehlým hodnotám).
+Počítá se jako Pearsonův koeficient aplikovaný na pořadí hodnot.
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{cor(x, y, method="spearman")} &
+\begin{lstlisting}
+cor(x, y, method = "spearman")
+\end{lstlisting}
+&
+Hodnota Spearmanova koeficientu $r_s$. \\
+
+\texttt{cor.test(x, y, method="spearman")} &
+\begin{lstlisting}
+cor.test(x, y, method = "spearman")
+\end{lstlisting}
+&
+Test $H_0\colon \rho_s=0$; vrací $p$-hodnotu a testovou statistiku. \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{stats.spearmanr(x, y)} & \texttt{rho, p = stats.spearmanr(x, y)} & Vrací Spearmanův $r_s$ a p-hodnotu testu $H_0\colon \rho_s = 0$. \\
+
+\end{funkcedict}
+
+%%_____________________________________________________________________________
+\subsection{Jednoduchá lineární regrese}
+
+\subsubsection{Odhad koeficientů (MNČ)}
+%%-----------------------------------------------------------------------------
+
+Model: $\hat{y} = b_0 + b_1 x$. Koeficienty minimalizují součet čtverců reziduí $Q = \sum e_i^2$.
+
+\begin{equation*}
+b_1 = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^n (x_i - \bar{x})^2}, \qquad b_0 = \bar{y} - b_1 \bar{x}
+\end{equation*}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{lm(y \textasciitilde\ x)} &
+\begin{lstlisting}
+m <- lm(cena ~ naklady)
+summary(m)       # koef., R^2, testy
+coef(m)          # b0 a b1
+fitted(m)        # vyrovnane hodnoty
+residuals(m)     # rezidua e_i
+\end{lstlisting}
+&
+Fituje lineární model; \texttt{summary} vrací koeficienty, $R^2$, t-testy i F-test automaticky. \\
+
+\texttt{Koeficienty ručně} &
+\begin{lstlisting}
+x_b <- mean(x); y_b <- mean(y)
+b1 <- sum((x-x_b)*(y-y_b)) /
+      sum((x-x_b)^2)
+b0 <- y_b - b1 * x_b
+\end{lstlisting}
+&
+Ruční výpočet metodou nejmenších čtverců (minimalizace $Q = \sum e_i^2$). \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{stats.linregress(x, y)} & \texttt{res = stats.linregress(x, y)} & Vrací \texttt{slope} ($b_1$), \texttt{intercept} ($b_0$), $r$, $p$-hodnotu a \texttt{stderr}. \\
+
+\end{funkcedict}
+
+\noindent\hrule\medskip
+
+\subsubsection{Součty čtverců a koeficient determinace $R^2$}
+%%-----------------------------------------------------------------------------
+
+\begin{equation*}
+S_Y = S_T + S_R, \qquad R^2 = \frac{S_T}{S_Y} \in [0,1]
+\end{equation*}
+
+kde $S_Y = \sum(y_i-\bar{y})^2$ (celkový), $S_T = \sum(\hat{y}_i-\bar{y})^2$ (regresní), $S_R = \sum e_i^2$ (reziduální).
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{Součty čtverců a $R^2$} &
+\begin{lstlisting}
+SS_tot <- sum((y - mean(y))^2)
+SS_reg <- sum((fitted(m)-mean(y))^2)
+SS_res <- sum(residuals(m)^2)
+R2 <- SS_reg / SS_tot
+summary(m)$r.squared  # zkratka
+\end{lstlisting}
+&
+$S_Y = S_T + S_R$; $R^2 = S_T/S_Y$ -- podíl rozptylu $Y$ vysvětlený modelem. \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{r\_squared} & \texttt{r\_squared = res.rvalue**2} & $R^2$ jako čtverec korelačního koeficientu (z \texttt{stats.linregress}). \\
+
+\end{funkcedict}
+
+\noindent\hrule\medskip
+
+\subsubsection{t-test a F-test platnosti modelu}
+%%-----------------------------------------------------------------------------
+
+\textbf{t-test pro $b_1$:} $H_0\colon \beta_1 = 0$; $T = b_1/s_{b_1} \sim t(n-2)$. \\
+\textbf{F-test modelu:} $H_0\colon \beta_1 = 0$; $F = S_T/\bigl(S_R/(n-2)\bigr) \sim F(1;\,n-2)$.
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{t-test pro $b_1$} &
+\begin{lstlisting}
+n <- length(x)
+se_b1 <- sqrt(SS_res/(n-2) /
+         sum((x-mean(x))^2))
+t_stat <- b1 / se_b1
+qt(0.975, df=n-2)             # krit. hodnota
+2*(1-pt(abs(t_stat), df=n-2)) # p-val
+\end{lstlisting}
+&
+$H_0\colon \beta_1=0$; zamítáme při $|T| \ge t_{1-\alpha/2}(n-2)$. \\
+
+\texttt{F-test modelu} &
+\begin{lstlisting}
+F_stat <- (SS_reg/1)/(SS_res/(n-2))
+qf(0.95, df1=1, df2=n-2)
+\end{lstlisting}
+&
+Pro jednoduchou regresi ekvivalentní t-testu. Výsledek v \texttt{summary(m)}. \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{p-hodnota pro $b_1$} & \texttt{res.pvalue} & p-hodnota testu $H_0\colon \beta_1 = 0$ (z \texttt{stats.linregress}). \\
+
+\end{funkcedict}
+
+\noindent\hrule\medskip
+
+\subsubsection{Predikce}
+%%-----------------------------------------------------------------------------
+
+Bodová predikce střední hodnoty $Y$ pro novou hodnotu $x^*$: $\hat{y}^* = b_0 + b_1 x^*$.
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{predict(m, newdata=...)} &
+\begin{lstlisting}
+predict(m, newdata=data.frame(naklady=80))
+predict(m, newdata=data.frame(naklady=80),
+        interval="confidence")
+\end{lstlisting}
+&
+Bodová predikce i IS pro střední hodnotu $Y$ při nové hodnotě $X$. \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{Predikce} & \texttt{y\_hat = res.intercept + res.slope * x\_new} & Bodová predikce (z \texttt{stats.linregress}). \\
+
+\end{funkcedict}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 
 \section{Práce s daty v Pythonu (Cheatsheet)}
