@@ -2239,6 +2239,53 @@ $p < \alpha$ & \textbf{ZAMÍTÁME $H_0$} (rozdíl je statisticky významný) \\ 
 $p \ge \alpha$ & \textbf{NEZAMÍTÁME $H_0$} (rozdíl je pravděpodobně náhodný) \\ \hline
 \end{tabular}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Lineární regrese}
+
+Regresní analýza zkoumá jednostranné závislosti mezi jednou či více vysvětlujícími proměnnými $X_i$ a vysvětlovanou proměnnou $Y$.
+
+\subsection{Přímková regrese}
+
+Závislost je popsána pomocí regresní funkce:
+\begin{equation*}
+Y = \beta_0 + \beta_1 X + \epsilon
+\end{equation*}
+kde $\beta_0$ je absolutní člen (posun přímky), $\beta_1$ je směr přímky a $\epsilon$ je náhodná chybová složka.\\\\
+Regresní funkci neznáme, takže ji odhadujeme za pomoci výběrového souboru:
+\begin{equation*}
+Y = b_0 + b_1 X
+\end{equation*}
+
+\subsubsection{Odhad parametrů metodou nejmenších čtverců}
+Parametry odhadujeme minimalizací součtu čtverců $Q = \sum (y_i - \hat{y}_i)^2$. Odhady pak jsou:
+\begin{equation*}
+b_1 = \hat{\beta}_1 = \frac{s_{xy}}{s_x^2} = \frac{\overline{xy} - \bar{x}\bar{y}}{\bar{x^2} - \bar{x}^2} , \qquad b_0 = \hat{\beta}_0 = \bar{y} - b_1\bar{x}
+\end{equation*}
+
+\subsubsection{Kvalita modelu a korelace}
+\begin{itemize}[noitemsep]
+    \item \textbf{Index determinace ($R^2$):} Udává, jakou část variability $Y$ model vysvětluje ($0 \le R^2 \le 1$). Obecně čím větší $R^2$, tím vhodnější je daný model pro popis daného typu závislosti.
+    \begin{equation*}
+    R^2 = \frac{S_T}{S_T + S_R}
+    \end{equation*}
+    kde $S_T = \sum (\hat{y}_i - \bar{y})^2$ je teoretický a $S_R = \sum (y_i - \hat{y}_i)^2$ reziduální součet čtverců.\\
+    \item \textbf{Adjustovaný index determinace ($R_{adj}^2$):} Penalizuje model za příliš vysoký počet parametrů $p$.
+    \begin{equation*}
+    R^2_\text{adj} = 1-(1-R^2) \frac{n-1}{n-p-1}
+    \end{equation*}
+    Platí, že $R^2_\text{adj}\le R^2$.\\
+    \item \textbf{Pearsonův korelační koeficient ($r_{xy}$):} Míra lineární těsnosti vztahu v intervalu $(-1, 1)$.
+\end{itemize}
+
+\subsection{Předpoklady modelu (Sada předpokladů)}
+Pro validní model by chybová složka $\epsilon_i$ měla splňovat:
+\begin{enumerate}[noitemsep]
+    \item \textbf{Nulová střední hodnota:} $\mathbb{E}(\epsilon_i) = 0$.
+    \item \textbf{Konstantní rozptyl:} $var(\epsilon_i) = \text{konstanta}<\infty$.
+    \item \textbf{Nulová kovariance mezi chybami:} $cov(\epsilon_i, \epsilon_j) = 0$.
+    \item \textbf{Normalita:} $\epsilon_i \sim \mathcal{N}(0, 1^2)$.
+\end{enumerate}
 \end{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
