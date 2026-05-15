@@ -2284,6 +2284,230 @@ Bodová predikce i IS pro střední hodnotu $Y$ při nové hodnotě $X$. \\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\section{Časové řady}
+%%_____________________________________________________________________________
+
+\subsection{Základní charakteristiky}
+
+\subsubsection{Absolutní přírůstky a tempa růstu}
+%%-----------------------------------------------------------------------------
+
+\begin{align*}
+\text{1.\ diference:} \quad &\Delta y_t = y_t - y_{t-1} \\
+\text{Tempo růstu:} \quad &k_t = y_t / y_{t-1} \\
+\text{Průměrné tempo:} \quad &\bar{k} = \sqrt[n-1]{y_n/y_1}
+\end{align*}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{diff(y)} &
+\begin{lstlisting}
+y <- c(5274,5288,5297,5318,5338,5356)
+diff(y)          # 1. diference
+diff(diff(y))    # 2. diference
+\end{lstlisting}
+&
+Absolutní přírůstky první a druhé řádu. \\
+
+\texttt{Tempo růstu} &
+\begin{lstlisting}
+n <- length(y)
+tempo <- y[-1] / y[-n]
+prum_tempo <- (y[n]/y[1])^(1/(n-1))
+\end{lstlisting}
+&
+Mezičasové indexy $k_t$ a průměrné tempo růstu (geometrický průměr). \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{np.diff(y)} & \texttt{np.diff(y)} & Absolutní přírůstky (1.\ diference). \\
+\texttt{Tempo růstu} & \texttt{y[1:] / y[:-1]} & Mezičasové indexy $k_t$ pro NumPy pole \texttt{y}. \\
+
+\end{funkcedict}
+
+\noindent\hrule\medskip
+
+\subsubsection{Chronologický průměr}
+%%-----------------------------------------------------------------------------
+
+Pro okamžikovou časovou řadu (stejně dlouhé intervaly):
+
+\begin{equation*}
+\bar{y} = \frac{\tfrac{1}{2}y_1 + y_2 + \dots + y_{n-1} + \tfrac{1}{2}y_n}{n-1}
+\end{equation*}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{Chronologický průměr} &
+\begin{lstlisting}
+n <- length(y)
+(y[1]/2 + sum(y[2:(n-1)]) +
+  y[n]/2) / (n-1)
+\end{lstlisting}
+&
+Průměr okamžikové časové řady; krajní hodnoty mají váhu $\tfrac{1}{2}$. \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{Chronologický průměr} & \texttt{(y[0]/2 + np.sum(y[1:-1]) + y[-1]/2) / (len(y)-1)} & Průměr okamžikové časové řady. \\
+
+\end{funkcedict}
+
+%%_____________________________________________________________________________
+\subsection{Klouzavé průměry}
+
+\subsubsection{Prostý klouzavý průměr (liché $m$)}
+%%-----------------------------------------------------------------------------
+
+Symetrické okno šířky $m = 2p+1$:
+$\tilde{y}_t = \frac{1}{m}\sum_{j=-p}^{p} y_{t+j}$.
+Odstraňuje sezónnost délky $\le m$.
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{filter(y, rep(1/m, m))} &
+\begin{lstlisting}
+m <- 5  # liche m -- prosty KP
+kp <- filter(y, rep(1/m,m), sides=2)
+\end{lstlisting}
+&
+Prostý klouzavý průměr; \texttt{sides=2} = symetrické okno. \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{np.convolve} & \texttt{np.convolve(y, np.ones(m)/m, mode='valid')} & Prostý klouzavý průměr (ztratí krajní hodnoty). \\
+
+\end{funkcedict}
+
+\noindent\hrule\medskip
+
+\subsubsection{Centrovaný klouzavý průměr (sudé $m$)}
+%%-----------------------------------------------------------------------------
+
+Pro sudé $m$: centrovaný KP = průměr dvou po sobě jdoucích prostých KP délky $m$.
+Používá se pro čtvrtletní nebo měsíční data.
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{Centrovaný KP (sudé m)} &
+\begin{lstlisting}
+m <- 4  # sude m -- centrovany KP
+kp_l <- filter(y, rep(1/m,m), sides=1)
+kp_c <- (kp_l +
+  c(NA, kp_l[-length(kp_l)])) / 2
+\end{lstlisting}
+&
+\texttt{sides=1}: průměr posledních $m$ hodnot. Centrovaný KP = průměr dvou sousedních prostých KP. \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{pd.Series.rolling} & \texttt{pd.Series(y).rolling(m).mean()} & Klouzavý průměr délky $m$ (pandas). \\
+
+\end{funkcedict}
+
+%%_____________________________________________________________________________
+\subsection{Trend a sezónnost -- regresní přístup}
+
+\subsubsection{Dummy proměnné a model}
+%%-----------------------------------------------------------------------------
+
+Model: $y_t = \beta_0 + \beta_1 t + \gamma_1 D_1 + \gamma_2 D_2 + \gamma_3 D_3 + \varepsilon_t$
+(sezónnost délky 4; $D_j$ jsou dummy proměnné; 4.\ čtvrtletí je referenční kategorie).
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{Dummy proměnné} &
+\begin{lstlisting}
+t <- 1:length(y)
+Q2 <- as.integer(t %% 4 == 2)
+Q3 <- as.integer(t %% 4 == 3)
+Q4 <- as.integer(t %% 4 == 0)
+# Q1 je referencni (t %% 4 == 1)
+\end{lstlisting}
+&
+Vždy o jednu méně dummy než sezón -- jinak hrozí multikolinearita. \\
+
+\texttt{lm() s trendem a sezónností} &
+\begin{lstlisting}
+m <- lm(y ~ t + Q2 + Q3 + Q4)
+summary(m)
+fitted(m)   # vyrovnane hodnoty
+\end{lstlisting}
+&
+Odhaduje lineární trend a sezónní odchylky; $\hat{\gamma}_j$ = odchylka $j$-tého čtvrtletí od referenčního. \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{pd.get\_dummies} & \texttt{pd.get\_dummies(df['quarter'], drop\_first=True)} & Automatické dummy proměnné z kategorického sloupce (pandas). \\
+
+\end{funkcedict}
+
+\noindent\hrule\medskip
+
+\subsubsection{Predikce na budoucí období}
+%%-----------------------------------------------------------------------------
+
+Sestavíme \texttt{data.frame} s $t$ a dummy proměnnými pro každé nové pozorování.
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{predict(m, newdata=...)} &
+\begin{lstlisting}
+t_n <- 21:24
+nd <- data.frame(
+  t  = t_n,
+  Q2 = as.integer(t_n %% 4 == 2),
+  Q3 = as.integer(t_n %% 4 == 3),
+  Q4 = as.integer(t_n %% 4 == 0))
+predict(m, newdata = nd)
+\end{lstlisting}
+&
+Predikce na budoucí kvartály. \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{model.predict(X\_new)} & \texttt{model.predict(X\_new)} & Predikce na nová data (scikit-learn nebo statsmodels). \\
+
+\end{funkcedict}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 
 \section{Práce s daty v Pythonu (Cheatsheet)}
