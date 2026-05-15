@@ -20,6 +20,11 @@
 \usepackage{xcolor}
 \usepackage{enumitem}
 \usepackage{booktabs}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18,
+  distr/.style={width=7cm, height=2.8cm, axis lines=left,
+    ytick=\empty, tick label style={font=\small},
+    every axis plot/.style={thick}}}
 
 \usepackage{listings}
 \usepackage{xcolor}
@@ -2002,13 +2007,6 @@ Mějme množinu $n$ prvků, ze které vybíráme $k$ prvků.
         S opakováním: $K'(k, n) = \binom{n+k-1}{k} = \frac{(n+k-1)!}{k!(n-1)!}$
 \end{itemize}
 
-\subsection{$L^p$ Normy (Vzdálenosti a penalizace)}
-Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky chyb a regularizaci.
-\begin{itemize}[noitemsep]
-    \item \textbf{$L^1$ (Manhattan):} $\|x\|_1 = \sum |x_i|$. Využití: Lasso regrese.
-    \item \textbf{$L^2$ (Euklid):} $\|x\|_2 = \sqrt{\sum x_i^2}$. Využití: Ridge regrese (metoda nejmenších čtverců).
-    \item \textbf{$L^\infty$ (Max):} $\|x\|_\infty = \max(|x_i|)$. Reprezentuje nejhorší možnou chybu.
-\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -2212,6 +2210,15 @@ kde
 \item $e \approx 2{,}718$ je Eulerovo číslo, $\pi \approx 3{,}14159$.
 \end{itemize}
 
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[distr, domain=-4:4, samples=120, axis lines=center,
+  ymin=0, ymax=0.42, xtick={0}, xticklabels={$\mu$}]
+\addplot[thick, blue!70!black] {exp(-x^2/2)/sqrt(2*pi)};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
 \paragraph{Standardizace}\mbox{}\par
 
 Libovolnou normálně rozdělenou veličinu lze převést na standardní normální
@@ -2223,13 +2230,17 @@ Z = \frac{X - \mu}{\sigma} \sim N(0,1)
 
 Standardní normální rozdělení má $E(Z) = 0$ a $D(Z) = 1$.
 
-\paragraph{Pravidlo $3\sigma$}\mbox{}\par
+\paragraph{Pravidlo $6\sigma$}\mbox{}\par
+
+Oblast $\pm 6\sigma$ kolem střední hodnoty pokrývá prakticky celou distribuci.
+Pravidlo se využívá v managementu kvality (metodologie \emph{Six~Sigma}):
 
 \begin{equation*}
-P(\mu - \sigma \le X \le \mu + \sigma) \approx 0{,}683, \quad
-P(\mu - 2\sigma \le X \le \mu + 2\sigma) \approx 0{,}954, \quad
-P(\mu - 3\sigma \le X \le \mu + 3\sigma) \approx 0{,}997
+P(\mu - 6\sigma \le X \le \mu + 6\sigma) \approx 0{,}9999999980
 \end{equation*}
+
+Procesy s variabilitou nepřesahující $\pm 6\sigma$ od cílové hodnoty produkují
+méně než $3{,}4$ závad na milion příležitostí (DPMO).
 
 \paragraph{Implementace v R}\mbox{}\par
 
@@ -2263,6 +2274,284 @@ norm.rvs(size=100)        # simulace
 &
 \texttt{loc}$\,=\mu$, \texttt{scale}$\,=\sigma$. \\
 
+\end{funkcedict}
+
+\noindent\hrule\medskip
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Rovnoměrné rozdělení $U(a,\,b)$}
+
+Každá hodnota v intervalu $[a, b]$ je stejně pravděpodobná.
+Hustota pravděpodobnosti je na celém intervalu konstantní.
+
+\begin{equation*}
+f(x) = \frac{1}{b-a}, \quad x \in [a,b], \qquad f(x) = 0 \text{ jinak}
+\end{equation*}
+
+\begin{equation*}
+E(X) = \frac{a+b}{2}, \qquad D(X) = \frac{(b-a)^2}{12}
+\end{equation*}
+
+kde $a$ je dolní mez a $b$ je horní mez intervalu.
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[distr, xmin=-0.5, xmax=3.5, ymin=0, ymax=0.52,
+  xtick={0,3}, xticklabels={$a$,$b$},
+  xlabel={$x$}, xlabel style={right, font=\small}]
+\addplot[thick, blue!70!black] coordinates {(-0.5,0)(0,0)(0,0.333)(3,0.333)(3,0)(3.5,0)};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+\texttt{dunif / punif / qunif / runif} &
+\begin{lstlisting}
+dunif(0.5, min=0, max=1)  # hustota f(0.5)
+punif(0.5, min=0, max=1)  # P(X<=0.5)
+qunif(0.75, min=0, max=1) # kvantil
+runif(100, min=0, max=1)  # simulace
+\end{lstlisting}
+& \texttt{min}$=a$, \texttt{max}$=b$. \\
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+\texttt{uniform.cdf(x, loc, scale)} &
+\begin{lstlisting}
+from scipy.stats import uniform
+# loc=a, scale=b-a
+uniform.pdf(0.5, loc=0, scale=1)
+uniform.cdf(0.5, loc=0, scale=1)  # P(X<=0.5)
+uniform.ppf(0.75, loc=0, scale=1) # kvantil
+\end{lstlisting}
+& \texttt{loc}$=a$, \texttt{scale}$=b-a$. \\
+\end{funkcedict}
+
+\noindent\hrule\medskip
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Exponenciální rozdělení $\mathrm{Exp}(\lambda)$}
+
+Modeluje dobu čekání na první událost Poissonova procesu.
+Charakteristická vlastnost: \textbf{absence paměti} --
+$P(X > s+t \mid X > s) = P(X > t)$.
+
+\begin{equation*}
+f(x) = \lambda\, e^{-\lambda x}, \quad x \ge 0
+\end{equation*}
+
+\begin{equation*}
+E(X) = \frac{1}{\lambda}, \qquad D(X) = \frac{1}{\lambda^2}
+\end{equation*}
+
+kde $\lambda > 0$ je intenzita (průměrný počet událostí za jednotku času).
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[distr, domain=0:5, samples=100, xmin=0, ymin=0, ymax=1.1,
+  xtick=\empty, xlabel={$x \ge 0$}, xlabel style={right, font=\small},
+  legend style={font=\tiny, at={(0.97,0.95)}, anchor=north east}]
+\addplot[thick, blue!70!black] {exp(-x)};
+\addlegendentry{$\lambda=1$}
+\addplot[thick, red!70!black, dashed] {0.5*exp(-0.5*x)};
+\addlegendentry{$\lambda=0{,}5$}
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+\texttt{dexp / pexp / qexp / rexp} &
+\begin{lstlisting}
+dexp(1, rate=0.5)    # hustota f(1) pro lambda=0.5
+pexp(2, rate=0.5)    # P(X<=2)
+qexp(0.9, rate=0.5)  # kvantil
+rexp(100, rate=0.5)  # simulace
+\end{lstlisting}
+& \texttt{rate}$=\lambda$. \\
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+\texttt{expon.cdf(x, scale)} &
+\begin{lstlisting}
+from scipy.stats import expon
+# scale = 1/lambda
+expon.pdf(1, scale=2)    # hustota pro lambda=0.5
+expon.cdf(2, scale=2)    # P(X<=2)
+expon.ppf(0.9, scale=2)  # kvantil
+\end{lstlisting}
+& \texttt{scale}$=1/\lambda$. \\
+\end{funkcedict}
+
+%%_____________________________________________________________________________
+\subsection{Odvozená rozdělení}
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Studentovo t-rozdělení $t(\nu)$}
+
+Vzniká jako podíl standardní normální veličiny a odmocniny veličiny
+$\chi^2$ dělené svými stupni volnosti. Klíčové pro testování hypotéz
+a intervaly spolehlivosti, když \textbf{neznáme rozptyl} populace $\sigma^2$.
+
+\begin{equation*}
+E(X) = 0\; (\nu > 1), \qquad D(X) = \frac{\nu}{\nu - 2}\; (\nu > 2)
+\end{equation*}
+
+kde $\nu$ jsou stupně volnosti. Pro $\nu \to \infty$ přechází t-rozdělení v $N(0,1)$.
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[distr, domain=-4:4, samples=120, axis lines=center,
+  ymin=0, ymax=0.42, xtick={0}, xticklabels={$0$},
+  legend style={font=\tiny, at={(0.97,0.95)}, anchor=north east}]
+\addplot[thick, blue!70!black] {exp(-x^2/2)/sqrt(2*pi)};
+\addlegendentry{$N(0,1)$}
+\addplot[thick, red!70!black, dashed] {0.380*(1+x^2/5)^(-3)};
+\addlegendentry{$t(5)$}
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+\texttt{dt / pt / qt / rt} &
+\begin{lstlisting}
+dt(0, df=5)           # hustota f(0)
+pt(-1.96, df=19)      # P(T<=t)
+qt(0.975, df=19)      # krit. hodnota pro t-test/IS
+rt(100, df=10)        # simulace
+\end{lstlisting}
+& \texttt{df}$=\nu$ (stupně volnosti). \\
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+\texttt{t.pdf / cdf / ppf} &
+\begin{lstlisting}
+from scipy.stats import t
+t.pdf(0, df=5)          # hustota f(0)
+t.cdf(-1.96, df=19)     # P(T<=t)
+t.ppf(0.975, df=19)     # krit. hodnota
+t.rvs(df=10, size=100)  # simulace
+\end{lstlisting}
+& \texttt{df}$=\nu$ (stupně volnosti). \\
+\end{funkcedict}
+
+\noindent\hrule\medskip
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Chí-kvadrát rozdělení $\chi^2(k)$}
+
+Vzniká jako součet kvadrátů $k$ nezávislých standardně normálních veličin.
+Použití: test dobré shody, test nezávislosti v kontingenční tabulce.
+
+\begin{equation*}
+E(X) = k, \qquad D(X) = 2k
+\end{equation*}
+
+kde $k > 0$ jsou stupně volnosti. Rozdělení je pravostranně asymetrické;
+pro velká $k$ se přibližuje normálnímu.
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[distr, domain=0.01:15, samples=150, xmin=0, ymin=0, ymax=0.28,
+  xtick=\empty, xlabel={$x > 0$}, xlabel style={right, font=\small},
+  legend style={font=\tiny, at={(0.97,0.95)}, anchor=north east}]
+\addplot[thick, blue!70!black] {x^0.5*exp(-x/2)/2.506};
+\addlegendentry{$k=3$}
+\addplot[thick, red!70!black, dashed] {x^2*exp(-x/2)/16};
+\addlegendentry{$k=6$}
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+\texttt{dchisq / pchisq / qchisq / rchisq} &
+\begin{lstlisting}
+dchisq(5, df=3)        # hustota f(5)
+pchisq(7.81, df=3)     # P(X<=7.81)
+qchisq(0.95, df=3)     # krit. hodnota
+rchisq(100, df=3)      # simulace
+\end{lstlisting}
+& \texttt{df}$=k$ (stupně volnosti). \\
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+\texttt{chi2.pdf / cdf / ppf} &
+\begin{lstlisting}
+from scipy.stats import chi2
+chi2.pdf(5, df=3)        # hustota f(5)
+chi2.cdf(7.81, df=3)     # P(X<=7.81)
+chi2.ppf(0.95, df=3)     # krit. hodnota
+chi2.rvs(df=3, size=100) # simulace
+\end{lstlisting}
+& \texttt{df}$=k$ (stupně volnosti). \\
+\end{funkcedict}
+
+\noindent\hrule\medskip
+
+%%-----------------------------------------------------------------------------
+\subsubsection{F-rozdělení $F(k_1,\,k_2)$}
+
+Vzniká jako podíl dvou nezávislých veličin $\chi^2$, každé dělené svými
+stupni volnosti. Použití: ANOVA, F-test celkové platnosti regresního modelu.
+
+\begin{equation*}
+E(X) = \frac{k_2}{k_2 - 2}\; (k_2 > 2), \qquad
+D(X) = \frac{2k_2^2(k_1+k_2-2)}{k_1(k_2-2)^2(k_2-4)}\; (k_2 > 4)
+\end{equation*}
+
+kde $k_1$ jsou stupně volnosti čitatele a $k_2$ jmenovatele.
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[distr, domain=0.01:6, samples=150, xmin=0, ymin=0, ymax=0.75,
+  xtick=\empty, xlabel={$x > 0$}, xlabel style={right, font=\small}]
+\addplot[thick, blue!70!black] {x^0.5*(1+0.3*x)^(-6.5)};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+\texttt{df / pf / qf / rf} &
+\begin{lstlisting}
+df(2, df1=3, df2=10)    # hustota f(2)
+pf(3.71, df1=3, df2=10) # P(F<=3.71)
+qf(0.95, df1=3, df2=10) # krit. hodnota
+rf(100, df1=3, df2=10)  # simulace
+# pozor: df() koliduje s data.frame
+# pouzit: stats::df()
+\end{lstlisting}
+& \texttt{df1}$=k_1$ (čitatel), \texttt{df2}$=k_2$ (jmenovatel). \\
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+\texttt{f.pdf / cdf / ppf} &
+\begin{lstlisting}
+from scipy.stats import f
+f.pdf(2, dfn=3, dfd=10)     # hustota f(2)
+f.cdf(3.71, dfn=3, dfd=10)  # P(F<=3.71)
+f.ppf(0.95, dfn=3, dfd=10)  # krit. hodnota
+f.rvs(dfn=3, dfd=10, size=100) # simulace
+\end{lstlisting}
+& \texttt{dfn}$=k_1$ (čitatel), \texttt{dfd}$=k_2$ (jmenovatel). \\
 \end{funkcedict}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -3660,7 +3949,7 @@ plt.savefig("graf.pdf")
 \subsection{Náhodné veličiny a rozdělení}
 \texttt{Importy:}
 \begin{lstlisting}
-from scipy.stats import norm, binom, poisson, hypergeom, t
+from scipy.stats import norm, binom, poisson, hypergeom, t, chi2, f, uniform, expon
 \end{lstlisting}
 
 \subsubsection*{Normální rozdělení (\texttt{norm})}
@@ -3759,20 +4048,52 @@ hypergeom.pmf(0, 200, 10, 5)
 \subsubsection*{Studentovo t-rozdělení (\texttt{t})}
 \begin{itemize}[label={}, leftmargin=1.5em, nosep]
     \item Spojité rozdělení. Používá se pro konstrukci intervalů spolehlivosti a testování (neznáme-li rozptyl populace).
-    \item \textbf{Parametry:} \texttt{df} = stupně volnosti, \texttt{q} = hladina (pravděpodobnost).
+    \item \textbf{Parametry:} \texttt{df} = stupně volnosti ($\nu$), \texttt{q} = hladina pravděpodobnosti.
 \end{itemize}
 
 \begin{funkcedict}
-\texttt{t.pdf(x, df)} &
+\texttt{t.pdf / cdf / ppf / rvs} &
 \begin{lstlisting}
-t.pdf(x, df=15)
+t.pdf(0, df=5)          # hustota f(0)
+t.cdf(-1.96, df=19)     # P(T<=t)
+t.ppf(1 - 0.05/2, df=19) # krit. hodnota
+t.rvs(df=10, size=100)  # simulace
 \end{lstlisting}
-& \texttt{Hustota pravděpodobnosti}: Hodnota křivky pro bod $x$. \\
-\texttt{t.ppf(q, df)} &
+& \texttt{df}$=\nu$ (stupně volnosti). \\
+\end{funkcedict}
+
+\subsubsection*{Chí-kvadrát rozdělení (\texttt{chi2})}
+\begin{itemize}[label={}, leftmargin=1.5em, nosep]
+    \item Součet kvadrátů $k$ standardních normálních veličin.
+    \item \textbf{Parametry:} \texttt{df} $= k$ = stupně volnosti.
+\end{itemize}
+
+\begin{funkcedict}
+\texttt{chi2.pdf / cdf / ppf / rvs} &
 \begin{lstlisting}
-t.ppf(1 - 0.05/2, df=19)
+chi2.pdf(5, df=3)        # hustota f(5)
+chi2.cdf(7.81, df=3)     # P(X<=7.81)
+chi2.ppf(0.95, df=3)     # krit. hodnota
+chi2.rvs(df=3, size=100) # simulace
 \end{lstlisting}
-& \texttt{Kritická hodnota}: Kvantil pro t-rozdělení (pro meze intervalu spolehlivosti). \\
+& \texttt{df}$=k$ (stupně volnosti). \\
+\end{funkcedict}
+
+\subsubsection*{F-rozdělení (\texttt{f})}
+\begin{itemize}[label={}, leftmargin=1.5em, nosep]
+    \item Podíl dvou veličin chi-kvadrát dělených svými stupni volnosti.
+    \item \textbf{Parametry:} \texttt{dfn} $= k_1$ (čitatel), \texttt{dfd} $= k_2$ (jmenovatel).
+\end{itemize}
+
+\begin{funkcedict}
+\texttt{f.pdf / cdf / ppf / rvs} &
+\begin{lstlisting}
+f.pdf(2, dfn=3, dfd=10)     # hustota f(2)
+f.cdf(3.71, dfn=3, dfd=10)  # P(F<=3.71)
+f.ppf(0.95, dfn=3, dfd=10)  # krit. hodnota
+f.rvs(dfn=3, dfd=10, size=100) # simulace
+\end{lstlisting}
+& \texttt{dfn}$=k_1$ (čitatel), \texttt{dfd}$=k_2$ (jmenovatel). \\
 \end{funkcedict}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -3884,45 +4205,54 @@ phyper(2, m=10, n=190, k=5)
 \subsubsection*{Studentovo t-rozdělení (\texttt{t})}
 \begin{itemize}[label={}, leftmargin=1.5em, nosep]
     \item Spojité rozdělení. Používá se pro intervaly spolehlivosti a testování, pokud neznáme rozptyl populace.
-    \item \textbf{Parametry:} \texttt{df} = stupně volnosti ($n - 1$ pro jednovýběrový t-test).
+    \item \textbf{Parametry:} \texttt{df} = stupně volnosti ($\nu$).
 \end{itemize}
 
 \begin{funkcedict}
-\texttt{pt(x, df)} &
+\texttt{dt / pt / qt / rt} &
 \begin{lstlisting}
-pt(-1.96, df=19)
+dt(0, df=5)           # hustota f(0)
+pt(-1.96, df=19)      # P(T<=t)
+qt(0.975, df=19)      # krit. hodnota pro t-test/IS
+rt(100, df=10)        # simulace
 \end{lstlisting}
-& Distribuční funkce $F(x) = P(T \le x)$. \\
-\texttt{qt(q, df)} &
-\begin{lstlisting}
-qt(0.975, df=19)
-\end{lstlisting}
-& Kvantil: kritická hodnota pro t-test nebo IS. \\
+& d/p/q/r $=$ hustota / distribuční fce / kvantilová fce / simulace. \\
 \end{funkcedict}
 
-\subsubsection*{Chí-kvadrát rozdělení (\texttt{chisq}) a F-rozdělení (\texttt{f})}
+\subsubsection*{Chí-kvadrát rozdělení (\texttt{chisq})}
+\begin{itemize}[label={}, leftmargin=1.5em, nosep]
+    \item Součet kvadrátů $k$ standardních normálních veličin.
+    \item \textbf{Parametry:} \texttt{df} $= k$ = stupně volnosti.
+\end{itemize}
 
 \begin{funkcedict}
-\texttt{pchisq(x, df)} &
+\texttt{dchisq / pchisq / qchisq / rchisq} &
 \begin{lstlisting}
-pchisq(7.81, df=3)
+dchisq(5, df=3)        # hustota f(5)
+pchisq(7.81, df=3)     # P(X<=7.81)
+qchisq(0.95, df=3)     # krit. hodnota
+rchisq(100, df=3)      # simulace
 \end{lstlisting}
-& $P(\chi^2 \le x)$ -- distribuční funkce. \\
-\texttt{qchisq(q, df)} &
+& d/p/q/r $=$ hustota / distribuční fce / kvantilová fce / simulace. \\
+\end{funkcedict}
+
+\subsubsection*{F-rozdělení (\texttt{f})}
+\begin{itemize}[label={}, leftmargin=1.5em, nosep]
+    \item Podíl dvou veličin chi-kvadrát dělených svými stupni volnosti.
+    \item \textbf{Parametry:} \texttt{df1} $= k_1$ (čitatel), \texttt{df2} $= k_2$ (jmenovatel).
+\end{itemize}
+
+\begin{funkcedict}
+\texttt{df / pf / qf / rf} &
 \begin{lstlisting}
-qchisq(0.99, df=3)
+df(2, df1=3, df2=10)    # hustota f(2)
+pf(3.71, df1=3, df2=10) # P(F<=3.71)
+qf(0.95, df1=3, df2=10) # krit. hodnota
+rf(100, df1=3, df2=10)  # simulace
+# pozor: df() koliduje s data.frame
+# pouzit: stats::df()
 \end{lstlisting}
-& Kritická hodnota pro $\chi^2$ test. \\
-\texttt{pf(x, df1, df2)} &
-\begin{lstlisting}
-pf(3.86, df1=2, df2=9)
-\end{lstlisting}
-& $P(F \le x)$ -- distribuční funkce pro ANOVA. \\
-\texttt{qf(q, df1, df2)} &
-\begin{lstlisting}
-qf(0.95, df1=2, df2=9)
-\end{lstlisting}
-& Kritická hodnota pro F-test (ANOVA). \\
+& d/p/q/r $=$ hustota / distribuční fce / kvantilová fce / simulace. \\
 \end{funkcedict}
 
 \clearpage
