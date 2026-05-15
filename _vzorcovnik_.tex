@@ -1178,6 +1178,7 @@ Vrací variační koeficient hodnot ve vektoru \texttt{x}.
 \end{funkcedict}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
 \section{Teorie pravděpodobnosti}
 %%_____________________________________________________________________________
 \subsection{Počet pravděpodobnosti}
@@ -1591,6 +1592,7 @@ kde
 
 %%_____________________________________________________________________________
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
 \section{Kombinatorika a Metriky}
 %%_____________________________________________________________________________
 \subsection{Kombinatorika}
@@ -1617,6 +1619,7 @@ Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky c
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\clearpage
 \section{Testování hypotéz}
 %%_____________________________________________________________________________
 
@@ -1673,9 +1676,21 @@ Ruční výpočet IS s normálním rozdělením (velký výběr nebo známý $\s
 
 \begin{funkcedict}
 
-\texttt{Kritická hodnota} & \texttt{crit = t.ppf(1 - alpha/2, df=n-1)} & Kvantil pro t-interval (neznámé $\sigma$). Pro velké $n$ lze nahradit \texttt{norm.ppf}. \\
-\texttt{Mezní chyba} & \texttt{err = crit * (s / np.sqrt(n))} & Výpočet odchylky; \texttt{s} je výběrová směrodatná odchylka. \\
-\texttt{Meze intervalu} & \texttt{lower, upper = xbar - err, xbar + err} & Parametr leží v intervalu s pravděpodobností $1 - \alpha$. \\
+\texttt{Kritická hodnota} &
+\begin{lstlisting}
+crit = t.ppf(1 - alpha/2, df=n-1)
+\end{lstlisting}
+& Kvantil pro t-interval (neznámé $\sigma$). Pro velké $n$ lze nahradit \texttt{norm.ppf}. \\
+\texttt{Mezní chyba} &
+\begin{lstlisting}
+err = crit * (s / np.sqrt(n))
+\end{lstlisting}
+& Výpočet odchylky; \texttt{s} je výběrová směrodatná odchylka. \\
+\texttt{Meze intervalu} &
+\begin{lstlisting}
+lower, upper = xbar - err, xbar + err
+\end{lstlisting}
+& Parametr leží v intervalu s pravděpodobností $1 - \alpha$. \\
 
 \end{funkcedict}
 
@@ -1720,9 +1735,21 @@ Waldův IS -- jednoduchá normální aproximace. \\
 
 \begin{funkcedict}
 
-\texttt{Kritická hodnota} & \texttt{z\_crit = norm.ppf(1 - alpha / 2)} & Pro podíl se vždy používá normální rozdělení (Z-kvantil). \\
-\texttt{Mezní chyba} & \texttt{err = z\_crit * np.sqrt(p * (1-p) / n)} & Výpočet odchylky pro proporci $\hat{p}$. \\
-\texttt{Meze intervalu} & \texttt{lower, upper = p - err, p + err} & Parametr leží v intervalu s pravděpodobností $1 - \alpha$. \\
+\texttt{Kritická hodnota} &
+\begin{lstlisting}
+z_crit = norm.ppf(1 - alpha / 2)
+\end{lstlisting}
+& Pro podíl se vždy používá normální rozdělení (Z-kvantil). \\
+\texttt{Mezní chyba} &
+\begin{lstlisting}
+err = z_crit * np.sqrt(p * (1-p) / n)
+\end{lstlisting}
+& Výpočet odchylky pro proporci $\hat{p}$. \\
+\texttt{Meze intervalu} &
+\begin{lstlisting}
+lower, upper = p - err, p + err
+\end{lstlisting}
+& Parametr leží v intervalu s pravděpodobností $1 - \alpha$. \\
 
 \end{funkcedict}
 
@@ -1767,8 +1794,16 @@ Pro podíl. Používá se pro plánování reprezentativního výzkumu. \\
 
 \begin{funkcedict}
 
-\texttt{Minimální n (průměr)} & \texttt{n = math.ceil((z\_crit * sigma / delta)**2)} & Pro průměr. $\Delta$ je cílová přesnost. Výsledek \textbf{vždy} zaokrouhli nahoru. \\
-\texttt{Minimální n (podíl)} & \texttt{n = math.ceil(p*(1-p) * (z\_crit/delta)**2)} & Pro podíl. \\
+\texttt{Minimální n (průměr)} &
+\begin{lstlisting}
+n = math.ceil((z_crit * sigma / delta)**2)
+\end{lstlisting}
+& Pro průměr. $\Delta$ je cílová přesnost. Výsledek \textbf{vždy} zaokrouhli nahoru. \\
+\texttt{Minimální n (podíl)} &
+\begin{lstlisting}
+n = math.ceil(p*(1-p) * (z_crit/delta)**2)
+\end{lstlisting}
+& Pro podíl. \\
 
 \end{funkcedict}
 
@@ -1819,7 +1854,11 @@ Ruční výpočet (jednostranný levostranný). \\
 
 \begin{funkcedict}
 
-\texttt{stats.ttest\_1samp(data, mu0)} & \texttt{stats.ttest\_1samp(data, popmean=mu0)} & Porovnání průměru vzorku s pevnou hodnotou $\mu_0$. \\
+\texttt{stats.ttest\_1samp(data, mu0)} &
+\begin{lstlisting}
+stats.ttest_1samp(data, popmean=mu0)
+\end{lstlisting}
+& Porovnání průměru vzorku s pevnou hodnotou $\mu_0$. \\
 
 \end{funkcedict}
 
@@ -1864,7 +1903,11 @@ Welch-Satterthwaiteovy stupně volnosti ($s_1^2$, $s_2^2$ jsou rozptyly). \\
 
 \begin{funkcedict}
 
-\texttt{stats.ttest\_ind(A, B)} & \texttt{stats.ttest\_ind(A, B, equal\_var=False)} & Porovnání průměrů dvou nezávislých skupin (Welchův test). \\
+\texttt{stats.ttest\_ind(A, B)} &
+\begin{lstlisting}
+stats.ttest_ind(A, B, equal_var=False)
+\end{lstlisting}
+& Porovnání průměrů dvou nezávislých skupin (Welchův test). \\
 
 \end{funkcedict}
 
@@ -1893,7 +1936,11 @@ Porovnání stejné skupiny ve dvou různých situacích (např. před a po zás
 
 \begin{funkcedict}
 
-\texttt{stats.ttest\_rel(po, pred)} & \texttt{stats.ttest\_rel(po, pred)} & Porovnání stejné skupiny ve dvou různých situacích. \\
+\texttt{stats.ttest\_rel(po, pred)} &
+\begin{lstlisting}
+stats.ttest_rel(po, pred)
+\end{lstlisting}
+& Porovnání stejné skupiny ve dvou různých situacích. \\
 
 \end{funkcedict}
 
@@ -1936,7 +1983,11 @@ Oboustranný Z-test symetrie mince ($\alpha = 0{,}01$). \\
 
 \begin{funkcedict}
 
-\texttt{proportions\_ztest} & \texttt{from statsmodels.stats.proportion import proportions\_ztest} & Z-test proporce. Vrací $(Z, p)$. \\
+\texttt{proportions\_ztest} &
+\begin{lstlisting}
+from statsmodels.stats.proportion import proportions_ztest
+\end{lstlisting}
+& Z-test proporce. Vrací $(Z, p)$. \\
 
 \end{funkcedict}
 
@@ -2001,7 +2052,11 @@ Ruční výpočet součtů čtverců mezi skupinami a uvnitř skupin. \\
 
 \begin{funkcedict}
 
-\texttt{stats.f\_oneway(A, B, C)} & \texttt{stats.f\_oneway(A, B, C)} & Testování shody průměrů u tří a více skupin. \\
+\texttt{stats.f\_oneway(A, B, C)} &
+\begin{lstlisting}
+stats.f_oneway(A, B, C)
+\end{lstlisting}
+& Testování shody průměrů u tří a více skupin. \\
 
 \end{funkcedict}
 
@@ -2043,7 +2098,11 @@ Ruční výpočet testové statistiky a p-hodnoty. \\
 
 \begin{funkcedict}
 
-\texttt{stats.chisquare(O, f\_exp=E)} & \texttt{stats.chisquare(O, f\_exp=E)} & Test dobré shody. \texttt{O} jsou pozorované, \texttt{E} očekávané četnosti. \\
+\texttt{stats.chisquare(O, f\_exp=E)} &
+\begin{lstlisting}
+stats.chisquare(O, f_exp=E)
+\end{lstlisting}
+& Test dobré shody. \texttt{O} jsou pozorované, \texttt{E} očekávané četnosti. \\
 
 \end{funkcedict}
 
@@ -2094,12 +2153,17 @@ Síla závislosti: $V \in [0,1]$. Pearsonův $C$ závisí na rozměrech tabulky.
 
 \begin{funkcedict}
 
-\texttt{stats.chi2\_contingency(table)} & \texttt{chi2, p, df, exp = stats.chi2\_contingency(table)} & Vrací $(\chi^2, p, df, \text{teoretické četnosti})$. \\
+\texttt{stats.chi2\_contingency(table)} &
+\begin{lstlisting}
+chi2, p, df, exp = stats.chi2_contingency(table)
+\end{lstlisting}
+& Vrací $(\chi^2, p, df, \text{teoretické četnosti})$. \\
 
 \end{funkcedict}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\clearpage
 \section{Analýza závislosti}
 %%_____________________________________________________________________________
 
@@ -2143,7 +2207,11 @@ Test $H_0\colon \rho=0$; vrací $p$-hodnotu, $T$ a IS pro $\rho$. \\
 
 \begin{funkcedict}
 
-\texttt{stats.pearsonr(x, y)} & \texttt{r, p = stats.pearsonr(x, y)} & Vrací korelační koeficient $r$ a p-hodnotu testu $H_0\colon \rho = 0$. \\
+\texttt{stats.pearsonr(x, y)} &
+\begin{lstlisting}
+r, p = stats.pearsonr(x, y)
+\end{lstlisting}
+& Vrací korelační koeficient $r$ a p-hodnotu testu $H_0\colon \rho = 0$. \\
 
 \end{funkcedict}
 
@@ -2179,7 +2247,11 @@ Test $H_0\colon \rho_s=0$; vrací $p$-hodnotu a testovou statistiku. \\
 
 \begin{funkcedict}
 
-\texttt{stats.spearmanr(x, y)} & \texttt{rho, p = stats.spearmanr(x, y)} & Vrací Spearmanův $r_s$ a p-hodnotu testu $H_0\colon \rho_s = 0$. \\
+\texttt{stats.spearmanr(x, y)} &
+\begin{lstlisting}
+rho, p = stats.spearmanr(x, y)
+\end{lstlisting}
+& Vrací Spearmanův $r_s$ a p-hodnotu testu $H_0\colon \rho_s = 0$. \\
 
 \end{funkcedict}
 
@@ -2226,7 +2298,11 @@ Ruční výpočet metodou nejmenších čtverců (minimalizace $Q = \sum e_i^2$)
 
 \begin{funkcedict}
 
-\texttt{stats.linregress(x, y)} & \texttt{res = stats.linregress(x, y)} & Vrací \texttt{slope} ($b_1$), \texttt{intercept} ($b_0$), $r$, $p$-hodnotu a \texttt{stderr}. \\
+\texttt{stats.linregress(x, y)} &
+\begin{lstlisting}
+res = stats.linregress(x, y)
+\end{lstlisting}
+& Vrací \texttt{slope} ($b_1$), \texttt{intercept} ($b_0$), $r$, $p$-hodnotu a \texttt{stderr}. \\
 
 \end{funkcedict}
 
@@ -2262,7 +2338,11 @@ $S_Y = S_T + S_R$; $R^2 = S_T/S_Y$ -- podíl rozptylu $Y$ vysvětlený modelem. 
 
 \begin{funkcedict}
 
-\texttt{r\_squared} & \texttt{r\_squared = res.rvalue**2} & $R^2$ jako čtverec korelačního koeficientu (z \texttt{stats.linregress}). \\
+\texttt{r\_squared} &
+\begin{lstlisting}
+r_squared = res.rvalue**2
+\end{lstlisting}
+& $R^2$ jako čtverec korelačního koeficientu (z \texttt{stats.linregress}). \\
 
 \end{funkcedict}
 
@@ -2304,7 +2384,11 @@ Pro jednoduchou regresi ekvivalentní t-testu. Výsledek v \texttt{summary(m)}. 
 
 \begin{funkcedict}
 
-\texttt{p-hodnota pro $b_1$} & \texttt{res.pvalue} & p-hodnota testu $H_0\colon \beta_1 = 0$ (z \texttt{stats.linregress}). \\
+\texttt{p-hodnota pro $b_1$} &
+\begin{lstlisting}
+res.pvalue
+\end{lstlisting}
+& p-hodnota testu $H_0\colon \beta_1 = 0$ (z \texttt{stats.linregress}). \\
 
 \end{funkcedict}
 
@@ -2334,12 +2418,17 @@ Bodová predikce i IS pro střední hodnotu $Y$ při nové hodnotě $X$. \\
 
 \begin{funkcedict}
 
-\texttt{Predikce} & \texttt{y\_hat = res.intercept + res.slope * x\_new} & Bodová predikce (z \texttt{stats.linregress}). \\
+\texttt{Predikce} &
+\begin{lstlisting}
+y_hat = res.intercept + res.slope * x_new
+\end{lstlisting}
+& Bodová predikce (z \texttt{stats.linregress}). \\
 
 \end{funkcedict}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\clearpage
 \section{Časové řady}
 %%_____________________________________________________________________________
 
@@ -2382,8 +2471,16 @@ Mezičasové indexy $k_t$ a průměrné tempo růstu (geometrický průměr). \\
 
 \begin{funkcedict}
 
-\texttt{np.diff(y)} & \texttt{np.diff(y)} & Absolutní přírůstky (1.\ diference). \\
-\texttt{Tempo růstu} & \texttt{y[1:] / y[:-1]} & Mezičasové indexy $k_t$ pro NumPy pole \texttt{y}. \\
+\texttt{np.diff(y)} &
+\begin{lstlisting}
+np.diff(y)
+\end{lstlisting}
+& Absolutní přírůstky (1.\ diference). \\
+\texttt{Tempo růstu} &
+\begin{lstlisting}
+y[1:] / y[:-1]
+\end{lstlisting}
+& Mezičasové indexy $k_t$ pro NumPy pole \texttt{y}. \\
 
 \end{funkcedict}
 
@@ -2417,7 +2514,11 @@ Průměr okamžikové časové řady; krajní hodnoty mají váhu $\tfrac{1}{2}$
 
 \begin{funkcedict}
 
-\texttt{Chronologický průměr} & \texttt{(y[0]/2 + np.sum(y[1:-1]) + y[-1]/2) / (len(y)-1)} & Průměr okamžikové časové řady. \\
+\texttt{Chronologický průměr} &
+\begin{lstlisting}
+(y[0]/2 + np.sum(y[1:-1]) + y[-1]/2) / (len(y)-1)
+\end{lstlisting}
+& Průměr okamžikové časové řady. \\
 
 \end{funkcedict}
 
@@ -2449,7 +2550,11 @@ Prostý klouzavý průměr; \texttt{sides=2} = symetrické okno. \\
 
 \begin{funkcedict}
 
-\texttt{np.convolve} & \texttt{np.convolve(y, np.ones(m)/m, mode='valid')} & Prostý klouzavý průměr (ztratí krajní hodnoty). \\
+\texttt{np.convolve} &
+\begin{lstlisting}
+np.convolve(y, np.ones(m)/m, mode='valid')
+\end{lstlisting}
+& Prostý klouzavý průměr (ztratí krajní hodnoty). \\
 
 \end{funkcedict}
 
@@ -2481,7 +2586,11 @@ kp_c <- (kp_l +
 
 \begin{funkcedict}
 
-\texttt{pd.Series.rolling} & \texttt{pd.Series(y).rolling(m).mean()} & Klouzavý průměr délky $m$ (pandas). \\
+\texttt{pd.Series.rolling} &
+\begin{lstlisting}
+pd.Series(y).rolling(m).mean()
+\end{lstlisting}
+& Klouzavý průměr délky $m$ (pandas). \\
 
 \end{funkcedict}
 
@@ -2524,7 +2633,11 @@ Odhaduje lineární trend a sezónní odchylky; $\hat{\gamma}_j$ = odchylka $j$-
 
 \begin{funkcedict}
 
-\texttt{pd.get\_dummies} & \texttt{pd.get\_dummies(df['quarter'], drop\_first=True)} & Automatické dummy proměnné z kategorického sloupce (pandas). \\
+\texttt{pd.get\_dummies} &
+\begin{lstlisting}
+pd.get_dummies(df['quarter'], drop_first=True)
+\end{lstlisting}
+& Automatické dummy proměnné z kategorického sloupce (pandas). \\
 
 \end{funkcedict}
 
@@ -2558,7 +2671,11 @@ Predikce na budoucí kvartály. \\
 
 \begin{funkcedict}
 
-\texttt{model.predict(X\_new)} & \texttt{model.predict(X\_new)} & Predikce na nová data (scikit-learn nebo statsmodels). \\
+\texttt{model.predict(X\_new)} &
+\begin{lstlisting}
+model.predict(X_new)
+\end{lstlisting}
+& Predikce na nová data (scikit-learn nebo statsmodels). \\
 
 \end{funkcedict}
 
@@ -2566,6 +2683,7 @@ Predikce na budoucí kvartály. \\
 
 
 
+\clearpage
 \section{Příloha: Utility funkce v Pythonu}
 
 \subsection{Užitečné knihovny a základy}
@@ -2718,6 +2836,7 @@ from scipy.stats import norm, binom, poisson, hypergeom, t
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\clearpage
 \section{Příloha: Utility funkce v R}
 
 \subsection{Náhodné veličiny a rozdělení}
