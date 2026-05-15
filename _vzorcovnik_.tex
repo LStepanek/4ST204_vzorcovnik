@@ -2013,6 +2013,261 @@ Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky c
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \clearpage
+\section{Pravděpodobnostní rozdělení}
+%%_____________________________________________________________________________
+\subsection{Diskrétní rozdělení}
+%%-----------------------------------------------------------------------------
+\subsubsection{Binomické rozdělení $\mathrm{Bin}(n,\,p)$}
+
+Popisuje počet úspěchů v $n$ nezávislých pokusech, kde pravděpodobnost
+úspěchu v každém pokusu je $p$.
+
+\begin{equation*}
+P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}, \quad k = 0, 1, \ldots, n
+\end{equation*}
+
+\begin{equation*}
+E(X) = np, \qquad D(X) = np(1-p)
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $n$ je počet pokusů,
+\item $p$ je pravděpodobnost úspěchu v jednom pokusu,
+\item $k$ je počet úspěchů,
+\item $\binom{n}{k} = \frac{n!}{k!(n-k)!}$ je kombinační číslo.
+\end{itemize}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{dbinom(k, n, p)} &
+\begin{lstlisting}
+dbinom(3, size=10, prob=0.3) # P(X=3)
+pbinom(3, size=10, prob=0.3) # P(X<=3)
+qbinom(0.9, size=10, prob=0.3)# kvantil
+rbinom(100,size=10, prob=0.3) # simulace
+\end{lstlisting}
+&
+d/p/q/r $=$ hustota / distribuční fce / kvantilová fce / simulace. \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{stats.binom.pmf(k, n, p)} &
+\begin{lstlisting}
+from scipy.stats import binom
+binom.pmf(3, n=10, p=0.3)  # P(X=3)
+binom.cdf(3, n=10, p=0.3)  # P(X<=3)
+binom.ppf(0.9, n=10, p=0.3) # kvantil
+\end{lstlisting}
+&
+Binomické rozdělení z knihovny \texttt{scipy.stats}. \\
+
+\end{funkcedict}
+
+\noindent\hrule\medskip
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Poissonovo rozdělení $\mathrm{Pois}(\lambda)$}
+
+Popisuje počet náhodných událostí v daném časovém intervalu nebo oblasti,
+kdy průměrný počet událostí je $\lambda$. Vhodné pro vzácné jevy (velké $n$, malé $p$).
+
+\begin{equation*}
+P(X = k) = \frac{\lambda^k\, e^{-\lambda}}{k!}, \quad k = 0, 1, 2, \ldots
+\end{equation*}
+
+\begin{equation*}
+E(X) = D(X) = \lambda
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $\lambda > 0$ je průměrný počet událostí (intenzita),
+\item $k$ je počet událostí,
+\item $e \approx 2{,}718$ je Eulerovo číslo.
+\end{itemize}
+
+Aproximace: pro velké $n$ a malé $p$ platí $\mathrm{Bin}(n,p) \approx \mathrm{Pois}(\lambda)$, kde $\lambda = np$.
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{dpois(k, lambda)} &
+\begin{lstlisting}
+dpois(2, lambda=4)    # P(X=2)
+ppois(2, lambda=4)    # P(X<=2)
+qpois(0.9, lambda=4)  # kvantil
+rpois(100, lambda=4)  # simulace
+\end{lstlisting}
+&
+d/p/q/r $=$ hustota / distribuční fce / kvantilová fce / simulace. \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{stats.poisson.pmf(k, mu)} &
+\begin{lstlisting}
+from scipy.stats import poisson
+poisson.pmf(2, mu=4)   # P(X=2)
+poisson.cdf(2, mu=4)   # P(X<=2)
+\end{lstlisting}
+&
+Poissonovo rozdělení z knihovny \texttt{scipy.stats}. \\
+
+\end{funkcedict}
+
+\noindent\hrule\medskip
+
+%%-----------------------------------------------------------------------------
+\subsubsection{Hypergeometrické rozdělení $\mathrm{Hyper}(N,\,K,\,n)$}
+
+Popisuje počet úspěchů při výběru $n$ prvků \textbf{bez návratu}
+z populace $N$ prvků, z nichž $K$ je úspěšných. Rozdíl od binomického:
+pravděpodobnost úspěchu se mění s každým tahem.
+
+\begin{equation*}
+P(X = k) = \frac{\dbinom{K}{k}\dbinom{N-K}{n-k}}{\dbinom{N}{n}},
+\quad k = \max(0,\,n+K-N), \ldots, \min(n,K)
+\end{equation*}
+
+\begin{equation*}
+E(X) = \frac{nK}{N}, \qquad
+D(X) = \frac{nK}{N}\cdot\frac{N-K}{N}\cdot\frac{N-n}{N-1}
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $N$ je velikost populace,
+\item $K$ je počet úspěchů v populaci,
+\item $n$ je velikost výběru,
+\item $k$ je počet úspěchů ve výběru.
+\end{itemize}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{dhyper(k, K, N-K, n)} &
+\begin{lstlisting}
+# N=50, K=20 uspesnych, n=10 vybranych
+dhyper(3, m=20, n=30, k=10) # P(X=3)
+phyper(3, m=20, n=30, k=10) # P(X<=3)
+# argumenty: m=K, n=N-K, k=vyber n
+\end{lstlisting}
+&
+d/p/q/r $=$ hustota / distribuční fce / kvantilová fce / simulace. \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{stats.hypergeom.pmf(k, M, n, N)} &
+\begin{lstlisting}
+from scipy.stats import hypergeom
+hypergeom.pmf(3, M=50, n=20, N=10)
+# M=N (populace), n=K (uspesne), N=vyber
+\end{lstlisting}
+&
+Hypergeometrické rozdělení z knihovny \texttt{scipy.stats}. \\
+
+\end{funkcedict}
+
+%%_____________________________________________________________________________
+\subsection{Spojitá rozdělení}
+%%-----------------------------------------------------------------------------
+\subsubsection{Normální rozdělení $N(\mu,\,\sigma^2)$}
+
+Nejdůležitější spojité rozdělení. Hustota pravděpodobnosti má tvar symetrické
+zvonové křivky kolem střední hodnoty $\mu$.
+
+\begin{equation*}
+f(x) = \frac{1}{\sigma\sqrt{2\pi}}\,\exp\!\left(-\frac{(x-\mu)^2}{2\sigma^2}\right),
+\quad x \in \mathbb{R}
+\end{equation*}
+
+\begin{equation*}
+E(X) = \mu, \qquad D(X) = \sigma^2
+\end{equation*}
+
+kde
+
+\begin{itemize}[noitemsep]
+\item $\mu$ je střední hodnota (poloha středu),
+\item $\sigma^2$ je rozptyl ($\sigma > 0$ je směrodatná odchylka),
+\item $e \approx 2{,}718$ je Eulerovo číslo, $\pi \approx 3{,}14159$.
+\end{itemize}
+
+\paragraph{Standardizace}\mbox{}\par
+
+Libovolnou normálně rozdělenou veličinu lze převést na standardní normální
+$Z \sim N(0,1)$:
+
+\begin{equation*}
+Z = \frac{X - \mu}{\sigma} \sim N(0,1)
+\end{equation*}
+
+Standardní normální rozdělení má $E(Z) = 0$ a $D(Z) = 1$.
+
+\paragraph{Pravidlo $3\sigma$}\mbox{}\par
+
+\begin{equation*}
+P(\mu - \sigma \le X \le \mu + \sigma) \approx 0{,}683, \quad
+P(\mu - 2\sigma \le X \le \mu + 2\sigma) \approx 0{,}954, \quad
+P(\mu - 3\sigma \le X \le \mu + 3\sigma) \approx 0{,}997
+\end{equation*}
+
+\paragraph{Implementace v R}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{dnorm / pnorm / qnorm / rnorm} &
+\begin{lstlisting}
+pnorm(185, mean=180, sd=7) # F(185)
+qnorm(0.975)         # kvantil N(0,1)
+rnorm(100, mean=0, sd=1)   # simulace
+# standardizace (ekvivalentni):
+pnorm(185, 180, 7)
+pnorm((185-180)/7)
+\end{lstlisting}
+&
+d/p/q/r $=$ hustota / distribuční fce / kvantilová fce / simulace. \\
+
+\end{funkcedict}
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{stats.norm.cdf(x, loc, scale)} &
+\begin{lstlisting}
+from scipy.stats import norm
+norm.cdf(185, loc=180, scale=7)  # F(185)
+norm.ppf(0.975)           # kvantil N(0,1)
+norm.rvs(size=100)        # simulace
+\end{lstlisting}
+&
+\texttt{loc}$\,=\mu$, \texttt{scale}$\,=\sigma$. \\
+
+\end{funkcedict}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
 \section{Testování hypotéz}
 %%_____________________________________________________________________________
 
