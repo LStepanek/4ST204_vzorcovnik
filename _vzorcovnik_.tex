@@ -2239,6 +2239,119 @@ $p < \alpha$ & \textbf{ZAMÍTÁME $H_0$} (rozdíl je statisticky významný) \\ 
 $p \ge \alpha$ & \textbf{NEZAMÍTÁME $H_0$} (rozdíl je pravděpodobně náhodný) \\ \hline
 \end{tabular}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Lineární regrese}
+
+Regresní analýza zkoumá jednostranné závislosti mezi jednou či více vysvětlujícími proměnnými $X_i$ a vysvětlovanou proměnnou $Y$.
+
+\subsection{Přímková regrese}
+
+Závislost je popsána pomocí regresní funkce:
+\begin{equation*}
+Y = \beta_0 + \beta_1 X + \epsilon
+\end{equation*}
+kde $\beta_0$ je absolutní člen (posun přímky), $\beta_1$ je směr přímky a $\epsilon$ je náhodná chybová složka.\\\\
+Regresní funkci neznáme, takže ji odhadujeme za pomoci výběrového souboru:
+\begin{equation*}
+Y = b_0 + b_1 X
+\end{equation*}
+
+\subsubsection{Odhad parametrů metodou nejmenších čtverců}
+Parametry odhadujeme minimalizací součtu čtverců $Q = \sum (y_i - \hat{y}_i)^2$. Odhady pak jsou:
+\begin{equation*}
+b_1 = \hat{\beta}_1 = \frac{s_{xy}}{s_x^2} = \frac{\overline{xy} - \bar{x}\bar{y}}{\bar{x^2} - \bar{x}^2} , \qquad b_0 = \hat{\beta}_0 = \bar{y} - b_1\bar{x}
+\end{equation*}
+
+\subsubsection{Kvalita modelu}
+\begin{itemize}[noitemsep]
+    \item \textbf{Index determinace ($R^2$):} Udává, jakou část variability $Y$ model vysvětluje ($0 \le R^2 \le 1$). Obecně čím větší $R^2$, tím vhodnější je daný model pro popis daného typu závislosti.
+    \begin{equation*}
+    R^2 = \frac{S_T}{S_T + S_R}
+    \end{equation*}
+    kde $S_T = \sum (\hat{y}_i - \bar{y})^2$ je teoretický a $S_R = \sum (y_i - \hat{y}_i)^2$ reziduální součet čtverců.\\
+    \item \textbf{Adjustovaný index determinace ($R_{adj}^2$):} Penalizuje model za příliš vysoký počet parametrů $p$.
+    \begin{equation*}
+    R^2_\text{adj} = 1-(1-R^2) \frac{n-1}{n-p-1}
+    \end{equation*}
+    Platí, že $R^2_\text{adj}\le R^2$.
+\end{itemize}
+
+\subsection{Předpoklady modelu (Sada předpokladů)}
+Pro validní model by chybová složka $\epsilon_i$ měla splňovat:
+\begin{enumerate}[noitemsep]
+    \item \textbf{Nulová střední hodnota:} $\mathbb{E}(\epsilon_i) = 0$.
+    \item \textbf{Konstantní rozptyl:} $var(\epsilon_i) = \text{konstanta}<\infty$.
+    \item \textbf{Nulová kovariance mezi chybami:} $cov(\epsilon_i, \epsilon_j) = 0$.
+    \item \textbf{Normalita:} $\epsilon_i \sim \mathcal{N}(0, 1^2)$.
+\end{enumerate}
+
+\subsection{Testování v regresi}
+
+\subsubsection{Test o regresním parametru}
+Testujeme $H_0: \beta_j = 0$ (proměnná není v modelu významná). Testové kritérium je:
+\begin{equation*}
+t = \frac{\hat{\beta}_j}{s_{\hat{\beta}_j}} \sim t(n-p)
+\end{equation*}
+$H_0$ zamítáme na hladině významnost $\alpha$, pokud $|t| \ge t_{1-\alpha/2}$.
+
+\subsubsection{Test o regresním modelu}
+Testujeme $H_0: \beta_0=\text{konstanta}$ a $\beta_1,\beta_2,\dots,\beta_p = 0$ (model jako celek je nevýznamný). Testové kritérium je:
+\begin{equation*}
+F = \frac{S_T / (p-1)}{S_R / (n-p)} \sim F(p-1, n-p)
+\end{equation*}
+kde $S_T = \sum (\hat{y}_i - \bar{y})^2$ je teoretický a $S_R = \sum (y_i - \hat{y}_i)^2$ reziduální součet čtverců.\\
+
+\subsection{Lineární korelace}
+Jedná se o míru lineární těsnosti dvou proměnných.
+
+\subsubsection{Pearsonův korelační koeficient}
+Velikost lineární korelace $\rho_{xy}$ se obvykle vyjadřuje pomocí Pearsonova korelačního koeficientu $r_{xy}$:
+
+\begin{equation*}
+r_{xy} = \frac{\overline{xy} - \bar{x} \cdot \bar{y}}{\sqrt{(\overline{x^2} - \bar{x}^2)(\overline{y^2} - \bar{y}^2)}}
+\end{equation*}
+kde symboly typu $\bar{z}$ značí průměrnou hodnotu dané veličiny.
+
+Koeficient je škálován na interval $\langle -1, 1 \rangle$, kde:
+\begin{itemize}[noitemsep]
+    \item $r_{xy} = 1$ je přímá úměra,
+    \item $r_{xy} = -1$ je nepřímá úměra,
+    \item $r_{xy} \approx 0$ je lineární nezávislost.
+\end{itemize}
+
+\subsubsection{Test o korelačním koeficientu}
+Testujeme a nulové hypotézy $H_0: \rho_{xy} = 0$ (lineární nezávislost):
+
+\begin{equation*}
+t = \frac{r_{xy}}{\sqrt{1 - r_{xy}^2}} \sqrt{n-2}
+\end{equation*}
+Testová statistika má Studentovo $t$-rozdělení o $n-2$ stupních volnosti, tedy $T\sim t(n-2)$\\
+Nulovou hypotézu zamítáme na hladině významnosti $\alpha$, pokud $|t| \ge t_{1-\alpha/2}$.
+
+\subsection{Implementace regrese}
+
+\subsubsection{Implementace v R}
+\begin{funkcedict}
+% zakomentovane funkce v R od AI, kdyby se nekomu hodily pro budouci doplneni vzorcovniku ;)
+% \texttt{lm(y \textasciitilde\ x)} & \texttt{m <- lm(mzda \textasciitilde\ vzdelani)} & Vytvoří lineární regresní model. \\
+% \texttt{summary(m)} & \texttt{summary(m)} & Zobrazí koeficienty, $p$-hodnoty a $R^2$. \\
+% \texttt{predict(m, novy)} & \texttt{predict(m, data.frame(x=80))} & Odhad střední hodnoty pro nová data. \\
+\end{funkcedict}
+
+\subsubsection{Implementace v Pythonu}
+\texttt{Importy:}
+\begin{lstlisting}
+import statsmodels.formula.api as smf
+from scipy.stats import pearsonr
+\end{lstlisting}
+\begin{funkcedict}
+\texttt{smf.ols("y $\sim$ x", data).fit()} & \texttt{smf.ols("naklady\_na\_udrzbu $\sim$ cena\_domu", data=df).fit()} & Vytvoří model lineární regrese. \\
+\texttt{model.summary()} & \texttt{model.summary()} & Vrací shrnutí modelu, včetně koeficientů, p-hodnot, $R^2$, $R^2_\text{adj}$ a F-statistiky.\\
+\texttt{pearsonr(x, y)[0]} & \texttt{pearsonr(x, y)[0]} & Vrací korelační koeficient.\\
+\texttt{y = b0 + b1 * x} & \texttt{odhad80 = b0 + b1 * 80} & Odhady hodnot x a y lze manuálně spočítat využitím vzorce a koeficientů získaných z \texttt{model.summary()}.\\
+\end{funkcedict}
+
 \end{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
