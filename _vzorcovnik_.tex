@@ -3276,6 +3276,17 @@ print(m.summary()) # Komplexni vystup
 \end{lstlisting}
 & Fituje model pomocí vzorce (stejná syntaxe jako R). Funkce \texttt{summary()} vrací koeficienty, $R^2$, i testy. \\
 
+\texttt{Vícenásobná regrese} &
+\begin{lstlisting}
+# Model s vice prediktory
+m2 = smf.ols('y ~ x1 + x2 + x3', data=df).fit()
+print(m2.summary())
+
+# Upraveny R^2 pro porovnani modelu
+print(m2.rsquared_adj)
+\end{lstlisting}
+& \texttt{summary()} vypíše tabulku, kde \textbf{Adj. R-squared} použijeme k porovnání s jednodušším modelem (penalizuje za zbytečné parametry). \\
+
 \end{funkcedict}
 \noindent\hrule\medskip
 
@@ -3999,6 +4010,12 @@ plt.legend(loc='upper right')
 plt.savefig("graf.pdf")
 \end{lstlisting}
 & Uloží graf na disk. \\
+\texttt{sns.regplot()} &
+\begin{lstlisting}
+import seaborn as sns
+sns.regplot(data=df, x='TV', y='Sales')
+\end{lstlisting}
+& Vykreslí bodový graf (scatter) a rovnou jím proloží regresní přímku (včetně intervalu spolehlivosti). \\
 \end{funkcedict}
 
 \subsection{Náhodné veličiny a rozdělení}
