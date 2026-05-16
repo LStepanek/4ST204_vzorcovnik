@@ -3266,10 +3266,17 @@ Ruční výpočet metodou nejmenších čtverců (minimalizace $Q = \sum e_i^2$)
 \begin{lstlisting}
 res = stats.linregress(x, y)
 \end{lstlisting}
-& Vrací \texttt{slope} ($b_1$), \texttt{intercept} ($b_0$), $r$, $p$-hodnotu a \texttt{stderr}. \\
+& Vrací \texttt{slope} ($b_1$), \texttt{intercept} ($b_0$), $r$, $p$-hodnotu a \texttt{stderr} (základní regrese). \\
+
+\texttt{smf.ols(f, data)} &
+\begin{lstlisting}
+import statsmodels.formula.api as smf
+m = smf.ols('y ~ x', data=df).fit()
+print(m.summary()) # Komplexni vystup
+\end{lstlisting}
+& Fituje model pomocí vzorce (stejná syntaxe jako R). Funkce \texttt{summary()} vrací koeficienty, $R^2$, i testy. \\
 
 \end{funkcedict}
-
 \noindent\hrule\medskip
 
 \subsubsection{Součty čtverců a koeficient determinace $R^2$}
@@ -3382,11 +3389,18 @@ Bodová predikce i IS pro střední hodnotu $Y$ při nové hodnotě $X$. \\
 
 \begin{funkcedict}
 
-\texttt{Predikce} &
+\texttt{Predikce (scipy)} &
 \begin{lstlisting}
 y_hat = res.intercept + res.slope * x_new
 \end{lstlisting}
-& Bodová predikce (z \texttt{stats.linregress}). \\
+& Bodová predikce ručně z výsledků \texttt{stats.linregress}. \\
+
+\texttt{Predikce (statsmodels)} &
+\begin{lstlisting}
+pred = m.get_prediction(nove_data)
+pred.summary_frame() # Obsahuje intervaly
+\end{lstlisting}
+& Vrátí \texttt{DataFrame} obsahující bodovou predikci i interval spolehlivosti pro nová data. \\
 
 \end{funkcedict}
 
@@ -3550,11 +3564,12 @@ kp_c <- (kp_l +
 
 \begin{funkcedict}
 
-\texttt{pd.Series.rolling} &
+\texttt{Centrovaný KP} &
 \begin{lstlisting}
-pd.Series(y).rolling(m).mean()
+# Pro m=4 (ctvrtletni data)
+pd.Series(y).rolling(4).mean().rolling(2).mean().shift(-1)
 \end{lstlisting}
-& Klouzavý průměr délky $m$ (pandas). \\
+& Skutečný centrovaný klouzavý průměr pro sudé $m$. Vyžaduje průměr přes $m$ období následovaný oknem délky 2 a posunem \texttt{shift(-1)}. \\
 
 \end{funkcedict}
 
@@ -3594,6 +3609,25 @@ Odhaduje lineární trend a sezónní odchylky; $\hat{\gamma}_j$ = odchylka $j$-
 \end{funkcedict}
 
 \paragraph{Implementace v Python}\mbox{}\par
+
+\subsubsection{Dekompozice časové řady}
+
+Rozklad časové řady na trend, sezónnost a reziduální složku.
+
+\paragraph{Implementace v Python}\mbox{}\par
+
+\begin{funkcedict}
+
+\texttt{seasonal\_decompose} &
+\begin{lstlisting}
+from statsmodels.tsa.seasonal import seasonal_decompose
+decomp = seasonal_decompose(df['y'], model='additive', period=4)
+decomp.plot()
+\end{lstlisting}
+& Automatický rozklad řady na komponenty. Vykreslí originální data, trend, sezónnost a rezidua. \\
+
+\end{funkcedict}
+\noindent\hrule\medskip
 
 \begin{funkcedict}
 
@@ -3860,6 +3894,19 @@ np.where(df['am'] == 0, 'aut', 'man')
 
 \subsection{Pandas: Analýza dat}
 \begin{funkcedict}
+
+\texttt{pd.to\_datetime()} &
+\begin{lstlisting}
+df['datum'] = pd.to_datetime(df['datum'])
+df.set_index('datum', inplace=True)
+\end{lstlisting}
+& Převod textového sloupce na datumové hodnoty a jeho následné nastavení jako indexu tabulky (klíčové pro časové řady). \\
+
+\texttt{pd.date\_range()} &
+\begin{lstlisting}
+pd.date_range(start='2020-01-01', periods=10, freq='Q')
+\end{lstlisting}
+& Vygeneruje časovou osu, zde například se čtvrtletní (\texttt{'Q'}) frekvencí. \\
 \texttt{pd.read\_csv(file)} &
 \begin{lstlisting}
 pd.read_csv('data.csv')
