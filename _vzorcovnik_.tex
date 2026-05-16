@@ -20,6 +20,7 @@
 \usepackage{xcolor}
 \usepackage{enumitem}
 \usepackage{booktabs}
+\usepackage{multirow}
 
 \usepackage{listings}
 \usepackage{xcolor}
@@ -1558,6 +1559,323 @@ Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky c
     \item \textbf{$L^2$ (Euklid):} $\|x\|_2 = \sqrt{\sum x_i^2}$. Využití: Ridge regrese (metoda nejmenších čtverců).
     \item \textbf{$L^\infty$ (Max):} $\|x\|_\infty = \max(|x_i|)$. Reprezentuje nejhorší možnou chybu.
 \end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Statistická indukce}
+%%_____________________________________________________________________________
+\subsection{Testování statistických hypotéz o parametrech}
+%%_____________________________________________________________________________
+
+\textbf{Střední hodnota} (populační průměr); normální rozdělení
+
+{\renewcommand{\arraystretch}{2.2}%
+\noindent\begin{tabular}{|l|p{2.8cm}|p{5.5cm}|p{4.2cm}|}
+\hline
+\textbf{$H_0$} & \textbf{$H_1$} & \textbf{Testová statistika} & \textbf{Kritický obor} \\ \hline
+$\mu = \mu_0$
+  & $\mu > \mu_0$ \newline $\mu < \mu_0$ \newline $\mu \neq \mu_0$
+  & $T = \dfrac{\bar{x} - \mu_0}{S / \sqrt{n}}$ \newline Pokud $H_0$ platí \quad $T \sim t(n-1)$
+  & $W_\alpha = \{t;\, t \geq t_{1-\alpha}\}$ \newline $W_\alpha = \{t;\, t \leq -t_{1-\alpha}\}$ \newline $W_\alpha = \{t;\, |t| \geq t_{1-\alpha/2}\}$ \\ \hline
+\end{tabular}}\vspace{8pt}
+
+\textbf{Střední hodnota} (populační průměr); obecné rozdělení náhodné veličiny, velký náhodný výběr
+
+{\renewcommand{\arraystretch}{2.2}%
+\noindent\begin{tabular}{|l|p{2.8cm}|p{5.5cm}|p{4.2cm}|}
+\hline
+\textbf{$H_0$} & \textbf{$H_1$} & \textbf{Testová statistika} & \textbf{Kritický obor} \\ \hline
+$E(X) = E(X)_0$
+  & $E(X) > E(X)_0$ \newline $E(X) < E(X)_0$ \newline $E(X) \neq E(X)_0$
+  & $U = \dfrac{\bar{x} - E(X)_0}{S / \sqrt{n}}$ \newline Pokud $H_0$ platí \quad $U \approx N(0,1)$
+  & $W_\alpha = \{u;\, u \geq u_{1-\alpha}\}$ \newline $W_\alpha = \{u;\, u \leq -u_{1-\alpha}\}$ \newline $W_\alpha = \{u;\, |u| \geq u_{1-\alpha/2}\}$ \\ \hline
+\end{tabular}}\vspace{8pt}
+
+\textbf{Pravděpodobnost} (populační podíl); velký náhodný výběr
+
+{\renewcommand{\arraystretch}{2.2}%
+\noindent\begin{tabular}{|l|p{2.8cm}|p{5.5cm}|p{4.2cm}|}
+\hline
+\textbf{$H_0$} & \textbf{$H_1$} & \textbf{Testová statistika} & \textbf{Kritický obor} \\ \hline
+$\pi = \pi_0$
+  & $\pi > \pi_0$ \newline $\pi < \pi_0$ \newline $\pi \neq \pi_0$
+  & $U = \dfrac{p - \pi_0}{\sqrt{\dfrac{\pi_0(1-\pi_0)}{n}}}$ \newline Pokud $H_0$ platí \quad $U \approx N(0,1)$
+  & $W_\alpha = \{u;\, u \geq u_{1-\alpha}\}$ \newline $W_\alpha = \{u;\, u \leq -u_{1-\alpha}\}$ \newline $W_\alpha = \{u;\, |u| \geq u_{1-\alpha/2}\}$ \\ \hline
+\end{tabular}}\vspace{8pt}
+
+%%_____________________________________________________________________________
+\subsection{Testování statistických hypotéz o pravděpodobnostním rozdělení v populaci}
+%%_____________________________________________________________________________
+
+\textbf{Chí-kvadrát ($\chi^2$) test dobré shody}
+(velký náhodný výběr, $n'_j = n\pi_{0,j}$, $n'_j \geq 5$)
+
+\noindent\begin{tabular}{|p{3.5cm}|l|p{5.5cm}|p{4cm}|}
+\hline
+$H_0$ & $H_1$ & Testová statistika & Kritický obor \\ \hline
+$\pi_j = \pi_{0,j}$ \newline $(j = 1, 2, \ldots, k)$
+  & non $H_0$
+  & $G = \displaystyle\sum_{j=1}^{k} \dfrac{(n_j - n'_j)^2}{n'_j}$
+    \newline Pokud $H_0$ platí \quad $G \approx \chi^2(k-1)$
+  & $W_\alpha = \{g;\, g \geq \chi^2_{1-\alpha}\}$ \\ \hline
+\end{tabular}\vspace{8pt}
+
+%%_____________________________________________________________________________
+\subsection{Analýza rozptylu}
+%%_____________________________________________________________________________
+
+Rozklad čtverců: hodnoty faktoru ($k$ možností),
+počet pozorování $n_j$, $j = 1, 2, \ldots, k$; $y_{ji}$, $i = 1, 2, \ldots, n_j$ pozorování $Y$
+
+\begin{equation*}
+S_y = \sum_{j=1}^{k}\sum_{i=1}^{n_j}(y_{ji} - \bar{y})^2 = S_{y.m} + S_{y.v}
+\qquad
+S_{y.m} = \sum_{j=1}^{k} n_j(\bar{y}_j - \bar{y})^2
+\qquad
+S_{y.v} = \sum_{j=1}^{k}\sum_{i=1}^{n_j}(y_{ji} - \bar{y}_j)^2
+\end{equation*}
+
+\begin{equation*}
+P^2 = \frac{S_{y.m}}{S_y}
+\end{equation*}
+
+\noindent\begin{tabular}{|p{3.5cm}|l|p{5.5cm}|p{4cm}|}
+\hline
+$H_0$ & $H_1$ & Testové kritérium & Kritický obor \\ \hline
+$\mu_1 = \mu_2 = \ldots = \mu_k$
+  & non $H_0$
+  & $F = \dfrac{S_{y.m} / (k-1)}{S_{y.v} / (n-k)}$
+    \newline Pokud $H_0$ platí \quad $F \sim F(k-1,\, n-k)$
+  & $W_\alpha = \{F;\, F \geq F_{1-\alpha}\}$ \\ \hline
+\end{tabular}\vspace{8pt}
+
+%%_____________________________________________________________________________
+\subsection{Kontingenční tabulka ($r \times s$)}
+%%_____________________________________________________________________________
+
+\begin{equation*}
+n_{i.} = \sum_{j=1}^{s} n_{ij}
+\qquad
+n_{.j} = \sum_{i=1}^{r} n_{ij}
+\qquad
+n'_{ij} = \frac{n_{i.}\, n_{.j}}{n}
+\qquad
+n'_{ij} \geq 5
+\end{equation*}
+
+\textbf{Test nezávislosti v kontingenční tabulce}
+
+\noindent\begin{tabular}{|p{3cm}|l|p{5.5cm}|p{4cm}|}
+\hline
+$H_0$ & $H_1$ & Testové kritérium & Kritický obor \\ \hline
+znaky jsou nezávislé
+  & non $H_0$
+  & $G = \displaystyle\sum_{i=1}^{r}\sum_{j=1}^{s} \dfrac{(n_{ij} - n'_{ij})^2}{n'_{ij}}$
+    \newline Pokud $H_0$ platí \quad $G \approx \chi^2((r-1)(s-1))$
+  & $W_\alpha = \{g;\, g \geq \chi^2_{1-\alpha}\}$ \\ \hline
+\end{tabular}\vspace{8pt}
+
+\begin{equation*}
+C = \sqrt{\frac{G}{n+G}} \in \left\langle 0,\; \sqrt{\frac{m-1}{m}} \right\rangle
+\qquad
+V = \sqrt{\frac{G}{n(m-1)}}, \quad m = \min(r, s)
+\end{equation*}
+
+Pro $r = s = 2$:
+\begin{equation*}
+G = \frac{n\,(n_{11}n_{22} - n_{12}n_{21})^2}{n_{1.}\,n_{2.}\,n_{.1}\,n_{.2}}
+\end{equation*}
+
+%%_____________________________________________________________________________
+\subsection{Stupně volnosti – přehled}
+%%_____________________________________________________________________________
+
+\textbf{Zlaté pravidlo:} stupně volnosti = počet pozorování $-$ počet odhadovaných parametrů.
+Každý odhadovaný parametr „spotřebuje" jeden stupeň volnosti.
+
+\vspace{6pt}
+\textbf{T-testy}
+
+\noindent\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Test} & \textbf{df} & \textbf{Poznámka} \\ \hline
+Jednovýběrový t-test & $df = n - 1$ & $n$ = počet pozorování v souboru \\ \hline
+Párový t-test (závislé výběry) & $df = n_{\text{párů}} - 1$ & $n$ = počet párů (ne celkový počet hodnot!) \\ \hline
+Dvouvýběrový t-test (shoda rozptylů) & $df = n + m - 2$ & $n, m$ = velikosti obou skupin \\ \hline
+Dvouvýběrový t-test (neshoda rozptylů) & $df \approx \text{Welch}$ & Složitý vzorec – obvykle spočítá program \\ \hline
+\end{tabular}\vspace{8pt}
+
+\textbf{F-testy}
+
+\noindent\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Test} & \textbf{df\textsubscript{1}} & \textbf{df\textsubscript{2}} & \textbf{Poznámka} \\ \hline
+Test shody rozptylů (F-test) & $n - 1$ & $m - 1$ & Dva df – jeden pro každý soubor \\ \hline
+ANOVA (F-test) & $k - 1$ & $n - k$ & viz níže \\ \hline
+\end{tabular}\vspace{4pt}
+
+\noindent\textit{ANOVA:} $df_1 = k - 1$ je \textbf{meziskupinový} rozptyl (between groups, variabilita mezi skupinami);
+$df_2 = n - k$ je \textbf{vnitroskupinový} rozptyl (within groups, variabilita uvnitř skupin).
+$k$ = počet skupin, $n$ = celkový počet pozorování.\vspace{8pt}
+
+\textbf{Chí-kvadrát testy}
+
+\noindent\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Test} & \textbf{df} & \textbf{Poznámka} \\ \hline
+Test dobré shody & $df = k - 1$ & $k$ = počet kategorií (tříd) \\ \hline
+Test nezávislosti (kontingentní tabulka) & $df = (r-1)(s-1)$ & $r$ = počet řádků, $s$ = počet sloupců \\ \hline
+\end{tabular}\vspace{4pt}
+
+\noindent\textit{Poznámka:} u testu nezávislosti nezáleží na $n$, ale na rozměru tabulky.
+Tabulka $3 \times 4$ má $df = 2 \times 3 = 6$.\vspace{8pt}
+
+\textbf{Regrese}
+
+\noindent\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Model} & \textbf{df (reziduální)} & \textbf{Poznámka} \\ \hline
+Jednoduchá regrese & $df = n - 2$ & Odhadujeme $\beta_0$ a $\beta_1$ \\ \hline
+Vícenásobná regrese & $df = n - p - 1$ & $p$ = počet nezávislých proměnných \\ \hline
+\end{tabular}\vspace{8pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Analýza časových řad}
+%%_____________________________________________________________________________
+\subsection{Průměrné hodnoty časové řady}
+%%_____________________________________________________________________________
+
+Období $t = 1, 2, \ldots, n$. Prostý průměr, chronologický průměr (nevážený a vážený):
+
+\begin{equation*}
+\bar{y} = \frac{\displaystyle\sum_{t=1}^{n} y_t}{n}
+\qquad\qquad
+\bar{y} = \frac{\tfrac{1}{2}y_1 + \displaystyle\sum_{t=2}^{n-1} y_t + \tfrac{1}{2}y_n}{n-1}
+\qquad\qquad
+\bar{y} = \frac{\dfrac{y_1+y_2}{2}d_1 + \dfrac{y_2+y_3}{2}d_2 + \cdots + \dfrac{y_{n-1}+y_n}{2}d_{n-1}}{d_1 + d_2 + \cdots + d_{n-1}}
+\end{equation*}
+
+První diference a průměrná první diference:
+
+\begin{equation*}
+\Delta_t = y_t - y_{t-1}
+\qquad\qquad
+\bar{\Delta} = \frac{1}{n-1}\sum_{t=2}^{n}\Delta_t = \frac{y_n - y_1}{n-1}
+\end{equation*}
+
+%%_____________________________________________________________________________
+\subsection{Řetězové a bazické indexy}
+%%_____________________________________________________________________________
+
+\begin{equation*}
+k_t = I_{t/t-1} = \frac{y_t}{y_{t-1}}
+\qquad\qquad
+\bar{k} = \sqrt[n-1]{k_2 k_3 \cdots k_n} = \sqrt[n-1]{\frac{y_n}{y_1}}
+\end{equation*}
+
+\begin{equation*}
+I_{t/1} = I_{2/1} \cdot I_{3/2} \cdots I_{t/t-1}
+\qquad\qquad
+I_{k/t-1} = \frac{y_t}{y_{t-1}} = \frac{I_{t/1}}{I_{(t-1)/1}}
+\end{equation*}
+
+%%_____________________________________________________________________________
+\subsection{Klouzavé průměry}
+%%_____________________________________________________________________________
+
+\begin{equation*}
+m = 2p+1: \qquad
+\bar{y}_t = \frac{\displaystyle\sum_{i=-p}^{p} y_{t+i}}{m} = \frac{y_{t-p} + \cdots + y_{t-1} + y_t + y_{t+1} + \cdots + y_{t+p}}{m}
+\end{equation*}
+
+\begin{equation*}
+m = 2p: \qquad
+\bar{y}_t = \frac{1}{2m}\bigl(y_{t-p} + 2y_{t-p+1} + \cdots + 2y_{t-1} + 2y_t + 2y_{t+1} + \cdots + 2y_{t+p-1} + y_{t+p}\bigr)
+\end{equation*}
+
+%%_____________________________________________________________________________
+\subsection{Dekompozice časové řady}
+%%_____________________________________________________________________________
+
+\begin{equation*}
+y_t = T_t + S_t + C_t + \varepsilon_t \qquad\qquad y_t = T_t \cdot S_t \cdot C_t \cdot \varepsilon_t
+\end{equation*}
+
+\begin{equation*}
+T_t = \beta_0 + \beta_1 t \qquad \hat{T}_t = b_0 + b_1 t
+\qquad\qquad
+T_t = \beta_0 + \beta_1 t + \beta_2 t^2 \qquad \hat{T}_t = b_0 + b_1 t + b_2 t^2
+\end{equation*}
+
+\begin{equation*}
+e_t = y_t - \hat{y}_t
+\qquad\qquad
+MSE = \frac{\displaystyle\sum_{t=1}^{n}(y_t - \hat{y}_t)^2}{n} = \frac{\displaystyle\sum_{t=1}^{n} e_t^2}{n}
+\qquad\qquad
+D = \frac{\displaystyle\sum_{t=2}^{n}(e_t - e_{t-1})^2}{\displaystyle\sum_{t=1}^{n} e_t^2}
+\end{equation*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Indexní analýza}
+%%_____________________________________________________________________________
+
+\begin{equation*}
+Q = pq \qquad\qquad IQ = Ip \cdot Iq
+\end{equation*}
+
+\begin{equation*}
+Ip = \frac{p_1}{p_0} \qquad \Delta p = p_1 - p_0 \qquad
+Iq = \frac{q_1}{q_0} \qquad \Delta q = q_1 - q_0 \qquad
+IQ = \frac{Q_1}{Q_0} \qquad \Delta Q = Q_1 - Q_0
+\end{equation*}
+
+%%_____________________________________________________________________________
+\subsection{Složené individuální indexy}
+%%_____________________________________________________________________________
+
+\begin{equation*}
+I(\Sigma q) = \frac{\sum q_1}{\sum q_0} = \frac{\sum Iq \cdot q_0}{\sum q_0} = \frac{\sum q_1}{\sum \dfrac{q_1}{Iq}}
+\qquad\qquad
+\Delta(\Sigma q) = \sum q_1 - \sum q_0
+\end{equation*}
+
+\begin{equation*}
+I(\Sigma Q) = \frac{\sum Q_1}{\sum Q_0} = \frac{\sum p_1 q_1}{\sum p_0 q_0} = \frac{\sum IQ \cdot Q_0}{\sum Q_0} = \frac{\sum Q_1}{\sum \dfrac{Q_1}{IQ}}
+\qquad\qquad
+\Delta(\Sigma Q) = \sum Q_1 - \sum Q_0
+\end{equation*}
+
+\begin{equation*}
+I\bar{p} = \frac{\bar{p}_1}{\bar{p}_0}
+= \frac{\dfrac{\sum Q_1}{\sum q_1}}{\dfrac{\sum Q_0}{\sum q_0}}
+= \frac{\dfrac{\sum p_1 q_1}{\sum q_1}}{\dfrac{\sum p_0 q_0}{\sum q_0}}
+\qquad\qquad
+\Delta\bar{p} = \bar{p}_1 - \bar{p}_0 = \frac{\sum p_1 q_1}{\sum q_1} - \frac{\sum p_0 q_0}{\sum q_0}
+\end{equation*}
+
+%%_____________________________________________________________________________
+\subsection{Souhrnné indexy}
+%%_____________________________________________________________________________
+
+\begin{equation*}
+Ip^{(L)} = \frac{\sum p_1 q_0}{\sum p_0 q_0} = \frac{\sum Ip \cdot p_0 q_0}{\sum p_0 q_0} = \frac{\sum Ip \cdot Q_0}{\sum Q_0}
+\qquad\qquad
+Ip^{(P)} = \frac{\sum p_1 q_1}{\sum p_0 q_1} = \frac{\sum p_1 q_1}{\sum \dfrac{p_1 q_1}{Ip}} = \frac{\sum Q_1}{\sum \dfrac{Q_1}{Ip}}
+\end{equation*}
+
+\begin{equation*}
+Iq^{(L)} = \frac{\sum p_0 q_1}{\sum p_0 q_0} = \frac{\sum Iq \cdot p_0 q_0}{\sum p_0 q_0} = \frac{\sum Iq \cdot Q_0}{\sum Q_0}
+\qquad\qquad
+Iq^{(P)} = \frac{\sum p_1 q_1}{\sum p_1 q_0} = \frac{\sum p_1 q_1}{\sum \dfrac{p_1 q_1}{Iq}} = \frac{\sum Q_1}{\sum \dfrac{Q_1}{Iq}}
+\end{equation*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
