@@ -1732,14 +1732,6 @@ Test nezávislosti (kontingentní tabulka) & $df = (r-1)(s-1)$ & $r$ = počet ř
 \noindent\textit{Poznámka:} u testu nezávislosti nezáleží na $n$, ale na rozměru tabulky.
 Tabulka $3 \times 4$ má $df = 2 \times 3 = 6$.\vspace{8pt}
 
-\textbf{Regrese}
-
-\noindent\begin{tabular}{|l|l|l|}
-\hline
-\textbf{Model} & \textbf{df (reziduální)} & \textbf{Poznámka} \\ \hline
-Jednoduchá regrese & $df = n - 2$ & Odhadujeme $\beta_0$ a $\beta_1$ \\ \hline
-Vícenásobná regrese & $df = n - p - 1$ & $p$ = počet nezávislých proměnných \\ \hline
-\end{tabular}\vspace{8pt}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1860,6 +1852,9 @@ I\bar{p} = \frac{\bar{p}_1}{\bar{p}_0}
 \qquad\qquad
 \Delta\bar{p} = \bar{p}_1 - \bar{p}_0 = \frac{\sum p_1 q_1}{\sum q_1} - \frac{\sum p_0 q_0}{\sum q_0}
 \end{equation*}
+
+\noindent\textit{$\bar{p}$ je vážený průměr cen (\texttt{weighted.mean}), kde váhy jsou množství $q$:
+v období~0 jsou váhy $q_0$, v období~1 jsou váhy $q_1$.}
 
 %%_____________________________________________________________________________
 \subsection{Souhrnné indexy}
