@@ -1566,6 +1566,52 @@ Obecně: $\|x\|_p = \left( \sum |x_i|^p \right)^{1/p}$. Klíčové pro metriky c
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Statistická indukce}
 %%_____________________________________________________________________________
+\subsection{Intervalové odhady parametrů}
+%%_____________________________________________________________________________
+
+Spolehlivost intervalového odhadu $1 - \alpha$.
+
+\vspace{4pt}
+\textbf{Střední hodnota} (populační průměr); normální rozdělení
+
+Dvoustranný interval spolehlivosti pro parametr $\mu$:
+\begin{equation*}
+\left(\bar{x} - t_{1-\alpha/2}(n-1)\,\frac{S}{\sqrt{n}},\;\bar{x} + t_{1-\alpha/2}(n-1)\,\frac{S}{\sqrt{n}}\right)
+\end{equation*}
+
+Úhrn, $N$ jednotek:
+\begin{equation*}
+N\!\left(\bar{x} - t_{1-\alpha/2}(n-1)\,\frac{S}{\sqrt{n}},\;\bar{x} + t_{1-\alpha/2}(n-1)\,\frac{S}{\sqrt{n}}\right)
+=\left(N\bar{x} - Nt_{1-\alpha/2}(n-1)\,\frac{S}{\sqrt{n}},\;N\bar{x} + Nt_{1-\alpha/2}(n-1)\,\frac{S}{\sqrt{n}}\right)
+\end{equation*}
+
+\vspace{6pt}
+\textbf{Střední hodnota} (populační průměr); obecné rozdělení, velký náhodný výběr
+
+\begin{equation*}
+\left(\bar{x} - u_{1-\alpha/2}\,\frac{S}{\sqrt{n}},\;\bar{x} + u_{1-\alpha/2}\,\frac{S}{\sqrt{n}}\right)
+\end{equation*}
+
+Úhrn, $N$ jednotek:
+\begin{equation*}
+N\!\left(\bar{x} - u_{1-\alpha/2}\,\frac{S}{\sqrt{n}},\;\bar{x} + u_{1-\alpha/2}\,\frac{S}{\sqrt{n}}\right)
+=\left(N\bar{x} - Nu_{1-\alpha/2}\,\frac{S}{\sqrt{n}},\;N\bar{x} + Nu_{1-\alpha/2}\,\frac{S}{\sqrt{n}}\right)
+\end{equation*}
+
+\vspace{6pt}
+\textbf{Pravděpodobnost} (populační podíl); velký náhodný výběr
+
+\begin{equation*}
+\left(p - u_{1-\alpha/2}\sqrt{\frac{p(1-p)}{n}},\;p + u_{1-\alpha/2}\sqrt{\frac{p(1-p)}{n}}\right)
+\end{equation*}
+
+Úhrn ($N$ jednotek):
+\begin{equation*}
+N\!\left(p - u_{1-\alpha/2}\sqrt{\frac{p(1-p)}{n}},\;p + u_{1-\alpha/2}\sqrt{\frac{p(1-p)}{n}}\right)
+=\left(Np - Nu_{1-\alpha/2}\sqrt{\frac{p(1-p)}{n}},\;Np + Nu_{1-\alpha/2}\sqrt{\frac{p(1-p)}{n}}\right)
+\end{equation*}
+
+%%_____________________________________________________________________________
 \subsection{Testování statistických hypotéz o parametrech}
 %%_____________________________________________________________________________
 
@@ -1737,6 +1783,132 @@ Tabulka $3 \times 4$ má $df = 2 \times 3 = 6$.\vspace{8pt}
 
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Regrese a korelace}
+%%_____________________________________________________________________________
+\subsection{Regresní přímka}
+%%_____________________________________________________________________________
+
+\begin{equation*}
+y = \beta_0 + \beta_1 x + \varepsilon
+\qquad
+\hat{\beta}_0 = b_0,\; \hat{\beta}_1 = b_1 : \min_{b_0,\,b_1}\sum_{i=1}^{n}(y_i - b_0 - b_1 x_i)^2
+\qquad
+Y = b_0 + b_1 x,\quad \hat{y} = \hat{\beta}_0 + \hat{\beta}_1 x
+\end{equation*}
+
+\begin{equation*}
+e_i = y_i - b_0 - b_1 x_i = y_i - Y_i = y_i - \hat{y}_i
+\qquad\qquad
+s_{xy} = \frac{\displaystyle\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{n} = \overline{xy} - \bar{x}\cdot\bar{y}
+\end{equation*}
+
+\begin{equation*}
+\hat{\beta}_1 = b_1 = b_{yx}
+= \frac{n\displaystyle\sum_{i=1}^{n}x_i y_i - \sum_{i=1}^{n}x_i\sum_{i=1}^{n}y_i}{n\displaystyle\sum_{i=1}^{n}x_i^2 - \left(\sum_{i=1}^{n}x_i\right)^2}
+= \frac{\overline{xy} - \bar{x}\cdot\bar{y}}{\overline{x^2} - \bar{x}^2}
+= \frac{s_{xy}}{s_x^2}
+\end{equation*}
+
+\begin{equation*}
+\hat{\beta}_0 = b_0
+= \frac{\displaystyle\sum_{i=1}^{n}y_i\sum_{i=1}^{n}x_i^2 - \sum_{i=1}^{n}x_i y_i\sum_{i=1}^{n}x_i}{n\displaystyle\sum_{i=1}^{n}x_i^2 - \left(\sum_{i=1}^{n}x_i\right)^2}
+= \bar{y} - b_{yx}\bar{x}
+\end{equation*}
+
+%%_____________________________________________________________________________
+\subsection{Jiné regresní funkce}
+%%_____________________________________________________________________________
+
+Regresní parabola:
+\begin{equation*}
+y = \beta_0 + \beta_1 x + \beta_2 x^2 + \varepsilon \;\to\; Y = b_0 + b_1 x + b_2 x^2,\quad
+\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 x + \hat{\beta}_2 x^2
+\end{equation*}
+
+Vícenásobná regrese:
+\begin{equation*}
+y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots + \beta_k x_k + \varepsilon \;\to\;
+Y = b_0 + b_1 x_1 + \cdots + b_k x_k,\quad
+\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 x_1 + \hat{\beta}_2 x_2 + \cdots + \hat{\beta}_k x_k
+\end{equation*}
+
+%%_____________________________________________________________________________
+\subsection{Rozklad čtverců}
+%%_____________________________________________________________________________
+
+\begin{equation*}
+S_y = \sum_{i=1}^{n}(y_i-\bar{y})^2 \qquad
+S_T = \sum_{i=1}^{n}(Y_i-\bar{y})^2 \qquad
+S_R = \sum_{i=1}^{n}(y_i-Y_i)^2 = \sum_{i=1}^{n}(y_i-\hat{y}_i)^2 = \sum_{i=1}^{n}e_i^2
+\end{equation*}
+
+\begin{equation*}
+S_y = S_R + S_T \qquad
+s_R^2 = \frac{S_R}{n-p} \qquad
+s_R = \sqrt{\frac{S_R}{n-p}} = \sqrt{s_R^2} \qquad
+R^2 = I^2 = \frac{S_T}{S_y} \qquad
+I^2_{ADJ} = 1 - (1-I^2)\frac{n-1}{n-p}
+\end{equation*}
+
+%%_____________________________________________________________________________
+\subsection{Testy v regresi}
+%%_____________________________________________________________________________
+
+\textbf{Test hypotézy o regresních parametrech}
+
+\noindent\begin{tabular}{|l|l|p{5.5cm}|p{4cm}|}
+\hline
+\textbf{$H_0$} & \textbf{$H_1$} & \textbf{Testové kritérium} & \textbf{Kritický obor} \\ \hline
+$\beta_j = 0$ & $\beta_j \neq 0$
+  & $T = \dfrac{b_j}{s(b_j)}$ \newline Pokud $H_0$ platí \quad $T \sim t(n-p)$
+  & $W_\alpha = \{t;\, |t| \geq t_{1-\alpha/2}\}$ \\ \hline
+\end{tabular}\vspace{8pt}
+
+\textbf{Test o modelu} \quad ($p = k + 1$)
+
+\noindent\begin{tabular}{|p{3cm}|l|p{5.5cm}|p{4cm}|}
+\hline
+\textbf{$H_0$} & \textbf{$H_1$} & \textbf{Testové kritérium} & \textbf{Kritický obor} \\ \hline
+$\beta_0 = c$ \newline $\beta_1 = 0$ \newline $\vdots$ \newline $\beta_k = 0$
+  & non $H_0$
+  & $F = \dfrac{S_T / (p-1)}{S_R / (n-p)}$ \newline Pokud $H_0$ platí \quad $F \sim F(p-1,\, n-p)$
+  & $W_\alpha = \{F;\, F \geq F_{1-\alpha}\}$ \\ \hline
+\end{tabular}\vspace{8pt}
+
+%%_____________________________________________________________________________
+\subsection{Korelační koeficienty}
+%%_____________________________________________________________________________
+
+Pearsonův korelační koeficient:
+\begin{equation*}
+r_{yx} = r_{xy}
+= \frac{n\displaystyle\sum_{i=1}^{n}x_i y_i - \sum_{i=1}^{n}x_i\sum_{i=1}^{n}y_i}
+       {\sqrt{n\displaystyle\sum_{i=1}^{n}x_i^2 - \left(\sum_{i=1}^{n}x_i\right)^2}\;\sqrt{n\displaystyle\sum_{i=1}^{n}y_i^2 - \left(\sum_{i=1}^{n}y_i\right)^2}}
+= \frac{\overline{xy} - \bar{x}\cdot\bar{y}}{\sqrt{(\overline{x^2}-\bar{x}^2)(\overline{y^2}-\bar{y}^2)}}
+= \frac{s_{xy}}{s_x s_y}
+\end{equation*}
+
+Spearmanův pořadový korelační koeficient:
+\begin{equation*}
+r_s = 1 - \frac{6\displaystyle\sum_{i=1}^{n}(\text{pořadí}\,x_i - \text{pořadí}\,y_i)^2}{n(n^2-1)}
+\end{equation*}
+případně pomocí Pearsonova korelačního koeficientu proměnných pořadí $x_i$ a pořadí $y_i$.
+
+\vspace{4pt}
+\textbf{Test o nulovosti korelačního koeficientu}
+
+\noindent\begin{tabular}{|l|l|p{5.5cm}|p{4cm}|}
+\hline
+\textbf{$H_0$} & \textbf{$H_1$} & \textbf{Testové kritérium} & \textbf{Kritický obor} \\ \hline
+$\rho_{yx} = 0$ & $\rho_{yx} \neq 0$
+  & $T = \dfrac{r_{yx}\sqrt{n-2}}{\sqrt{1 - r_{yx}^2}}$ \newline Pokud $H_0$ platí \quad $T \sim t(n-2)$
+  & $W_\alpha = \{t;\, |t| \geq t_{1-\alpha/2}\}$ \\ \hline
+\end{tabular}\vspace{8pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Analýza časových řad}
 %%_____________________________________________________________________________
 \subsection{Průměrné hodnoty časové řady}
@@ -1813,6 +1985,29 @@ D = \frac{\displaystyle\sum_{t=2}^{n}(e_t - e_{t-1})^2}{\displaystyle\sum_{t=1}^
 \end{equation*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%_____________________________________________________________________________
+\subsection{Regresní metoda s umělými proměnnými (lineární trend, sezónnost délky 4)}
+%%_____________________________________________________________________________
+
+\begin{equation*}
+y_t = T_t + S_t + \varepsilon_t = \beta_0 + \beta_1 t + \alpha_1 x_{1t} + \alpha_2 x_{2t} + \alpha_3 x_{3t} + \varepsilon_t
+\end{equation*}
+
+\begin{equation*}
+\hat{y}_t = \hat{\beta}_0 + \hat{\beta}_1 t + \hat{\alpha}_1 x_{1t} + \hat{\alpha}_2 x_{2t} + \hat{\alpha}_3 x_{3t}
+         = b_0 + b_1 t + a_1 x_{1t} + a_2 x_{2t} + a_3 x_{3t}
+\end{equation*}
+
+\begin{equation*}
+\bar{a} = \frac{a_1 + a_2 + a_3}{4}
+\qquad
+S_{i+4j} = a_i - \bar{a},\quad i = 1,2,3 \quad \text{(\textit{i}-tá sezónní složka)}
+\qquad
+S_{4+4j} = -\bar{a} \quad \text{(čtvrtá sez. složka)}
+\qquad
+\hat{T}_t = (b_0 + \bar{a}) + b_1 t
+\end{equation*}
 
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
